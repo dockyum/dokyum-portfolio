@@ -228,7 +228,7 @@ git commit -m "feat: add typed portfolio content model"
 - Create: `public/assets/projects/snode/logo.png`
 - Create: `public/assets/projects/coffeeting/card.png`
 - Create: `public/assets/projects/coffeeting/logo.png`
-- Create: `public/assets/projects/matching-admin/card.png`
+- Create: `public/assets/projects/matching-admin/card-anonymized.png`
 - Create: `public/assets/projects/moum/card.png`
 - Create: `public/assets/projects/moum/logo.png`
 - Create: `public/dokyum-kim-portfolio.pdf`
@@ -279,18 +279,18 @@ Use these exact sources and destinations:
 Use the connected Figma file and store the current MCP assets at these stable local paths:
 
 ```text
-Butlerlee card  ebfb208c-d9f7-482c-8f2d-73ce672c95b9.png -> butlerlee/card.png
-Butlerlee logo  8215129a-0d5d-4765-b8e5-d556b4ba29b6.png -> butlerlee/logo.png
-Snode card      5edb70d6-3ae6-4c92-b9c3-15ee00768fd4.png -> snode/card.png
-Snode logo      66c1523e-55dd-44c6-82be-4150ed4efd19.png -> snode/logo.png
-Coffeeting card 8d1f443a-3828-4a9f-81c3-4fc6740f6c99.png -> coffeeting/card.png
-Coffeeting logo ca87f0bf-17e1-4e20-b9c3-e86a1a75a919.png -> coffeeting/logo.png
-Matching Admin  68e853db-e62b-4151-8142-12fd4da43451.png -> matching-admin/card.png
-Moum card        9f8dd952-f0b3-43d6-8a8e-099e687a8df0.png -> moum/card.png
-Moum logo        b663b9d7-b658-41f3-9e5a-104a3468a2e2.png -> moum/logo.png
+Butlerlee card  fb13de5e-c71e-4a41-a4a2-a3bbdd6238bb.png -> butlerlee/card.png
+Butlerlee logo  8e578049-7232-4f77-a2df-c7d4f0e0980a.png -> butlerlee/logo.png
+Snode card      9fe0d21c-31d7-464a-915b-2fb698528d81.png -> snode/card.jpg
+Snode logo      babe5ab7-d6cc-44a7-8dfe-403cb3101799.png -> snode/logo.png
+Coffeeting card 6acc0061-9037-473c-bb57-b4ece4bf941c.png -> coffeeting/card.jpg
+Coffeeting logo 14dfc716-f738-43df-9171-008827c714c3.png -> coffeeting/logo.png
+Matching source 5fe54349-9461-40ba-b55a-1529cc6dc97e.png -> temporary private input only
+Moum card        ec61f1f5-9feb-4103-b0d0-041c4d0c7862.png -> moum/card.png
+Moum logo        455e001a-e83d-4b92-be26-095577f77dcb.png -> moum/logo.png
 ```
 
-Matching Admin intentionally references Coffeeting's local logo. Inspect each downloaded file's MIME type and dimensions, and reject HTML/error payloads masquerading as images.
+The Matching Admin source contains real profile information. Use it only as an ImageGen edit target, replace faces and identifying data with fictional samples, save only the result as `matching-admin/card-anonymized.png`, and keep no private source in the repository. Matching Admin intentionally references Coffeeting's local logo. Inspect each downloaded file's MIME type and dimensions, and reject HTML/error payloads masquerading as images.
 
 - [ ] **Step 5: Point every project to local assets and rerun validation**
 

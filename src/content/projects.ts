@@ -135,8 +135,8 @@ export const projects = [
       "건설 현장의 작업 기록 오류와 관리 병목을 앱, 어드민, 체크리스트, 역할 체계로 함께 해결한 프로젝트입니다.",
     verifiedMetrics: ["월 평균 1,300만원 운영비 절감"],
     media: {
-      card: "assets/projects/snode/card.png",
-      hero: "assets/projects/snode/card.png",
+      card: "assets/projects/snode/card.jpg",
+      hero: "assets/projects/snode/card.jpg",
       logo: "assets/projects/snode/logo.png",
       alt: "건설 현장에서 Snode 앱으로 작업 기록을 관리하는 모습",
       accent: "#f4c94b",
@@ -178,8 +178,8 @@ export const projects = [
       "고객 인터뷰와 상품 판매 실험으로 O2O 소개팅의 핵심 비용을 찾고 5개월 만에 월매출 1,200만원을 만든 프로젝트입니다.",
     verifiedMetrics: ["월매출 1,200만원", "1개월 재구매율 남성 58% · 여성 52%"],
     media: {
-      card: "assets/projects/coffeeting/card.png",
-      hero: "assets/projects/coffeeting/card.png",
+      card: "assets/projects/coffeeting/card.jpg",
+      hero: "assets/projects/coffeeting/card.jpg",
       logo: "assets/projects/coffeeting/logo.png",
       alt: "Coffeeting 앱의 소개팅 신청과 매칭 안내 화면",
       accent: "#f67b91",
@@ -221,8 +221,8 @@ export const projects = [
       "수기 매칭과 일정 안내를 판단 업무와 반복 업무로 나누고, 매칭 처리 시간을 35분에서 4.15분으로 줄인 백오피스 프로젝트입니다.",
     verifiedMetrics: ["1팀 처리 35분 → 4.15분", "운영 효율 5배 이상"],
     media: {
-      card: "assets/projects/matching-admin/card.png",
-      hero: "assets/projects/matching-admin/card.png",
+      card: "assets/projects/matching-admin/card-anonymized.png",
+      hero: "assets/projects/matching-admin/card-anonymized.png",
       logo: "assets/projects/coffeeting/logo.png",
       alt: "Coffeeting 매칭 관리 어드민에서 후보자를 비교하는 화면",
       accent: "#9b83ee",
