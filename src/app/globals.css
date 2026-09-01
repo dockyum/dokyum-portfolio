@@ -76,7 +76,9 @@ button {
   justify-content: space-between;
   gap: 1.5rem;
   padding: 1rem clamp(1.25rem, 3vw, 3rem);
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid rgb(242 239 231 / 10%);
+  background: rgb(9 9 9 / 74%);
+  backdrop-filter: blur(16px);
   mix-blend-mode: normal;
 }
 
@@ -373,6 +375,318 @@ button:focus-visible,
   outline-offset: 4px;
 }
 
+.work-page {
+  min-height: 100svh;
+  background: var(--paper);
+  color: var(--coal);
+}
+
+.work-hero {
+  display: grid;
+  min-height: 100svh;
+  grid-template-columns: minmax(20rem, 44%) minmax(0, 56%);
+  background: var(--coal);
+  color: var(--bone);
+}
+
+.work-hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(7rem, 12svh, 9rem) clamp(1.5rem, 4.5vw, 5rem)
+    clamp(2rem, 5vw, 4.5rem);
+}
+
+.work-kicker {
+  margin: 0 0 clamp(1.4rem, 3vw, 2.6rem);
+  color: var(--muted);
+  font-family: var(--font-condensed);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.11em;
+}
+
+.work-logo {
+  display: flex;
+  width: fit-content;
+  min-width: 7rem;
+  min-height: 3.8rem;
+  align-items: center;
+  margin-bottom: clamp(1.6rem, 3vw, 2.8rem);
+  padding: 0.75rem 1.15rem;
+  border-radius: 0.2rem;
+  background: var(--paper);
+}
+
+.work-logo img {
+  width: auto;
+  max-width: min(11rem, 32vw);
+  height: auto;
+  max-height: 2.65rem;
+  object-fit: contain;
+}
+
+.work-hero h1 {
+  max-width: 9.5em;
+  margin: 0;
+  font-family: var(--font-korean);
+  font-size: clamp(2.9rem, 5vw, 6.4rem);
+  font-weight: 840;
+  letter-spacing: -0.074em;
+  line-height: 0.96;
+  text-wrap: balance;
+}
+
+.work-summary {
+  max-width: 34rem;
+  margin: clamp(1.5rem, 2.4vw, 2.4rem) 0 0;
+  color: color-mix(in srgb, var(--bone), transparent 24%);
+  font-family: var(--font-korean);
+  font-size: clamp(0.94rem, 1.15vw, 1.1rem);
+  letter-spacing: -0.025em;
+  line-height: 1.75;
+}
+
+.work-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem 2rem;
+  margin: clamp(2rem, 4vw, 3.6rem) 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.work-meta div {
+  min-width: 0;
+}
+
+.work-meta dt {
+  margin-bottom: 0.5rem;
+  color: var(--muted);
+  font-family: var(--font-condensed);
+  font-size: 0.64rem;
+  font-weight: 680;
+  letter-spacing: 0.1em;
+}
+
+.work-meta dd {
+  margin: 0;
+  color: color-mix(in srgb, var(--bone), transparent 12%);
+  font-family: var(--font-korean);
+  font-size: 0.78rem;
+  letter-spacing: -0.025em;
+  line-height: 1.55;
+}
+
+.work-hero-media {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  margin: 0;
+  background: color-mix(in srgb, var(--project-accent), var(--coal) 68%);
+}
+
+.work-hero-media::after {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgb(255 255 255 / 12%);
+  background: linear-gradient(to top, rgb(0 0 0 / 30%), transparent 35%);
+  content: "";
+  pointer-events: none;
+}
+
+.work-hero-media img {
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.work-hero:hover .work-hero-media img {
+  transform: scale(1.015);
+}
+
+.work-metrics {
+  display: grid;
+  padding: clamp(2.5rem, 5vw, 5rem) clamp(1.5rem, 5vw, 5rem);
+  border-bottom: 1px solid rgb(9 9 9 / 14%);
+  background: var(--project-accent);
+  color: var(--coal);
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.work-metrics p {
+  margin: 0;
+  padding: 0 clamp(1rem, 3vw, 3rem);
+  border-left: 1px solid rgb(9 9 9 / 26%);
+  font-family: var(--font-korean);
+  font-size: clamp(2rem, 4.4vw, 5rem);
+  font-weight: 830;
+  letter-spacing: -0.066em;
+  line-height: 0.98;
+}
+
+.work-story {
+  max-width: 92rem;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 8rem) clamp(1.5rem, 6vw, 7rem);
+}
+
+.work-story-section {
+  display: grid;
+  padding: clamp(2.5rem, 5vw, 5.5rem) 0;
+  border-top: 1px solid rgb(9 9 9 / 18%);
+  grid-template-columns: minmax(12rem, 31%) minmax(0, 1fr);
+}
+
+.work-story-section:last-child {
+  border-bottom: 1px solid rgb(9 9 9 / 18%);
+}
+
+.work-story-heading {
+  padding-right: 2rem;
+}
+
+.work-story-heading span {
+  display: block;
+  margin-bottom: 1rem;
+  color: color-mix(in srgb, var(--project-accent), var(--coal) 18%);
+  font-family: var(--font-serif);
+  font-size: 0.94rem;
+  font-style: italic;
+}
+
+.work-story-heading h2 {
+  margin: 0;
+  font-family: var(--font-korean);
+  font-size: clamp(1.5rem, 2.8vw, 3.1rem);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.work-story-body {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.work-story-body p {
+  max-width: 42rem;
+  margin: 0;
+  font-family: var(--font-korean);
+  font-size: clamp(1.02rem, 1.5vw, 1.36rem);
+  font-weight: 470;
+  letter-spacing: -0.032em;
+  line-height: 1.72;
+  word-break: keep-all;
+}
+
+.work-navigation {
+  display: grid;
+  min-height: 28rem;
+  background: var(--coal);
+  color: var(--bone);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.work-navigation-link {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  padding: clamp(2rem, 5vw, 5rem);
+  overflow: hidden;
+  border-right: 1px solid var(--line);
+  transition:
+    background-color 320ms ease,
+    color 320ms ease;
+}
+
+.work-navigation-link::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0.28rem;
+  background: var(--project-accent);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 420ms var(--ease-out);
+}
+
+.work-navigation-link:hover {
+  background: rgb(255 255 255 / 5%);
+}
+
+.work-navigation-link:hover::before {
+  transform: scaleX(1);
+}
+
+.work-navigation-next {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.work-navigation-label {
+  color: var(--muted);
+  font-family: var(--font-condensed);
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+}
+
+.work-navigation-link strong {
+  font-family: var(--font-condensed);
+  font-size: clamp(2.8rem, 6vw, 7.5rem);
+  font-weight: 760;
+  letter-spacing: -0.065em;
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+.work-navigation-link > span:last-child {
+  max-width: 26rem;
+  color: color-mix(in srgb, var(--bone), transparent 26%);
+  font-family: var(--font-korean);
+  font-size: 0.8rem;
+  letter-spacing: -0.02em;
+  line-height: 1.5;
+}
+
+.not-found-page {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 1.5rem;
+  text-align: center;
+}
+
+.not-found-page p {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.not-found-page h1 {
+  margin: 1rem 0 2rem;
+  font-family: var(--font-korean);
+  font-size: clamp(2.5rem, 7vw, 6.5rem);
+  font-weight: 850;
+  letter-spacing: -0.07em;
+}
+
+.not-found-page a {
+  min-height: 44px;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--bone);
+  font-size: 0.82rem;
+}
+
 @media (max-width: 1199px) {
   .project-card {
     width: clamp(15rem, 39vw, 24rem);
@@ -469,6 +783,84 @@ button:focus-visible,
   .project-controls {
     right: 1rem;
     bottom: 0.75rem;
+  }
+
+  .work-hero {
+    display: flex;
+    min-height: auto;
+    flex-direction: column;
+  }
+
+  .work-hero-copy {
+    min-height: 86svh;
+    padding: 7rem 1.25rem 2.5rem;
+  }
+
+  .work-hero h1 {
+    max-width: 11em;
+    font-size: clamp(2.85rem, 13vw, 4.7rem);
+  }
+
+  .work-summary {
+    font-size: 0.94rem;
+  }
+
+  .work-meta {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .work-hero-media {
+    min-height: 72svh;
+  }
+
+  .work-metrics {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 3rem 1.25rem;
+  }
+
+  .work-metrics p {
+    padding: 0 0 0 1.25rem;
+    font-size: clamp(2.4rem, 12vw, 4.6rem);
+  }
+
+  .work-story {
+    padding: 3rem 1.25rem 5rem;
+  }
+
+  .work-story-section {
+    display: block;
+    padding: 3rem 0;
+  }
+
+  .work-story-heading {
+    margin-bottom: 2rem;
+    padding-right: 0;
+  }
+
+  .work-story-heading h2 {
+    font-size: 2rem;
+  }
+
+  .work-story-body p {
+    font-size: 1.05rem;
+    line-height: 1.78;
+  }
+
+  .work-navigation {
+    min-height: 36rem;
+    grid-template-columns: 1fr;
+  }
+
+  .work-navigation-link {
+    min-height: 18rem;
+    padding: 2rem 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .work-navigation-link strong {
+    font-size: clamp(3rem, 16vw, 5.4rem);
   }
 }
 
