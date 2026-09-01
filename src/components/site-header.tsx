@@ -1,9 +1,11 @@
+import Link from "next/link";
+
 export function SiteHeader() {
   return (
     <header className="site-header">
-      <a className="site-wordmark" href="/" aria-label="Dokyum Kim 홈">
+      <Link className="site-wordmark" href="/" aria-label="Dokyum Kim 홈">
         DOKYUM KIM
-      </a>
+      </Link>
       <nav className="site-actions" aria-label="주요 링크">
         <a className="site-pdf-link" href="/dokyum-kim-portfolio.pdf" download>
           포트폴리오 PDF

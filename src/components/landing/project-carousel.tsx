@@ -55,7 +55,6 @@ export function ProjectCarousel({ projects }: { projects: readonly Project[] }) 
 
   const handlePointerDown = (event: PointerEvent<HTMLElement>) => {
     pointerStart.current = event.clientX;
-    event.currentTarget.setPointerCapture?.(event.pointerId);
   };
 
   const handlePointerUp = (event: PointerEvent<HTMLElement>) => {
@@ -136,19 +135,20 @@ export function ProjectCarousel({ projects }: { projects: readonly Project[] }) 
                   src={`/${project.media.card}`}
                   alt={project.media.alt}
                   fill
-                  priority={index < 3}
+                  preload={index === 0}
                   sizes="(max-width: 767px) 76vw, (max-width: 1199px) 42vw, 31vw"
                 />
               </span>
               <span className="project-card-shade" aria-hidden="true" />
               <span className="project-card-logo" aria-hidden="true">
-                <Image
-                  src={`/${project.media.logo}`}
-                  alt=""
-                  width={180}
-                  height={60}
-                  sizes="180px"
-                />
+                <span className="project-card-logo-image">
+                  <Image
+                    src={`/${project.media.logo}`}
+                    alt=""
+                    fill
+                    sizes="180px"
+                  />
+                </span>
               </span>
             </a>
           );

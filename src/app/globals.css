@@ -256,11 +256,13 @@ button {
   backdrop-filter: blur(18px);
 }
 
-.project-card-logo img {
-  width: auto;
-  max-width: 56%;
-  height: auto;
-  max-height: 2.6rem;
+.project-card-logo-image {
+  position: relative;
+  width: 56%;
+  height: 2.6rem;
+}
+
+.project-card-logo-image img {
   object-fit: contain;
 }
 
@@ -418,11 +420,13 @@ button:focus-visible,
   background: var(--paper);
 }
 
-.work-logo img {
-  width: auto;
-  max-width: min(11rem, 32vw);
-  height: auto;
-  max-height: 2.65rem;
+.work-logo-image {
+  position: relative;
+  width: min(11rem, 32vw);
+  height: 2.65rem;
+}
+
+.work-logo-image img {
   object-fit: contain;
 }
 
@@ -435,6 +439,7 @@ button:focus-visible,
   letter-spacing: -0.074em;
   line-height: 0.96;
   text-wrap: balance;
+  word-break: keep-all;
 }
 
 .work-summary {

@@ -24,13 +24,15 @@ export function ProjectDetail({ project }: { project: Project }) {
         <div className="work-hero-copy">
           <p className="work-kicker">{project.category}</p>
           <div className="work-logo">
-            <Image
-              src={`/${project.media.logo}`}
-              alt={`${project.name} 로고`}
-              width={220}
-              height={72}
-              priority
-            />
+            <span className="work-logo-image">
+              <Image
+                src={`/${project.media.logo}`}
+                alt={`${project.name} 로고`}
+                fill
+                loading="eager"
+                sizes="176px"
+              />
+            </span>
           </div>
           <h1>{project.heroOutcome}</h1>
           <p className="work-summary">{project.summary}</p>
@@ -56,7 +58,7 @@ export function ProjectDetail({ project }: { project: Project }) {
             src={`/${project.media.hero}`}
             alt={project.media.alt}
             fill
-            priority
+            preload
             sizes="(max-width: 767px) 100vw, 56vw"
           />
         </figure>
