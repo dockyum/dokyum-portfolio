@@ -1,5 +1,7 @@
 "use client";
 
+/* oxlint-disable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */
+
 import Image from "next/image";
 import type { CSSProperties, KeyboardEvent, PointerEvent, WheelEvent } from "react";
 import { useRef, useState } from "react";
@@ -90,7 +92,6 @@ export function ProjectCarousel({ projects }: { projects: readonly Project[] }) 
   return (
     <section
       className="project-carousel"
-      role="region"
       aria-label="프로젝트 둘러보기"
       tabIndex={0}
       onKeyDown={handleKeyDown}

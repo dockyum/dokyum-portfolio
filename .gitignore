@@ -1,6 +1,9 @@
 .worktrees/
 node_modules/
 .next/
+.vinext/
+dist/
+.wrangler/
 playwright-report/
 test-results/
 .DS_Store
