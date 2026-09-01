@@ -18,13 +18,25 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
   if (!project) return {};
 
+  const socialImage = `/${project.media.hero}`;
+
   return {
     title: project.name,
     description: project.summary,
+    alternates: {
+      canonical: project.route,
+    },
     openGraph: {
       title: `${project.name} — dokyum kim`,
       description: project.summary,
-      images: [`/${project.media.hero}`],
+      url: project.route,
+      images: [socialImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.name} — dokyum kim`,
+      description: project.summary,
+      images: [socialImage],
     },
   };
 }

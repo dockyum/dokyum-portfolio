@@ -10,7 +10,10 @@ import { SiteHeader } from "@/components/site-header";
 
 import "./globals.css";
 
+const siteUrl = new URL("https://dokyum-kim-portfolio.dock-y.chatgpt.site");
+
 export const metadata: Metadata = {
+  metadataBase: siteUrl,
   title: {
     default: "dokyum kim — Product Portfolio",
     template: "%s — dokyum kim",
@@ -19,11 +22,29 @@ export const metadata: Metadata = {
     "제품 밖의 병목까지 발견하고, 사업이 흐르도록 제품과 운영을 다시 설계하는 dokyum kim의 포트폴리오입니다.",
   authors: [{ name: "dokyum kim" }],
   creator: "dokyum kim",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     locale: "ko_KR",
     type: "website",
     title: "dokyum kim — Product Portfolio",
     description: "제품 밖의 병목까지, 사업이 흐르도록 다시 설계합니다.",
+    url: "/",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "DOKYUM KIM — Building Beyond the Product",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "dokyum kim — Product Portfolio",
+    description: "제품 밖의 병목까지, 사업이 흐르도록 다시 설계합니다.",
+    images: ["/og.png"],
   },
 };
 
