@@ -51,6 +51,22 @@ test("all project routes render and the old Snode slug redirects", async ({ page
   await expect(page).toHaveURL(/\/work\/snode$/);
 });
 
+test("Career renders the complete work chronology", async ({ page }) => {
+  await page.goto("/career");
+  for (const company of [
+    "Touchpoint",
+    "서우노드",
+    "커피팅주식회사",
+    "프라우들리",
+    "룩코",
+    "올스케이프",
+    "피그위",
+  ]) {
+    await expect(page.getByRole("heading", { name: company })).toBeVisible();
+  }
+  await expect(page.getByText("서울시립대학교")).toBeVisible();
+});
+
 test("desktop Work navigation reaches every project in one activation", async ({ page }) => {
   for (const [name, route] of workLinks) {
     await page.goto("/");
