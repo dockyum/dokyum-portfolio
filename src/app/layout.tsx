@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
-import "@fontsource-variable/inter/wght.css";
-import "@fontsource/instrument-serif/400-italic.css";
-import "@fontsource-variable/roboto-condensed/wght.css";
+import "@fontsource-variable/geist-mono/wght.css";
+import "@fontsource/instrument-serif/400.css";
 import "pretendard/dist/web/variable/pretendardvariable.css";
 
 import { SiteHeader } from "@/components/site-header";
@@ -52,7 +51,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" data-scroll-behavior="smooth">
       <body>
         <SiteHeader />
         {children}

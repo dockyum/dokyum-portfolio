@@ -123,3 +123,51 @@ test("visitor footer stays usable when Redis is unavailable", async ({ page }) =
   await page.goto("/");
   await expect(page.locator(".site-visitor")).toContainText("VISITORS —");
 });
+
+test("mobile layout keeps navigation and content inside the viewport", async ({ page }) => {
+  for (const viewport of [
+    { width: 320, height: 700 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth),
+    ).toBe(false);
+    await expect(page.getByRole("button", { name: "메뉴 열기" })).toBeVisible();
+    await page.getByRole("button", { name: "메뉴 열기" }).click();
+    await expect(page.getByRole("link", { name: /Touchpoint/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: "커리어" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "이메일로 연락하기" })).toBeVisible();
+    await page.getByRole("link", { name: "커리어" }).click();
+    await expect(page).toHaveURL(/\/career$/);
+  }
+});
+
+test("landing uses the approved editorial type roles", async ({ page }) => {
+  await page.goto("/");
+  const mastheadFont = await page.locator(".landing-masthead").evaluate(
+    (element) => getComputedStyle(element).fontFamily,
+  );
+  const labelFont = await page.locator(".landing-thesis > p").evaluate(
+    (element) => getComputedStyle(element).fontFamily,
+  );
+  expect(mastheadFont).toContain("Instrument Serif");
+  expect(labelFont).toContain("Geist Mono");
+});
+
+test("landing entrance is staged and reduced-motion safe", async ({ page }) => {
+  await page.goto("/");
+  const delays = await Promise.all(
+    [".landing-masthead", ".landing-thesis", ".project-runway"].map((selector) =>
+      page.locator(selector).evaluate((element) => getComputedStyle(element).animationDelay),
+    ),
+  );
+  expect(delays).toEqual(["0s", "0.16s", "0.36s"]);
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.reload();
+  for (const selector of [".landing-masthead", ".landing-thesis", ".project-runway"]) {
+    await expect(page.locator(selector)).toHaveCSS("animation-duration", "0s");
+  }
+});
