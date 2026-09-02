@@ -6,6 +6,37 @@ function isValidVisitorCount(value: unknown): value is number {
   return typeof value === "number" && Number.isInteger(value) && value >= 0;
 }
 
+let inFlightVisitorCountRequest: Promise<number | null> | null = null;
+
+async function requestVisitorCount(): Promise<number | null> {
+  const response = await fetch("/api/visitors", { method: "POST" });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const data: unknown = await response.json();
+  const nextCount =
+    typeof data === "object" && data !== null && "count" in data ? data.count : null;
+
+  return isValidVisitorCount(nextCount) ? nextCount : null;
+}
+
+function getVisitorCount(): Promise<number | null> {
+  if (inFlightVisitorCountRequest) {
+    return inFlightVisitorCountRequest;
+  }
+
+  const sharedRequest = requestVisitorCount().finally(() => {
+    if (inFlightVisitorCountRequest === sharedRequest) {
+      inFlightVisitorCountRequest = null;
+    }
+  });
+  inFlightVisitorCountRequest = sharedRequest;
+
+  return inFlightVisitorCountRequest;
+}
+
 export function VisitorCount() {
   const [count, setCount] = useState<number | null>(null);
 
@@ -14,33 +45,15 @@ export function VisitorCount() {
 
     async function loadCount() {
       try {
-        const response = await fetch("/api/visitors", { method: "POST" });
+        const nextCount = await getVisitorCount();
 
-        if (!response.ok) {
-          if (!cancelled) {
-            setCount(null);
-          }
-          return;
-        }
-
-        const data: unknown = await response.json();
-        const nextCount =
-          typeof data === "object" && data !== null && "count" in data
-            ? data.count
-            : null;
-
-        if (isValidVisitorCount(nextCount)) {
-          if (!cancelled) {
-            setCount(nextCount);
-          }
-          return;
+        if (!cancelled) {
+          setCount(nextCount);
         }
       } catch {
-        // Fall through to the documented unavailable state.
-      }
-
-      if (!cancelled) {
-        setCount(null);
+        if (!cancelled) {
+          setCount(null);
+        }
       }
     }
 

@@ -1,3 +1,4 @@
+import { StrictMode } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -26,5 +27,25 @@ describe("VisitorCount", () => {
     render(<VisitorCount />);
 
     await waitFor(() => expect(screen.getByText("—")).toBeInTheDocument());
+  });
+
+  it("posts once across Strict Mode effect replay and keeps the resolved count", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ count: 42 }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(
+      <StrictMode>
+        <VisitorCount />
+      </StrictMode>,
+    );
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(fetchMock).toHaveBeenCalledWith("/api/visitors", { method: "POST" });
+      expect(screen.getByText("000042")).toBeInTheDocument();
+    });
   });
 });
