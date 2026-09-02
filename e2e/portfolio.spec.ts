@@ -32,6 +32,14 @@ test("landing CTA, project journey, and PDF are available", async ({ page, reque
   expect(pdf.headers()["content-type"]).toContain("application/pdf");
 });
 
+test("every landing card opens its project on the first activation", async ({ page }) => {
+  for (const [name, route] of workLinks) {
+    await page.goto("/");
+    await page.getByRole("link", { name: `${name} 프로젝트 보기` }).click();
+    await expect(page).toHaveURL(new RegExp(`${route}$`));
+  }
+});
+
 test("all project routes render and the old Snode slug redirects", async ({ page }) => {
   for (const route of routes) {
     const response = await page.goto(route);
