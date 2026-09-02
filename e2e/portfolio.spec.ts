@@ -1,13 +1,15 @@
 import { expect, test } from "@playwright/test";
 
-const routes = [
-  "/work/touchpoint",
-  "/work/butlerlee",
-  "/work/snode",
-  "/work/coffeeting",
-  "/work/matching-admin",
-  "/work/moum",
+const workLinks = [
+  ["Touchpoint", "/work/touchpoint"],
+  ["Butlerlee", "/work/butlerlee"],
+  ["Snode", "/work/snode"],
+  ["Coffeeting", "/work/coffeeting"],
+  ["Matching Admin", "/work/matching-admin"],
+  ["Moum", "/work/moum"],
 ] as const;
+
+const routes = workLinks.map(([, route]) => route);
 
 test("landing CTA, project journey, and PDF are available", async ({ page, request }) => {
   await page.goto("/");
@@ -39,6 +41,15 @@ test("all project routes render and the old Snode slug redirects", async ({ page
 
   await page.goto("/work/snod");
   await expect(page).toHaveURL(/\/work\/snode$/);
+});
+
+test("desktop Work navigation reaches every project in one activation", async ({ page }) => {
+  for (const [name, route] of workLinks) {
+    await page.goto("/");
+    await page.getByRole("button", { name: "프로젝트 메뉴" }).click();
+    await page.locator("#work-menu").getByRole("link", { name: new RegExp(name) }).click();
+    await expect(page).toHaveURL(new RegExp(`${route}$`));
+  }
 });
 
 test("project logos keep their proportions and Korean titles wrap by word", async ({ page }) => {
