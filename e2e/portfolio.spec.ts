@@ -60,15 +60,19 @@ test("project logos keep their proportions and Korean titles wrap by word", asyn
   expect(wordBreak).toBe("keep-all");
 });
 
-test("social metadata uses the trusted production origin", async ({ page }) => {
+test("social metadata uses the configured local origin", async ({ page }) => {
   await page.goto("/work/touchpoint");
 
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    "http://127.0.0.1:4173/work/touchpoint",
+  );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     "content",
-    /^https:\/\/dokyum-kim-portfolio\.dock-y\.chatgpt\.site\//,
+    /^http:\/\/127\.0\.0\.1:4173\//,
   );
   await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
     "content",
-    /^https:\/\/dokyum-kim-portfolio\.dock-y\.chatgpt\.site\//,
+    /^http:\/\/127\.0\.0\.1:4173\//,
   );
 });

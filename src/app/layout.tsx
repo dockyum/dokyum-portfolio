@@ -7,10 +7,11 @@ import "@fontsource-variable/roboto-condensed/wght.css";
 import "pretendard/dist/web/variable/pretendardvariable.css";
 
 import { SiteHeader } from "@/components/site-header";
+import { resolveSiteUrl } from "@/lib/site-url";
 
 import "./globals.css";
 
-const siteUrl = new URL("https://dokyum-kim-portfolio.dock-y.chatgpt.site");
+const siteUrl = resolveSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
