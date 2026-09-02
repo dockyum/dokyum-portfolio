@@ -7,6 +7,7 @@ import "@fontsource-variable/roboto-condensed/wght.css";
 import "pretendard/dist/web/variable/pretendardvariable.css";
 
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { resolveSiteUrl } from "@/lib/site-url";
 
 import "./globals.css";
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body>
         <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );

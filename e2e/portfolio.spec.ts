@@ -111,3 +111,15 @@ test("social metadata uses the configured local origin", async ({ page }) => {
     /^http:\/\/127\.0\.0\.1:4173\//,
   );
 });
+
+test("visitor footer stays usable when Redis is unavailable", async ({ page }) => {
+  await page.route("**/api/visitors", (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: '{"count":null}',
+    }),
+  );
+  await page.goto("/");
+  await expect(page.locator(".site-visitor")).toContainText("VISITORS —");
+});
