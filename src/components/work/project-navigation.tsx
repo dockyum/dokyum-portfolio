@@ -11,9 +11,9 @@ export function ProjectNavigation({ slug }: { slug: ProjectSlug }) {
           href={previous.route}
           aria-label={`이전 프로젝트 ${previous.name}`}
         >
-          <span className="work-navigation-label">← 이전 프로젝트</span>
+          <span className="work-navigation-label work-navigation-meta">← 이전 프로젝트</span>
           <strong>{previous.name}</strong>
-          <span>{previous.activeLine}</span>
+          <span className="work-navigation-line">{previous.activeLine}</span>
         </a>
       ) : (
         <span aria-hidden="true" />
@@ -24,9 +24,9 @@ export function ProjectNavigation({ slug }: { slug: ProjectSlug }) {
           href={next.route}
           aria-label={`다음 프로젝트 ${next.name}`}
         >
-          <span className="work-navigation-label">다음 프로젝트 →</span>
+          <span className="work-navigation-label work-navigation-meta">다음 프로젝트 →</span>
           <strong>{next.name}</strong>
-          <span>{next.activeLine}</span>
+          <span className="work-navigation-line">{next.activeLine}</span>
         </a>
       ) : (
         <span aria-hidden="true" />
