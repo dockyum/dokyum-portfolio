@@ -28,6 +28,17 @@ describe("projects", () => {
     expect(touchpoint?.sections.outcome.join(" ")).toContain("검증 전");
   });
 
+  it("keeps resume-backed periods for projects with supplied dates", () => {
+    expect(projects).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ slug: "touchpoint", period: "2026–NOW" }),
+        expect.objectContaining({ slug: "butlerlee", period: "2022.03–2022.09" }),
+        expect.objectContaining({ slug: "snode", period: "2025.05–2026.02" }),
+        expect.objectContaining({ slug: "moum", period: "2022.10–2023.01" }),
+      ]),
+    );
+  });
+
   it("returns only existing neighbors", () => {
     expect(getProjectNeighbors("touchpoint").previous).toBeUndefined();
     expect(getProjectNeighbors("touchpoint").next?.slug).toBe("butlerlee");

@@ -45,7 +45,7 @@ export const projects = [
     activeLine: "결제와 일정 조율을 하나의 링크로 통합합니다",
     heroOutcome: "전문가의 유료 미팅을 하나의 링크로 구조화한 0→1 제품 구축",
     role: "Founding Product Builder · PO · Design · Development",
-    period: "2026",
+    period: "2026–NOW",
     team: "기획·디자인·개발 1인",
     summary:
       "창작자와 전문가가 제안, 요청, 일정, 결제를 한 프로필 링크에서 관리하도록 설계한 0→1 제품입니다.",
@@ -88,6 +88,7 @@ export const projects = [
     activeLine: "OTA 의존도를 97%에서 70%로 낮췄습니다",
     heroOutcome: "자사 웹과 멤버십을 다시 설계해 월 약 800만원의 수수료 절감",
     role: "PM · 웹 기획 · 운영 관리",
+    period: "2022.03–2022.09",
     team: "디자이너 · 콘텐츠 마케터 · 컨시어지 · 외주 개발",
     summary:
       "서촌과 북촌의 한옥 스테이 서비스가 OTA에 의존하던 예약 구조를 자사 웹과 멤버십 중심으로 전환한 프로젝트입니다.",
@@ -130,6 +131,7 @@ export const projects = [
     activeLine: "현장 관리비 월 1,300만원 절감",
     heroOutcome: "작업 기록 앱과 운영 체계를 함께 바꿔 월 평균 1,300만원 절감",
     role: "PO · 기획 · 운영 관리",
+    period: "2025.05–2026.02",
     team: "백엔드 2 · 현장 관리 4 · 운영 4",
     summary:
       "건설 현장의 작업 기록 오류와 관리 병목을 앱, 어드민, 체크리스트, 역할 체계로 함께 해결한 프로젝트입니다.",
@@ -258,7 +260,7 @@ export const projects = [
     activeLine: "4개월 만에 매출 3.9배",
     heroOutcome: "UX가 아니라 상품 부족을 병목으로 다시 정의해 클릭률과 매출을 성장",
     role: "PM · 기획 · 디자인 · 프런트엔드 개발",
-    period: "4개월",
+    period: "2022.10–2023.01",
     team: "개발 2 · 운영 매니저 1",
     summary:
       "데이터와 사용자 관찰로 낮은 상품 클릭률의 원인을 상품 부족에서 찾고 클릭률을 10%에서 29%로 높인 프로젝트입니다.",
