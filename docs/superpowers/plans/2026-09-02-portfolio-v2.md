@@ -1561,6 +1561,26 @@ Expected:
 
 If no correction was required, leave the tree clean and record the verified HEAD instead of creating an empty commit. If Step 3 exposed a gap, do not use a generic audit commit: append and execute a correction task with exact file paths, RED/GREEN commands, and its own scoped commit before repeating Steps 2 and 4.
 
+## Task 10A: Cover the Runway Pointer-Enter Contract
+
+**Files:**
+
+- Modify: `src/components/landing/project-runway.test.tsx`
+- Verify only: `src/components/landing/project-runway.tsx`
+- Modify: `docs/superpowers/plans/2026-09-02-portfolio-v2.md` (this correction record)
+
+**Correction discovered by Task 10:**
+
+`ProjectRunway` updates the separate index/name/outcome metadata from `onPointerEnter`, but the component suite proves only the focus path. Add one test that pointer-enters a non-active card and asserts that card's `02 / 06`, name, and `activeLine` appear in `.project-runway-meta`.
+
+1. Add the pointer-enter regression test to `project-runway.test.tsx`.
+2. Prove test sensitivity by temporarily removing the `onPointerEnter` handler from `project-runway.tsx`, run the focused test and observe the expected failure, then restore the source file exactly. This temporary mutation must not be committed.
+3. Run the focused test against the restored production behavior and observe GREEN.
+4. Run `pnpm test` and `pnpm verify`.
+5. Commit only this plan record and the test file with `test: cover runway hover metadata`.
+
+No production source behavior or new feature is required.
+
 ## Task 11: GitHub Publication, Redis Provisioning, and Vercel Production
 
 **Files:**

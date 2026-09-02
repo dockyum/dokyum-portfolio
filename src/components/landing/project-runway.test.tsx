@@ -33,4 +33,13 @@ describe("ProjectRunway", () => {
     expect(screen.getByText("Butlerlee")).toBeInTheDocument();
     expect(screen.getByText(projects[1].activeLine)).toBeInTheDocument();
   });
+
+  it("updates runway metadata when a project receives a pointer enter", () => {
+    const { container } = render(<ProjectRunway projects={projects} />);
+    fireEvent.pointerEnter(screen.getByRole("link", { name: "Butlerlee 프로젝트 보기" }));
+    const meta = container.querySelector(".project-runway-meta");
+    expect(meta).toHaveTextContent("02 / 06");
+    expect(meta).toHaveTextContent("Butlerlee");
+    expect(meta).toHaveTextContent(projects[1].activeLine);
+  });
 });
