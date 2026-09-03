@@ -2,18 +2,27 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { getProjectBySlug, getProjectNeighbors, projects } from "./projects";
+import { getProjectBySlug, getProjectNeighbors, getProjectsByKind, projects } from "./projects";
 
 describe("projects", () => {
-  it("keeps the approved canonical order", () => {
+  it("keeps the resume order: career work first, independent projects last", () => {
     expect(projects.map(({ slug }) => slug)).toEqual([
-      "touchpoint",
-      "butlerlee",
       "snode",
       "coffeeting",
       "matching-admin",
       "moum",
+      "butlerlee",
+      "touchpoint",
     ]);
+  });
+
+  it("never places a career project after an independent one", () => {
+    const kinds = projects.map(({ kind }) => kind);
+    const firstIndependent = kinds.indexOf("independent");
+    expect(firstIndependent).toBeGreaterThan(0);
+    expect(kinds.slice(0, firstIndependent).every((kind) => kind === "career")).toBe(true);
+    expect(kinds.slice(firstIndependent).every((kind) => kind === "independent")).toBe(true);
+    expect(getProjectsByKind("independent").map(({ slug }) => slug)).toEqual(["touchpoint"]);
   });
 
   it("keeps every slug, route, and landing line unique", () => {
@@ -40,13 +49,13 @@ describe("projects", () => {
   });
 
   it("returns only existing neighbors", () => {
-    expect(getProjectNeighbors("touchpoint").previous).toBeUndefined();
-    expect(getProjectNeighbors("touchpoint").next?.slug).toBe("butlerlee");
-    expect(getProjectNeighbors("snode")).toMatchObject({
-      previous: { slug: "butlerlee" },
-      next: { slug: "coffeeting" },
+    expect(getProjectNeighbors("snode").previous).toBeUndefined();
+    expect(getProjectNeighbors("snode").next?.slug).toBe("coffeeting");
+    expect(getProjectNeighbors("matching-admin")).toMatchObject({
+      previous: { slug: "coffeeting" },
+      next: { slug: "moum" },
     });
-    expect(getProjectNeighbors("moum").next).toBeUndefined();
+    expect(getProjectNeighbors("touchpoint").next).toBeUndefined();
   });
 
   it("ships every required project asset and the PDF locally", () => {

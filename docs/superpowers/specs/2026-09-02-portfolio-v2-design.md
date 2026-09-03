@@ -174,6 +174,8 @@ No other ambient animations run after the sequence. Reduced-motion users receive
 ### Project cards
 
 - Six cards, one per featured project.
+- Cards follow the resume order: resume-backed career work first (Snode, Coffeeting, Matching Admin, Moum, Butlerlee), then independent projects (Touchpoint) last.
+- The runway index labels the active card `CAREER` or `INDEPENDENT` so employment work and independent projects stay distinguishable without adding text to the cards.
 - Media-first 4:5 composition.
 - Bottom band contains only the product logo, preserving the earlier requirement.
 - Accessible name and outcome remain in the DOM for screen readers.
@@ -218,23 +220,26 @@ Layout rules:
 
 Route: `/career`
 
-The page uses reverse chronology because recruiters scan the newest and most relevant work first. It contains a continuous year rail and linked project evidence.
+The page uses reverse chronology because recruiters scan the newest and most relevant work first. It contains a continuous year rail and linked project evidence. Resume-backed employment history comes first; independent projects follow in their own section, before education.
 
 ### Work chronology
 
-1. `2026–NOW` — Touchpoint — Independent Product Builder
-   Linked project: Touchpoint.
-2. `2025.05–2026.02` — 서우노드 — PM
+1. `2025.05–2026.02` — 서우노드 — PM
    Linked project: Snode.
-3. `2022.10–2024.11` — 커피팅주식회사 — Co-founder, CPO
-   Linked projects: Moum, Coffeeting, Matching Admin.
-4. `2022.03–2022.10` — 프라우들리 — PM
+2. `2022.10–2024.11` — 커피팅주식회사 — Co-founder, CPO
+   Linked projects: Coffeeting, Matching Admin, Moum.
+3. `2022.03–2022.10` — 프라우들리 — PM
    Linked project: Butlerlee. `프릴리` is listed as additional work without a detail route.
-5. `2021.06–2021.12` — 룩코 — Frontend Developer
+4. `2021.06–2021.12` — 룩코 — Frontend Developer
    Work: data collection and coding generator; Feed social feature.
-6. `2018.12–2020.10` — 올스케이프 — Founder/CEO, Frontend Developer
+5. `2018.12–2020.10` — 올스케이프 — Founder/CEO, Frontend Developer
    Work: 시공간 nearby restaurant pre-order app.
-7. `2016.10–2018.11` — 피그위 — Founder/CEO.
+6. `2016.10–2018.11` — 피그위 — Founder/CEO.
+
+### Independent projects
+
+1. `2026–NOW` — Touchpoint — Founding Product Builder
+   Linked project: Touchpoint.
 
 ### Education and training
 
@@ -422,7 +427,7 @@ The release is complete when:
 - The Vercel project name is `dokyum-portfolio` unless Vercel requires a unique suffix.
 - No custom domain is required in this release.
 - The displayed counter represents unique browsers over a 400-day cookie window.
-- Touchpoint is included as current independent work even though it is described separately from formal employment in the resume.
+- Touchpoint is shown as an independent project, separate from and after the resume-backed employment history, because it is not part of formal employment in the resume.
 - Resume phone number and source PDF remain private.
 - The portfolio PDF remains a separate public download.
 - The prior OpenAI Sites deployment is preserved but is no longer canonical after Vercel verification.

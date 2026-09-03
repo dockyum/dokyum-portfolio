@@ -4,7 +4,7 @@ import Image from "next/image";
 import type { CSSProperties } from "react";
 import { useRef, useState } from "react";
 
-import type { Project } from "@/content/projects";
+import { projectKindLabels, type Project } from "@/content/projects";
 
 export function ProjectRunway({ projects }: { projects: readonly Project[] }) {
   const runwayRef = useRef<HTMLDivElement>(null);
@@ -70,7 +70,12 @@ export function ProjectRunway({ projects }: { projects: readonly Project[] }) {
         <p className="project-runway-count">
           {String(activeIndex + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
         </p>
-        <p className="project-runway-name">{projects[activeIndex].name}</p>
+        <p className="project-runway-name">
+          <span className="project-runway-kind">
+            {projectKindLabels[projects[activeIndex].kind]}
+          </span>
+          {projects[activeIndex].name}
+        </p>
         <p className="project-runway-outcome">{projects[activeIndex].activeLine}</p>
       </div>
     </section>

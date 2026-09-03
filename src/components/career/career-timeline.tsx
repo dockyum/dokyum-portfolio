@@ -1,11 +1,13 @@
 import type { CareerEntry, EducationEntry } from "@/content/career";
-import { getProjectBySlug } from "@/content/projects";
+import { getProjectBySlug, type Project } from "@/content/projects";
 
 export function CareerTimeline({
   careers,
+  projects,
   education,
 }: {
   careers: readonly CareerEntry[];
+  projects: readonly Project[];
   education: readonly EducationEntry[];
 }) {
   return (
@@ -37,6 +39,30 @@ export function CareerTimeline({
                       </a>
                     );
                   })}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="career-independent" aria-labelledby="career-independent-heading">
+        <div className="career-section-heading">
+          <p className="career-section-kicker">INDEPENDENT PROJECTS</p>
+          <h2 id="career-independent-heading">직접 만드는 것들</h2>
+        </div>
+        <div className="independent-entries">
+          {projects.map((project) => (
+            <article className="independent-entry" key={project.slug}>
+              <p className="independent-period">{project.period ?? ""}</p>
+              <div className="independent-entry-main">
+                <h3 className="independent-name">{project.name}</h3>
+                <p className="independent-role">{project.role}</p>
+                <p className="independent-summary">{project.summary}</p>
+                <div className="career-projects">
+                  <a href={project.route} aria-label={`${project.name} 프로젝트 보기`}>
+                    {project.name} ↗
+                  </a>
                 </div>
               </div>
             </article>

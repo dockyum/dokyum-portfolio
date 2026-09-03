@@ -17,14 +17,6 @@ export type EducationEntry = {
 
 export const careerEntries = [
   {
-    period: "2026–NOW",
-    company: "Touchpoint",
-    role: "Independent Product Builder",
-    summary: "전문가의 제안, 일정, 결제를 하나의 링크로 연결하는 제품을 직접 설계하고 구현합니다.",
-    highlights: ["제품 기획", "디자인", "개발", "결제 구조 검증"],
-    projectSlugs: ["touchpoint"],
-  },
-  {
     period: "2025.05–2026.02",
     company: "서우노드",
     role: "PM",
@@ -38,7 +30,7 @@ export const careerEntries = [
     role: "Co-founder, CPO",
     summary: "소개팅 상품, 고객 앱, 매칭 어드민을 0→1로 만들고 운영했습니다.",
     highlights: ["월매출 1,200만원", "매칭 운영 효율 5배 이상"],
-    projectSlugs: ["moum", "coffeeting", "matching-admin"],
+    projectSlugs: ["coffeeting", "matching-admin", "moum"],
   },
   {
     period: "2022.03–2022.10",

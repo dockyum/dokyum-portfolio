@@ -38,12 +38,12 @@ pnpm dev
 
 - `/` — 포트폴리오 홈
 - `/career` — 경력 및 타임라인
-- `/work/touchpoint`
-- `/work/butlerlee`
 - `/work/snode`
 - `/work/coffeeting`
 - `/work/matching-admin`
 - `/work/moum`
+- `/work/butlerlee`
+- `/work/touchpoint`
 - `/api/visitors` — 익명 방문자 수 API
 - `/dokyum-kim-portfolio.pdf` — 포트폴리오 PDF
 

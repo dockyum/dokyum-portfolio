@@ -6,6 +6,13 @@ export type ProjectSlug =
   | "matching-admin"
   | "moum";
 
+export type ProjectKind = "career" | "independent";
+
+export const projectKindLabels = {
+  career: "CAREER",
+  independent: "INDEPENDENT",
+} as const satisfies Record<ProjectKind, string>;
+
 export type ProjectSections = {
   overview: readonly string[];
   problem: readonly string[];
@@ -18,6 +25,7 @@ export type Project = {
   slug: ProjectSlug;
   route: `/work/${ProjectSlug}`;
   name: string;
+  kind: ProjectKind;
   category: string;
   activeLine: string;
   heroOutcome: string;
@@ -38,96 +46,11 @@ export type Project = {
 
 export const projects = [
   {
-    slug: "touchpoint",
-    route: "/work/touchpoint",
-    name: "Touchpoint",
-    category: "0→1 PRODUCT BUILD",
-    activeLine: "결제와 일정 조율을 하나의 링크로 통합합니다",
-    heroOutcome: "전문가의 유료 미팅을 하나의 링크로 구조화한 0→1 제품 구축",
-    role: "Founding Product Builder · PO · Design · Development",
-    period: "2026–NOW",
-    team: "기획·디자인·개발 1인",
-    summary:
-      "창작자와 전문가가 제안, 요청, 일정, 결제를 한 프로필 링크에서 관리하도록 설계한 0→1 제품입니다.",
-    verifiedMetrics: [],
-    media: {
-      card: "assets/projects/touchpoint/card.jpg",
-      hero: "assets/projects/touchpoint/card.jpg",
-      logo: "assets/projects/touchpoint/logo.svg",
-      alt: "Touchpoint 프로필과 미팅 상품 화면을 사용하는 장면",
-      accent: "#ff6b5f",
-    },
-    sections: {
-      overview: [
-        "창작자와 전문가는 유료 상담이나 미팅을 열어도 소개, 신청, 일정 조율, 결제가 서로 다른 도구와 메시지에 흩어져 있었습니다.",
-        "Touchpoint는 제공할 미팅과 신청 조건을 정리하고, 하나의 프로필 링크에서 요청부터 결제까지 이어지도록 만든 제품입니다.",
-      ],
-      problem: [
-        "DM과 이메일로 요청을 받으면 필요한 정보가 빠지고, 일정과 가격을 다시 물으며, 결제 의사와 실제 참석 의사를 구분하기 어려웠습니다.",
-        "요청자는 무엇을 준비해야 하는지 모르고, 제공자는 반복 조율과 노쇼 위험을 떠안는 구조였습니다.",
-      ],
-      judgment: [
-        "프로필을 예쁘게 보여주는 것보다 제안, 요청, 일정, 결제의 순서를 하나의 흐름으로 묶는 것이 먼저라고 판단했습니다.",
-        "미팅 조건을 쉽게 구성하고 결제를 의향 필터로 쓰면 제공자는 더 적은 대화로 준비된 요청을 받을 수 있다는 가설을 세웠습니다.",
-      ],
-      execution: [
-        "프로필, 미팅 상품, 온보딩, 신청 폼, 대시보드, 일정, 결제, 다국어, 이벤트 측정을 직접 설계하고 구현했습니다.",
-        "국내 C2C 결제 심사에서 제약을 확인한 뒤 결제를 억지로 우회하지 않고, 글로벌 법인과 Stripe를 전제로 시장과 결제 구조를 다시 설계하는 방향으로 전환했습니다.",
-      ],
-      outcome: [
-        "요청부터 운영까지 연결되는 제품 전 범위를 실제로 구축했지만 시장 반응과 성장성은 아직 검증 전입니다.",
-        "이번 단계의 성과는 숫자를 과장하는 대신, 결제 규제가 제품 범위와 시장 선택을 바꿀 수 있다는 점을 빠르게 확인하고 다음 검증 순서를 명확히 한 것입니다.",
-      ],
-    },
-  },
-  {
-    slug: "butlerlee",
-    route: "/work/butlerlee",
-    name: "Butlerlee",
-    category: "OWNED WEB · MEMBERSHIP",
-    activeLine: "OTA 의존도를 97%에서 70%로 낮췄습니다",
-    heroOutcome: "자사 웹과 멤버십을 다시 설계해 월 약 800만원의 수수료 절감",
-    role: "PM · 웹 기획 · 운영 관리",
-    period: "2022.03–2022.09",
-    team: "디자이너 · 콘텐츠 마케터 · 컨시어지 · 외주 개발",
-    summary:
-      "서촌과 북촌의 한옥 스테이 서비스가 OTA에 의존하던 예약 구조를 자사 웹과 멤버십 중심으로 전환한 프로젝트입니다.",
-    verifiedMetrics: ["OTA 의존도 97% → 70%", "월 약 800만원 수수료 절감"],
-    media: {
-      card: "assets/projects/butlerlee/card.png",
-      hero: "assets/projects/butlerlee/card.png",
-      logo: "assets/projects/butlerlee/logo.png",
-      alt: "Butlerlee 한옥 스테이와 자사 예약 웹 화면",
-      accent: "#d6b98b",
-    },
-    sections: {
-      overview: [
-        "Butlerlee는 서촌과 북촌에서 한옥 스테이를 운영했지만 예약의 약 97%가 OTA에 집중돼 있었습니다.",
-        "고객과의 관계는 플랫폼에 남고, 재방문이 생겨도 수수료를 반복해서 부담하는 구조였습니다.",
-      ],
-      problem: [
-        "기존 자사 웹은 숙소의 매력과 예약 이유를 충분히 전달하지 못했고, 고객을 다시 불러올 회원 관계도 없었습니다.",
-        "채널 의존 문제는 화면만 고치는 것으로 풀리지 않았고 콘텐츠, 예약, 운영, 재방문을 함께 연결해야 했습니다.",
-      ],
-      judgment: [
-        "OTA를 단숨에 없애기보다 자사 웹에서 예약할 이유를 만들고, 기존 고객의 재방문을 멤버십으로 축적하는 접근을 택했습니다.",
-        "숙소 탐색부터 예약까지의 신뢰를 높이고 운영팀이 관리 가능한 흐름을 만들면 자사 예약 비중이 커질 것으로 판단했습니다.",
-      ],
-      execution: [
-        "웹 정보 구조와 숙소 상세, 예약 흐름을 다시 기획하고 디자이너, 콘텐츠 마케터, 컨시어지팀, 외주 개발팀의 실행을 조율했습니다.",
-        "멤버십 체계를 구축하고 자사 예약과 재방문을 운영에서 계속 관리할 수 있도록 정책과 업무 흐름을 함께 정리했습니다.",
-      ],
-      outcome: [
-        "OTA 예약 의존도를 약 97%에서 70%로 낮추고 자사 웹 예약과 재방문 비중을 높였습니다.",
-        "Airbnb 등 OTA 수수료로 나가던 비용을 월 약 800만원 절감하며, 자사 채널이 실제 손익 구조를 바꾸는 제품이 되도록 만들었습니다.",
-      ],
-    },
-  },
-  {
     slug: "snode",
     route: "/work/snode",
     name: "Snode",
     category: "FIELD APP · OPERATIONS",
+    kind: "career",
     activeLine: "현장 관리비 월 1,300만원 절감",
     heroOutcome: "작업 기록 앱과 운영 체계를 함께 바꿔 월 평균 1,300만원 절감",
     role: "PO · 기획 · 운영 관리",
@@ -171,6 +94,7 @@ export const projects = [
     route: "/work/coffeeting",
     name: "Coffeeting",
     category: "MVP · PRODUCT MARKET LEARNING",
+    kind: "career",
     activeLine: "MVP 5개월 만에 월매출 1,200만원",
     heroOutcome: "고객의 낭비 비용을 줄인 50분 소개팅으로 MVP를 매출까지 연결",
     role: "PM · 기획 · 프런트엔드 개발",
@@ -214,6 +138,7 @@ export const projects = [
     route: "/work/matching-admin",
     name: "Matching Admin",
     category: "BACK OFFICE · AUTOMATION",
+    kind: "career",
     activeLine: "1팀 처리 35분 → 4.15분",
     heroOutcome: "사람의 판단은 빠르게, 반복 업무는 자동화해 운영 효율 5배 이상 향상",
     role: "PM · 기획 · 디자인 · 개발 관리",
@@ -257,6 +182,7 @@ export const projects = [
     route: "/work/moum",
     name: "Moum",
     category: "FUNNEL · SUPPLY GROWTH",
+    kind: "career",
     activeLine: "4개월 만에 매출 3.9배",
     heroOutcome: "UX가 아니라 상품 부족을 병목으로 다시 정의해 클릭률과 매출을 성장",
     role: "PM · 기획 · 디자인 · 프런트엔드 개발",
@@ -295,7 +221,99 @@ export const projects = [
       ],
     },
   },
+  {
+    slug: "butlerlee",
+    route: "/work/butlerlee",
+    name: "Butlerlee",
+    category: "OWNED WEB · MEMBERSHIP",
+    kind: "career",
+    activeLine: "OTA 의존도를 97%에서 70%로 낮췄습니다",
+    heroOutcome: "자사 웹과 멤버십을 다시 설계해 월 약 800만원의 수수료 절감",
+    role: "PM · 웹 기획 · 운영 관리",
+    period: "2022.03–2022.09",
+    team: "디자이너 · 콘텐츠 마케터 · 컨시어지 · 외주 개발",
+    summary:
+      "서촌과 북촌의 한옥 스테이 서비스가 OTA에 의존하던 예약 구조를 자사 웹과 멤버십 중심으로 전환한 프로젝트입니다.",
+    verifiedMetrics: ["OTA 의존도 97% → 70%", "월 약 800만원 수수료 절감"],
+    media: {
+      card: "assets/projects/butlerlee/card.png",
+      hero: "assets/projects/butlerlee/card.png",
+      logo: "assets/projects/butlerlee/logo.png",
+      alt: "Butlerlee 한옥 스테이와 자사 예약 웹 화면",
+      accent: "#d6b98b",
+    },
+    sections: {
+      overview: [
+        "Butlerlee는 서촌과 북촌에서 한옥 스테이를 운영했지만 예약의 약 97%가 OTA에 집중돼 있었습니다.",
+        "고객과의 관계는 플랫폼에 남고, 재방문이 생겨도 수수료를 반복해서 부담하는 구조였습니다.",
+      ],
+      problem: [
+        "기존 자사 웹은 숙소의 매력과 예약 이유를 충분히 전달하지 못했고, 고객을 다시 불러올 회원 관계도 없었습니다.",
+        "채널 의존 문제는 화면만 고치는 것으로 풀리지 않았고 콘텐츠, 예약, 운영, 재방문을 함께 연결해야 했습니다.",
+      ],
+      judgment: [
+        "OTA를 단숨에 없애기보다 자사 웹에서 예약할 이유를 만들고, 기존 고객의 재방문을 멤버십으로 축적하는 접근을 택했습니다.",
+        "숙소 탐색부터 예약까지의 신뢰를 높이고 운영팀이 관리 가능한 흐름을 만들면 자사 예약 비중이 커질 것으로 판단했습니다.",
+      ],
+      execution: [
+        "웹 정보 구조와 숙소 상세, 예약 흐름을 다시 기획하고 디자이너, 콘텐츠 마케터, 컨시어지팀, 외주 개발팀의 실행을 조율했습니다.",
+        "멤버십 체계를 구축하고 자사 예약과 재방문을 운영에서 계속 관리할 수 있도록 정책과 업무 흐름을 함께 정리했습니다.",
+      ],
+      outcome: [
+        "OTA 예약 의존도를 약 97%에서 70%로 낮추고 자사 웹 예약과 재방문 비중을 높였습니다.",
+        "Airbnb 등 OTA 수수료로 나가던 비용을 월 약 800만원 절감하며, 자사 채널이 실제 손익 구조를 바꾸는 제품이 되도록 만들었습니다.",
+      ],
+    },
+  },
+  {
+    slug: "touchpoint",
+    route: "/work/touchpoint",
+    name: "Touchpoint",
+    category: "0→1 PRODUCT BUILD",
+    kind: "independent",
+    activeLine: "결제와 일정 조율을 하나의 링크로 통합합니다",
+    heroOutcome: "전문가의 유료 미팅을 하나의 링크로 구조화한 0→1 제품 구축",
+    role: "Founding Product Builder · PO · Design · Development",
+    period: "2026–NOW",
+    team: "기획·디자인·개발 1인",
+    summary:
+      "창작자와 전문가가 제안, 요청, 일정, 결제를 한 프로필 링크에서 관리하도록 설계한 0→1 제품입니다.",
+    verifiedMetrics: [],
+    media: {
+      card: "assets/projects/touchpoint/card.jpg",
+      hero: "assets/projects/touchpoint/card.jpg",
+      logo: "assets/projects/touchpoint/logo.svg",
+      alt: "Touchpoint 프로필과 미팅 상품 화면을 사용하는 장면",
+      accent: "#ff6b5f",
+    },
+    sections: {
+      overview: [
+        "창작자와 전문가는 유료 상담이나 미팅을 열어도 소개, 신청, 일정 조율, 결제가 서로 다른 도구와 메시지에 흩어져 있었습니다.",
+        "Touchpoint는 제공할 미팅과 신청 조건을 정리하고, 하나의 프로필 링크에서 요청부터 결제까지 이어지도록 만든 제품입니다.",
+      ],
+      problem: [
+        "DM과 이메일로 요청을 받으면 필요한 정보가 빠지고, 일정과 가격을 다시 물으며, 결제 의사와 실제 참석 의사를 구분하기 어려웠습니다.",
+        "요청자는 무엇을 준비해야 하는지 모르고, 제공자는 반복 조율과 노쇼 위험을 떠안는 구조였습니다.",
+      ],
+      judgment: [
+        "프로필을 예쁘게 보여주는 것보다 제안, 요청, 일정, 결제의 순서를 하나의 흐름으로 묶는 것이 먼저라고 판단했습니다.",
+        "미팅 조건을 쉽게 구성하고 결제를 의향 필터로 쓰면 제공자는 더 적은 대화로 준비된 요청을 받을 수 있다는 가설을 세웠습니다.",
+      ],
+      execution: [
+        "프로필, 미팅 상품, 온보딩, 신청 폼, 대시보드, 일정, 결제, 다국어, 이벤트 측정을 직접 설계하고 구현했습니다.",
+        "국내 C2C 결제 심사에서 제약을 확인한 뒤 결제를 억지로 우회하지 않고, 글로벌 법인과 Stripe를 전제로 시장과 결제 구조를 다시 설계하는 방향으로 전환했습니다.",
+      ],
+      outcome: [
+        "요청부터 운영까지 연결되는 제품 전 범위를 실제로 구축했지만 시장 반응과 성장성은 아직 검증 전입니다.",
+        "이번 단계의 성과는 숫자를 과장하는 대신, 결제 규제가 제품 범위와 시장 선택을 바꿀 수 있다는 점을 빠르게 확인하고 다음 검증 순서를 명확히 한 것입니다.",
+      ],
+    },
+  },
 ] as const satisfies readonly Project[];
+
+export function getProjectsByKind(kind: ProjectKind): Project[] {
+  return projects.filter((project) => project.kind === kind);
+}
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);

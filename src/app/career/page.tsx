@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { CareerTimeline } from "@/components/career/career-timeline";
 import { careerEntries, educationEntries } from "@/content/career";
+import { getProjectsByKind } from "@/content/projects";
 
 export const metadata: Metadata = {
   title: "커리어",
@@ -22,7 +23,11 @@ export default function CareerPage() {
         </p>
       </header>
 
-      <CareerTimeline careers={careerEntries} education={educationEntries} />
+      <CareerTimeline
+        careers={careerEntries}
+        projects={getProjectsByKind("independent")}
+        education={educationEntries}
+      />
 
       <section className="career-cta" aria-labelledby="career-cta-heading">
         <p className="career-section-kicker">LET&apos;S WORK TOGETHER</p>

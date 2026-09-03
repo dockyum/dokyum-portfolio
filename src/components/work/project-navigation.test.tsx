@@ -5,12 +5,12 @@ import { ProjectNavigation } from "./project-navigation";
 
 describe("ProjectNavigation", () => {
   it("shows only the next project at the beginning", () => {
-    render(<ProjectNavigation slug="touchpoint" />);
+    render(<ProjectNavigation slug="snode" />);
 
     expect(screen.queryByText("이전 프로젝트")).not.toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: /다음 프로젝트.*Butlerlee/ }),
-    ).toHaveAttribute("href", "/work/butlerlee");
+      screen.getByRole("link", { name: /다음 프로젝트.*Coffeeting/ }),
+    ).toHaveAttribute("href", "/work/coffeeting");
   });
 
   it("shows both neighbors in the middle", () => {
@@ -25,11 +25,11 @@ describe("ProjectNavigation", () => {
   });
 
   it("shows only the previous project at the end", () => {
-    render(<ProjectNavigation slug="moum" />);
+    render(<ProjectNavigation slug="touchpoint" />);
 
     expect(
-      screen.getByRole("link", { name: /이전 프로젝트.*Matching Admin/ }),
-    ).toHaveAttribute("href", "/work/matching-admin");
+      screen.getByRole("link", { name: /이전 프로젝트.*Butlerlee/ }),
+    ).toHaveAttribute("href", "/work/butlerlee");
     expect(screen.queryByText("다음 프로젝트")).not.toBeInTheDocument();
   });
 });

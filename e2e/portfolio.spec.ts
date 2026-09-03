@@ -1,12 +1,12 @@
 import { expect, test } from "@playwright/test";
 
 const workLinks = [
-  ["Touchpoint", "/work/touchpoint"],
-  ["Butlerlee", "/work/butlerlee"],
   ["Snode", "/work/snode"],
   ["Coffeeting", "/work/coffeeting"],
   ["Matching Admin", "/work/matching-admin"],
   ["Moum", "/work/moum"],
+  ["Butlerlee", "/work/butlerlee"],
+  ["Touchpoint", "/work/touchpoint"],
 ] as const;
 
 const routes = workLinks.map(([, route]) => route);
@@ -22,10 +22,10 @@ test("landing CTA, project journey, and PDF are available", async ({ page, reque
     "mailto:snfltptkd91@gmail.com",
   );
 
-  await page.getByRole("link", { name: "Touchpoint 프로젝트 보기" }).click();
-  await expect(page).toHaveURL(/\/work\/touchpoint$/);
-  await page.getByRole("link", { name: "다음 프로젝트 Butlerlee" }).click();
-  await expect(page).toHaveURL(/\/work\/butlerlee$/);
+  await page.getByRole("link", { name: "Snode 프로젝트 보기" }).click();
+  await expect(page).toHaveURL(/\/work\/snode$/);
+  await page.getByRole("link", { name: "다음 프로젝트 Coffeeting" }).click();
+  await expect(page).toHaveURL(/\/work\/coffeeting$/);
 
   const pdf = await request.get("/dokyum-kim-portfolio.pdf");
   expect(pdf.ok()).toBeTruthy();
@@ -51,10 +51,10 @@ test("all project routes render and the old Snode slug redirects", async ({ page
   await expect(page).toHaveURL(/\/work\/snode$/);
 });
 
-test("Career renders the complete work chronology", async ({ page }) => {
+test("Career shows employment history before independent projects", async ({ page }) => {
   await page.goto("/career");
+  const history = page.locator(".career-history");
   for (const company of [
-    "Touchpoint",
     "서우노드",
     "커피팅주식회사",
     "프라우들리",
@@ -62,8 +62,16 @@ test("Career renders the complete work chronology", async ({ page }) => {
     "올스케이프",
     "피그위",
   ]) {
-    await expect(page.getByRole("heading", { name: company })).toBeVisible();
+    await expect(history.getByRole("heading", { name: company })).toBeVisible();
   }
+  await expect(history).not.toContainText("Touchpoint");
+
+  const independent = page.locator(".career-independent");
+  await expect(independent.getByRole("heading", { name: "Touchpoint" })).toBeVisible();
+  const historyBox = await history.boundingBox();
+  const independentBox = await independent.boundingBox();
+  expect(independentBox!.y).toBeGreaterThan(historyBox!.y + historyBox!.height - 1);
+
   await expect(page.getByText("서울시립대학교")).toBeVisible();
 });
 
