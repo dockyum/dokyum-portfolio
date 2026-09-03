@@ -92,7 +92,7 @@
 - Produces: `resolveSiteUrl(env?: NodeJS.ProcessEnv): URL`.
 - Consumed by: root metadata and all route metadata.
 
-- [ ] **Step 1: Write the failing canonical-origin tests**
+- [x] **Step 1: Write the failing canonical-origin tests**
 
 ```ts
 import { describe, expect, it } from "vitest";
@@ -141,7 +141,7 @@ test("social metadata uses the configured local origin", async ({ page }) => {
 });
 ```
 
-- [ ] **Step 2: Run the focused test and verify RED**
+- [x] **Step 2: Run the focused test and verify RED**
 
 Run:
 
@@ -152,7 +152,7 @@ pnpm playwright test -g "configured local origin"
 
 Expected: the unit test fails because `src/lib/site-url.ts` does not exist, and the E2E test fails because canonical and social metadata still point to the retired Sites hostname.
 
-- [ ] **Step 3: Implement origin resolution**
+- [x] **Step 3: Implement origin resolution**
 
 ```ts
 export function resolveSiteUrl(env: NodeJS.ProcessEnv = process.env): URL {
@@ -168,7 +168,7 @@ export function resolveSiteUrl(env: NodeJS.ProcessEnv = process.env): URL {
 
 Replace the hard-coded Sites origin in `src/app/layout.tsx` with `resolveSiteUrl()`.
 
-- [ ] **Step 4: Replace Sites/Vinext dependencies and scripts**
+- [x] **Step 4: Replace Sites/Vinext dependencies and scripts**
 
 Run:
 
@@ -206,7 +206,7 @@ webServer: {
 
 Remove `vite.config.ts`. Keep the Vitest Vite config and its React plugin. In `pnpm-workspace.yaml`, remove only the obsolete `workerd` build approval and preserve the approvals still needed by the native toolchain.
 
-- [ ] **Step 5: Verify GREEN and native build**
+- [x] **Step 5: Verify GREEN and native build**
 
 Run:
 
@@ -218,7 +218,7 @@ pnpm playwright test -g "configured local origin"
 
 Expected: 3 unit tests and the focused E2E test pass, and Next.js writes `.next/` successfully.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add package.json pnpm-lock.yaml pnpm-workspace.yaml playwright.config.ts src/app/layout.tsx src/lib/site-url.ts src/lib/site-url.test.ts e2e/portfolio.spec.ts vite.config.ts
@@ -240,7 +240,7 @@ git commit -m "build: migrate portfolio to native Next.js"
 - Consumes: `ProjectSlug` from `src/content/projects.ts`.
 - Consumed by: Career timeline and GNB project metadata.
 
-- [ ] **Step 1: Write failing chronology tests**
+- [x] **Step 1: Write failing chronology tests**
 
 ```ts
 import { describe, expect, it } from "vitest";
@@ -278,13 +278,13 @@ describe("career content", () => {
 });
 ```
 
-- [ ] **Step 2: Run and verify RED**
+- [x] **Step 2: Run and verify RED**
 
 Run: `pnpm vitest run src/content/career.test.ts`
 
 Expected: FAIL because `career.ts` does not exist.
 
-- [ ] **Step 3: Implement the typed chronology**
+- [x] **Step 3: Implement the typed chronology**
 
 ```ts
 import type { ProjectSlug } from "./projects";
@@ -379,13 +379,13 @@ Add periods supplied by the resume to missing project records:
 
 Do not change Coffeeting or Matching Admin periods without a new source because the project and employment windows may legitimately differ.
 
-- [ ] **Step 4: Verify GREEN**
+- [x] **Step 4: Verify GREEN**
 
 Run: `pnpm vitest run src/content/career.test.ts src/content/projects.test.ts`
 
 Expected: all career and project tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/content/career.ts src/content/career.test.ts src/content/projects.ts src/content/projects.test.ts
@@ -406,7 +406,7 @@ git commit -m "feat: add resume-backed career chronology"
 - Consumes: `projects` and current pathname.
 - Produces: one desktop Work dropdown and one mobile full-screen menu with the same canonical links.
 
-- [ ] **Step 1: Replace the header tests with failing navigation behavior**
+- [x] **Step 1: Replace the header tests with failing navigation behavior**
 
 ```tsx
 import { fireEvent, render, screen } from "@testing-library/react";
@@ -494,7 +494,7 @@ test("desktop Work navigation reaches every project in one activation", async ({
 });
 ```
 
-- [ ] **Step 2: Run and verify RED**
+- [x] **Step 2: Run and verify RED**
 
 Run:
 
@@ -505,7 +505,7 @@ pnpm playwright test -g "desktop Work navigation"
 
 Expected: both commands FAIL because Work and Career navigation do not exist.
 
-- [ ] **Step 3: Implement one shared menu model**
+- [x] **Step 3: Implement one shared menu model**
 
 Implement `SiteHeader` as a client component with:
 
@@ -549,7 +549,7 @@ useEffect(() => {
 
 The Work trigger uses `aria-expanded`, `aria-controls="work-menu"`, and `aria-label="프로젝트 메뉴"`. The mobile trigger uses `aria-expanded`, `aria-controls="mobile-menu"`, and the closed label `메뉴 열기`. Keep both link collections server-rendered and toggle them with the HTML `hidden` attribute so the links remain present without client JavaScript. Render project links directly from `projects`, close both menus on pathname changes, and use `aria-current="page"` when `pathname` equals a project route or `/career`.
 
-- [ ] **Step 4: Verify GREEN**
+- [x] **Step 4: Verify GREEN**
 
 Run:
 
@@ -560,7 +560,7 @@ pnpm playwright test -g "desktop Work navigation"
 
 Expected: all header tests and the six-route navigation loop pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/components/site-header.tsx src/components/site-header.test.tsx src/app/layout.tsx e2e/portfolio.spec.ts
@@ -583,7 +583,7 @@ git commit -m "feat: add complete portfolio navigation"
 - Consumes: `readonly Project[]`.
 - Produces: six first-click project links and a mobile scroll-snap runway.
 
-- [ ] **Step 1: Write failing runway tests**
+- [x] **Step 1: Write failing runway tests**
 
 ```tsx
 import { fireEvent, render, screen } from "@testing-library/react";
@@ -645,7 +645,7 @@ test("every landing card opens its project on the first activation", async ({ pa
 });
 ```
 
-- [ ] **Step 2: Run and verify RED**
+- [x] **Step 2: Run and verify RED**
 
 Run:
 
@@ -656,7 +656,7 @@ pnpm playwright test -g "every landing card"
 
 Expected: the component test fails because `ProjectRunway` does not exist, and the E2E test fails when the old carousel intercepts a non-active card's first click.
 
-- [ ] **Step 3: Implement direct-link cards**
+- [x] **Step 3: Implement direct-link cards**
 
 `ProjectRunway` is a client component. It initializes `activeIndex` to zero, sets it from card pointer/focus events, and uses this native-scroll synchronizer:
 
@@ -727,7 +727,7 @@ It renders:
 
 Attach `ref={runwayRef}` and `onScroll={syncActiveIndex}` to `.project-runway`. Do not implement `onWheel`, pointer thresholds, card selection interception, or click prevention.
 
-- [ ] **Step 4: Update the page and verify GREEN**
+- [x] **Step 4: Update the page and verify GREEN**
 
 Replace `ProjectCarousel` with `ProjectRunway` in `src/app/page.tsx`.
 
@@ -740,7 +740,7 @@ pnpm playwright test -g "every landing card"
 
 Expected: 3 component tests and the six-route landing navigation loop pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/app/page.tsx e2e/portfolio.spec.ts src/components/landing/project-runway.tsx src/components/landing/project-runway.test.tsx src/components/landing/project-carousel.tsx src/components/landing/project-carousel.test.tsx
@@ -760,7 +760,7 @@ git commit -m "feat: replace carousel with editorial project runway"
 - Consumes: `Project`.
 - Produces: outcome-led hero, optional metrics, four evidence chapters, and neighbors.
 
-- [ ] **Step 1: Write failing detail structure tests**
+- [x] **Step 1: Write failing detail structure tests**
 
 ```tsx
 import { render, screen } from "@testing-library/react";
@@ -787,13 +787,13 @@ describe("ProjectDetail", () => {
 });
 ```
 
-- [ ] **Step 2: Run and verify RED**
+- [x] **Step 2: Run and verify RED**
 
 Run: `pnpm vitest run src/components/work/project-detail.test.tsx`
 
 Expected: FAIL because the new heading and metric emphasis contract is not met.
 
-- [ ] **Step 3: Implement the editorial hierarchy**
+- [x] **Step 3: Implement the editorial hierarchy**
 
 Use exactly four evidence chapters after the hero:
 
@@ -808,7 +808,7 @@ const chapters = [
 
 Render `overview` in the hero summary area instead of as a fifth repeated chapter. Use semantic `article`, `section`, `h2`, `dl`, and `figure`. Keep `ProjectNavigation` behavior unchanged while replacing its visual labels with mono metadata.
 
-- [ ] **Step 4: Verify GREEN and neighbor regression**
+- [x] **Step 4: Verify GREEN and neighbor regression**
 
 Run:
 
@@ -818,7 +818,7 @@ pnpm vitest run src/components/work/project-detail.test.tsx src/components/work/
 
 Expected: detail and neighbor tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/components/work/project-detail.tsx src/components/work/project-detail.test.tsx src/components/work/project-navigation.tsx
@@ -839,7 +839,7 @@ git commit -m "feat: reshape project stories as editorial case studies"
 - Consumes: `careerEntries`, `educationEntries`, and `projects`.
 - Produces: `/career` with reverse chronology and canonical work links.
 
-- [ ] **Step 1: Write the failing timeline test**
+- [x] **Step 1: Write the failing timeline test**
 
 ```tsx
 import { render, screen } from "@testing-library/react";
@@ -894,7 +894,7 @@ test("Career renders the complete work chronology", async ({ page }) => {
 });
 ```
 
-- [ ] **Step 2: Run and verify RED**
+- [x] **Step 2: Run and verify RED**
 
 Run:
 
@@ -905,7 +905,7 @@ pnpm playwright test -g "complete work chronology"
 
 Expected: both commands FAIL because the timeline component and route do not exist.
 
-- [ ] **Step 3: Implement the timeline and route**
+- [x] **Step 3: Implement the timeline and route**
 
 Render each career entry as:
 
@@ -931,7 +931,7 @@ Render each career entry as:
 
 `src/app/career/page.tsx` exports Korean metadata and renders the `2016 — NOW` hero, timeline, education section, and email CTA. Do not render the phone number or source resume URL.
 
-- [ ] **Step 4: Verify GREEN**
+- [x] **Step 4: Verify GREEN**
 
 Run:
 
@@ -942,7 +942,7 @@ pnpm playwright test -g "complete work chronology"
 
 Expected: 2 component tests and the focused E2E test pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/app/career/page.tsx src/components/career/career-timeline.tsx src/components/career/career-timeline.test.tsx e2e/portfolio.spec.ts
@@ -969,7 +969,7 @@ git commit -m "feat: add complete career timeline"
 - Produces: `VisitorStore`, `registerVisit`, `POST /api/visitors`, `VisitorCount`.
 - Consumed by: footer and production Route Handler.
 
-- [ ] **Step 1: Write failing pure use-case tests**
+- [x] **Step 1: Write failing pure use-case tests**
 
 ```ts
 import { describe, expect, it, vi } from "vitest";
@@ -997,13 +997,13 @@ describe("registerVisit", () => {
 });
 ```
 
-- [ ] **Step 2: Run and verify RED**
+- [x] **Step 2: Run and verify RED**
 
 Run: `pnpm vitest run src/visitors/register-visit.test.ts`
 
 Expected: FAIL because `register-visit.ts` does not exist.
 
-- [ ] **Step 3: Implement the store-neutral use case**
+- [x] **Step 3: Implement the store-neutral use case**
 
 ```ts
 export type VisitorStore = {
@@ -1022,7 +1022,7 @@ export async function registerVisit(
 }
 ```
 
-- [ ] **Step 4: Implement the Upstash adapter**
+- [x] **Step 4: Implement the Upstash adapter**
 
 ```ts
 import { Redis } from "@upstash/redis";
@@ -1046,7 +1046,7 @@ export function createRedisVisitorStore(): VisitorStore {
 }
 ```
 
-- [ ] **Step 5: Write failing Route Handler tests**
+- [x] **Step 5: Write failing Route Handler tests**
 
 ```ts
 import { NextRequest } from "next/server";
@@ -1098,13 +1098,13 @@ describe("POST /api/visitors", () => {
 });
 ```
 
-- [ ] **Step 6: Run and verify Route Handler RED**
+- [x] **Step 6: Run and verify Route Handler RED**
 
 Run: `pnpm vitest run src/app/api/visitors/route.test.ts`
 
 Expected: FAIL because the Route Handler does not exist.
 
-- [ ] **Step 7: Implement the Route Handler**
+- [x] **Step 7: Implement the Route Handler**
 
 ```ts
 import { NextRequest, NextResponse } from "next/server";
@@ -1137,7 +1137,7 @@ export async function POST(request: NextRequest) {
 }
 ```
 
-- [ ] **Step 8: Write failing visitor UI tests**
+- [x] **Step 8: Write failing visitor UI tests**
 
 ```tsx
 import { render, screen, waitFor } from "@testing-library/react";
@@ -1173,7 +1173,7 @@ test("visitor footer stays usable when Redis is unavailable", async ({ page }) =
 });
 ```
 
-- [ ] **Step 9: Run and verify UI RED**
+- [x] **Step 9: Run and verify UI RED**
 
 Run:
 
@@ -1184,7 +1184,7 @@ pnpm playwright test -g "visitor footer"
 
 Expected: both commands FAIL because `VisitorCount` and the footer do not exist.
 
-- [ ] **Step 10: Implement the non-blocking client and footer**
+- [x] **Step 10: Implement the non-blocking client and footer**
 
 `VisitorCount` starts with `null`, POSTs once in `useEffect`, validates `Number.isInteger(count) && count >= 0`, and renders `String(count).padStart(6, "0")`; any failed or invalid response renders `—` without retry.
 
@@ -1200,7 +1200,7 @@ Expected: both commands FAIL because `VisitorCount` and the footer do not exist.
 
 Mount the footer after `{children}` in the root layout.
 
-- [ ] **Step 11: Verify GREEN**
+- [x] **Step 11: Verify GREEN**
 
 Run:
 
@@ -1211,7 +1211,7 @@ pnpm playwright test -g "visitor footer"
 
 Expected: 7 visitor tests and the focused E2E test pass.
 
-- [ ] **Step 12: Commit**
+- [x] **Step 12: Commit**
 
 ```bash
 git add src/visitors src/app/api/visitors/route.ts src/app/api/visitors/route.test.ts src/components/visitor-count.tsx src/components/visitor-count.test.tsx src/components/site-footer.tsx src/app/layout.tsx e2e/portfolio.spec.ts
@@ -1233,7 +1233,7 @@ git commit -m "feat: add persisted anonymous visitor counter"
 - Consumes: semantic class names from Tasks 3–7.
 - Produces: desktop, tablet, and mobile layouts with no horizontal page overflow.
 
-- [ ] **Step 1: Add failing responsive E2E checks**
+- [x] **Step 1: Add failing responsive E2E checks**
 
 ```ts
 test("mobile layout keeps navigation and content inside the viewport", async ({ page }) => {
@@ -1285,13 +1285,13 @@ test("landing entrance is staged and reduced-motion safe", async ({ page }) => {
 });
 ```
 
-- [ ] **Step 2: Run the focused E2E checks and verify RED**
+- [x] **Step 2: Run the focused E2E checks and verify RED**
 
 Run: `pnpm build && pnpm playwright test -g "mobile layout|approved editorial type|staged"`
 
 Expected: FAIL because the new menu and typography classes are not styled.
 
-- [ ] **Step 3: Replace the visual tokens and base styles**
+- [x] **Step 3: Replace the visual tokens and base styles**
 
 Start `:root` exactly with:
 
@@ -1360,7 +1360,7 @@ At `max-width: 767px`, enforce:
 
 Add `@media (prefers-reduced-motion: reduce)` that sets these entrance animations to `none`, disables smooth scrolling, and removes entry transforms and transitions.
 
-- [ ] **Step 4: Import Geist Mono and remove obsolete font roles**
+- [x] **Step 4: Import Geist Mono and remove obsolete font roles**
 
 In `src/app/layout.tsx` import:
 
@@ -1376,7 +1376,7 @@ Remove their unused packages:
 pnpm remove @fontsource-variable/inter @fontsource-variable/roboto-condensed
 ```
 
-- [ ] **Step 5: Verify GREEN**
+- [x] **Step 5: Verify GREEN**
 
 Run:
 
@@ -1387,7 +1387,7 @@ pnpm playwright test -g "mobile layout|approved editorial type|staged"
 
 Expected: build succeeds and all three targeted E2E tests pass.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/app/globals.css src/app/layout.tsx e2e/portfolio.spec.ts package.json pnpm-lock.yaml
@@ -1407,7 +1407,7 @@ git commit -m "feat: apply the editorial portfolio design system"
 - Consumes: the runtime and metadata behavior from Task 1.
 - Produces: public setup documentation and a source tree safe to publish after the platform-binding switch.
 
-- [ ] **Step 1: Run the public-documentation acceptance checks and verify RED**
+- [x] **Step 1: Run the public-documentation acceptance checks and verify RED**
 
 ```bash
 test -f README.md
@@ -1416,7 +1416,7 @@ test -f .env.example
 
 Expected: FAIL because the public README and environment example do not exist.
 
-- [ ] **Step 2: Reconfirm the already-tested metadata contract**
+- [x] **Step 2: Reconfirm the already-tested metadata contract**
 
 Run:
 
@@ -1427,7 +1427,7 @@ pnpm playwright test -g "configured local origin"
 
 Expected: the canonical-origin unit and E2E tests remain green before publication files are added.
 
-- [ ] **Step 3: Add environment and README documentation**
+- [x] **Step 3: Add environment and README documentation**
 
 `.env.example`:
 
@@ -1456,7 +1456,7 @@ README sections, in order:
 7. Verification command.
 8. Privacy note stating that the resume and phone number are not in the repository.
 
-- [ ] **Step 4: Scan the future public source for secrets**
+- [x] **Step 4: Scan the future public source for secrets**
 
 Run:
 
@@ -1467,7 +1467,7 @@ if pdftotext public/dokyum-kim-portfolio.pdf - | rg -n "010[.-]2398[.-]8398"; th
 
 Expected: no retired hostname, phone number, or populated Redis token in publishable runtime files, and no phone number in the downloadable portfolio PDF. The Sites project ID remains temporarily in `.openai/hosting.json` until Vercel is linked in Task 11 and is not pushed to GitHub.
 
-- [ ] **Step 5: Verify GREEN**
+- [x] **Step 5: Verify GREEN**
 
 Run:
 
@@ -1479,7 +1479,7 @@ pnpm build
 
 Expected: both documentation files exist and the native Next build passes.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add .env.example .gitignore README.md
@@ -1497,7 +1497,7 @@ git commit -m "docs: prepare the portfolio for public Vercel hosting"
 - Consumes: all public routes and UI contracts.
 - Produces: one repeatable local release gate and evidence that each approved behavior already has a test.
 
-- [ ] **Step 1: Audit coverage before running the release gate**
+- [x] **Step 1: Audit coverage before running the release gate**
 
 Confirm the suite already covers these routes and behaviors:
 
@@ -1523,7 +1523,7 @@ const routes = [
 - Visitor increment/read/cookie/503 contracts: visitor use-case and Route Handler tests.
 - Visitor success and unavailable display: visitor component and E2E tests.
 
-- [ ] **Step 2: Run every automated check**
+- [x] **Step 2: Run every automated check**
 
 Run:
 
@@ -1536,11 +1536,11 @@ pnpm test:e2e
 
 Expected: every command exits 0. If a command fails, do not continue to deployment.
 
-- [ ] **Step 3: Handle any discovered gap with a fresh RED test**
+- [x] **Step 3: Handle any discovered gap with a fresh RED test**
 
 For any uncovered or failing behavior, add the smallest regression test first, run it to observe the expected failure, implement only the missing behavior, and rerun the focused and full suites. Do not add new routes, animation systems, analytics products, or content beyond the approved spec.
 
-- [ ] **Step 4: Run the full local release gate**
+- [x] **Step 4: Run the full local release gate**
 
 Run:
 
@@ -1557,7 +1557,7 @@ Expected:
 - all Playwright tests pass;
 - no whitespace errors.
 
-- [ ] **Step 5: Record the verified release commit**
+- [x] **Step 5: Record the verified release commit**
 
 If no correction was required, leave the tree clean and record the verified HEAD instead of creating an empty commit. If Step 3 exposed a gap, do not use a generic audit commit: append and execute a correction task with exact file paths, RED/GREEN commands, and its own scoped commit before repeating Steps 2 and 4.
 
@@ -1594,7 +1594,7 @@ No production source behavior or new feature is required.
 - Consumes: verified feature branch HEAD.
 - Produces: public GitHub `main`, linked Vercel project, Redis-backed production visitor count, and final URL.
 
-- [ ] **Step 1: Confirm clean verified source**
+- [x] **Step 1: Confirm clean verified source**
 
 Run:
 
@@ -1606,7 +1606,7 @@ pnpm verify
 
 Expected: clean worktree and all checks green on the exact commit to publish.
 
-- [ ] **Step 2: Link the Vercel project before removing the prior platform binding**
+- [x] **Step 2: Link the Vercel project before removing the prior platform binding**
 
 ```bash
 vercel link --yes --project dokyum-portfolio
@@ -1615,7 +1615,7 @@ vercel project inspect dokyum-portfolio
 
 Expected: the local checkout is linked to an active Vercel project and `.vercel/` remains ignored.
 
-- [ ] **Step 3: Remove the retired Sites source binding and reverify**
+- [x] **Step 3: Remove the retired Sites source binding and reverify**
 
 ```bash
 git rm .openai/hosting.json
@@ -1625,7 +1625,7 @@ pnpm verify
 
 Expected: the exact post-removal commit is green and contains no `.openai/hosting.json`.
 
-- [ ] **Step 4: Merge the feature branch into local main**
+- [x] **Step 4: Merge the feature branch into local main**
 
 From the main repository root:
 
@@ -1636,7 +1636,7 @@ git merge --ff-only feature/portfolio-site
 
 Run `pnpm verify` again on merged `main`. Do not remove the worktree until production verification finishes.
 
-- [ ] **Step 5: Create the public GitHub repository and push main**
+- [x] **Step 5: Create the public GitHub repository and push main**
 
 ```bash
 gh repo create dockyum/dokyum-portfolio --public --description "Product portfolio of dokyum kim — product, operations, and business systems."
@@ -1650,7 +1650,7 @@ If the `github` remote already exists, verify its URL instead of replacing it. C
 gh repo view dockyum/dokyum-portfolio --json nameWithOwner,url,visibility,defaultBranchRef
 ```
 
-- [ ] **Step 6: Connect the Vercel project to GitHub**
+- [x] **Step 6: Connect the Vercel project to GitHub**
 
 ```bash
 vercel git connect https://github.com/dockyum/dokyum-portfolio
@@ -1658,7 +1658,7 @@ vercel git connect https://github.com/dockyum/dokyum-portfolio
 
 Confirm project state with `vercel project inspect dokyum-portfolio`.
 
-- [ ] **Step 7: Provision Upstash Redis**
+- [x] **Step 7: Provision Upstash Redis**
 
 Run:
 
@@ -1684,7 +1684,7 @@ Use `vercel env ls` to confirm the linked variables cover Production, Preview, a
 
 If Vercel opens an Upstash sign-in, pricing, or terms screen, stop only this provisioning step, preserve the linked Vercel project, and report the exact screen the owner must approve. Do not substitute a public counter service or persist credentials in source.
 
-- [ ] **Step 8: Deploy production**
+- [x] **Step 8: Deploy production**
 
 ```bash
 vercel deploy --prod --yes
@@ -1701,7 +1701,7 @@ vercel deploy --prod --yes
 
 Capture the promoted URL again before continuing.
 
-- [ ] **Step 9: Verify production behavior**
+- [x] **Step 9: Verify production behavior**
 
 For the captured `PRODUCTION_URL`, verify:
 
@@ -1745,7 +1745,7 @@ If Step 7 was blocked by Marketplace approval, replace only the visitor persiste
 
 Delete the temporary cookie, redirect header, PDF header, visitor header, and HTML files with a recoverable trash operation after verification.
 
-- [ ] **Step 10: Perform browser visual QA**
+- [x] **Step 10: Perform browser visual QA**
 
 Inspect production at desktop, 390×844, and 320×700:
 
@@ -1760,7 +1760,7 @@ Inspect production at desktop, 390×844, and 320×700:
 
 Mark the verified Vercel tab as the deliverable.
 
-- [ ] **Step 11: Set the GitHub homepage and report final state**
+- [x] **Step 11: Set the GitHub homepage and report final state**
 
 ```bash
 gh repo edit dockyum/dokyum-portfolio --homepage "$PRODUCTION_URL"
