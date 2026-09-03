@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# reference-transaction — refuse to rewind a shared branch.
+#
+# Several sessions work on this repository at the same time and share the main
+# checkout. On 2026-09-03 one session ran `git reset` on `main` seconds after
+# another had committed there, silently dropping that commit.
+#
+# Policy: a protected branch may be created or fast-forwarded. Rewinding or
+# deleting it is refused, whichever tool or session asks for it.
+#
+# Escape hatch, for a rewind you actually intend:
+#
+#     ALLOW_BRANCH_REWIND=1 git reset --hard <ref>
+#
+# Fails open. Anything unexpected allows the transaction, so a bug here can
+# never make the repository unusable.
+
+set -u
+
+[[ "${1:-}" == "prepared" ]] || exit 0
+
+case "${ALLOW_BRANCH_REWIND:-}" in
+  "" | 0 | false | no | off) : ;;
+  *) exit 0 ;;
+esac
+
+is_protected() {
+  case "$1" in
+    refs/heads/main | refs/heads/master | refs/heads/develop) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+is_zero() { [[ "$1" =~ ^0+$ ]]; }
+
+while read -r old new ref; do
+  is_protected "$ref" || continue
+  is_zero "$old" && continue
+  if is_zero "$new"; then
+    printf 'blocked: refusing to delete %s.\n' "$ref" >&2
+    printf 'Re-run with ALLOW_BRANCH_REWIND=1 if you mean it.\n' >&2
+    exit 1
+  fi
+  git merge-base --is-ancestor "$old" "$new" 2>/dev/null && continue
+  {
+    printf 'blocked: %s would move backwards.\n' "$ref"
+    printf '  current: %s\n' "$old"
+    printf '  wanted:  %s\n' "$new"
+    printf 'That discards commits another session may have just made here.\n'
+    printf 'Land work by committing or fast-forwarding instead, or re-run with\n'
+    printf 'ALLOW_BRANCH_REWIND=1 if the rewind is intended.\n'
+  } >&2
+  exit 1
+done
+
+exit 0
