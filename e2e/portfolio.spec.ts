@@ -179,3 +179,79 @@ test("landing entrance is staged and reduced-motion safe", async ({ page }) => {
     await expect(page.locator(selector)).toHaveCSS("animation-duration", "0s");
   }
 });
+
+test("Work dropdown rows keep the editorial grid across the full menu width", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "프로젝트 메뉴" }).click();
+  const menu = page.locator("#work-menu");
+  const menuWidth = (await menu.boundingBox())!.width;
+  const rows = menu.locator(".site-project-link");
+  await expect(rows).toHaveCount(6);
+  for (const row of await rows.all()) {
+    await expect(row).toHaveCSS("display", "grid");
+    await expect(row).toHaveCSS("text-transform", "none");
+    expect((await row.boundingBox())!.width).toBeGreaterThan(menuWidth - 4);
+  }
+});
+
+test("runway cards share one size and the hovered card comes forward", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const cards = page.locator(".project-card");
+  const boxes = await Promise.all((await cards.all()).map((card) => card.boundingBox()));
+  expect(new Set(boxes.map((box) => Math.round(box!.width))).size).toBe(1);
+  expect(new Set(boxes.map((box) => Math.round(box!.height))).size).toBe(1);
+
+  await cards.first().hover();
+  const first = (await cards.first().boundingBox())!;
+  const topCard = await page.evaluate(
+    ([x, y]) => document.elementFromPoint(x, y)?.closest(".project-card")?.getAttribute("href"),
+    [first.x + first.width - 4, first.y + first.height / 2],
+  );
+  expect(topCard).toBe(await cards.first().getAttribute("href"));
+});
+
+test("dragging the runway with the mouse scrolls it without opening a card", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const runway = page.locator(".project-runway");
+  await runway.scrollIntoViewIfNeeded();
+  const box = (await runway.boundingBox())!;
+  const y = box.y + box.height / 2;
+  await page.mouse.move(box.x + 600, y);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 300, y, { steps: 12 });
+  await page.mouse.up();
+  expect(await runway.evaluate((element) => element.scrollLeft)).toBeGreaterThan(200);
+  await expect(page).toHaveURL(/\/$/);
+});
+
+test("runway arrows step the index and scroll the cards", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const next = page.getByRole("button", { name: "다음 프로젝트 카드" });
+  await next.click();
+  await expect(page.locator(".project-runway-meta")).toContainText("02 / 06");
+  // Cards 1–3 already fit at desktop width; centring card 4 is what needs the runway to move.
+  await next.click();
+  await next.click();
+  await expect(page.locator(".project-runway-meta")).toContainText("04 / 06");
+  await expect
+    .poll(() => page.locator(".project-runway").evaluate((element) => element.scrollLeft))
+    .toBeGreaterThan(0);
+});
+
+test("detail and career heroes share the entrance and respect reduced motion", async ({ page }) => {
+  await page.goto("/work/touchpoint");
+  await expect(page.locator(".work-hero")).toHaveCSS("animation-name", "editorial-entrance");
+  await page.goto("/career");
+  await expect(page.locator(".career-hero")).toHaveCSS("animation-name", "editorial-entrance");
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.reload();
+  await expect(page.locator(".career-hero")).toHaveCSS("animation-duration", "0s");
+  await page.goto("/work/touchpoint");
+  await expect(page.locator(".work-hero")).toHaveCSS("animation-duration", "0s");
+  await page.goto("/");
+  await expect(page.locator(".landing-thesis-word").first()).toHaveCSS("animation-duration", "0s");
+});

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { getProjectNeighbors } from "@/content/projects";
 import { ProjectNavigation } from "./project-navigation";
 
 describe("ProjectNavigation", () => {
@@ -31,5 +32,16 @@ describe("ProjectNavigation", () => {
       screen.getByRole("link", { name: /이전 프로젝트.*Butlerlee/ }),
     ).toHaveAttribute("href", "/work/butlerlee");
     expect(screen.queryByText("다음 프로젝트")).not.toBeInTheDocument();
+  });
+
+  it("renders each neighbor's card image as a decorative hover preview", () => {
+    const { previous, next } = getProjectNeighbors("coffeeting");
+    const { container } = render(<ProjectNavigation slug="coffeeting" />);
+
+    const thumbs = Array.from(container.querySelectorAll(".work-navigation-thumb"));
+    expect(thumbs.map((thumb) => thumb.getAttribute("aria-hidden"))).toEqual(["true", "true"]);
+    expect(
+      thumbs.map((thumb) => thumb.querySelector("img")?.getAttribute("src")),
+    ).toEqual([`/${previous!.media.card}`, `/${next!.media.card}`]);
   });
 });
