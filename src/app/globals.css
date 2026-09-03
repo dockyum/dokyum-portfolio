@@ -625,8 +625,8 @@ a:focus-visible, button:focus-visible {
 }
 @media (max-width: 767px) {
   .site-header { min-height: 64px; padding: 0.45rem 1rem; }
-  .site-actions, .site-desktop-nav { display: none; }
-  .site-menu-trigger, .site-mobile-trigger {
+  .site-actions { display: none; }
+  .site-menu-trigger {
     display: inline-flex;
     min-width: 44px;
     min-height: 44px;
