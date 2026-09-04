@@ -1,41 +1,80 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { projects } from "@/content/projects";
+import { getProjectsByKind } from "@/content/projects";
 import { SiteHeader } from "./site-header";
 
 vi.mock("next/navigation", () => ({ usePathname: () => "/career" }));
 
+const workProjects = getProjectsByKind("career");
+
 describe("SiteHeader", () => {
   beforeEach(() => render(<SiteHeader />));
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
-  it("exposes every project from Work in one interaction", () => {
+  it("exposes every work project from Work and leaves independent work out", () => {
     fireEvent.click(screen.getByRole("button", { name: "프로젝트 메뉴" }));
-    for (const project of projects) {
-      expect(screen.getByRole("link", { name: new RegExp(project.name) })).toHaveAttribute(
+    const menu = within(document.getElementById("work-menu")!);
+    for (const project of workProjects) {
+      expect(menu.getByRole("link", { name: new RegExp(project.name) })).toHaveAttribute(
         "href",
         project.route,
       );
     }
+    expect(menu.getAllByRole("link")).toHaveLength(workProjects.length);
+    expect(menu.queryByRole("link", { name: /Touchpoint/ })).toBeNull();
   });
 
-  it("keeps Career, PDF, and email globally available", () => {
-    expect(screen.getByRole("link", { name: "커리어" })).toHaveAttribute("href", "/career");
-    expect(screen.getByRole("link", { name: "포트폴리오 PDF" })).toHaveAttribute(
+  it("opens Work when the mouse enters and closes shortly after it leaves", () => {
+    vi.useFakeTimers();
+    const trigger = screen.getByRole("button", { name: "프로젝트 메뉴" });
+    const navigation = trigger.closest(".site-work-navigation")!;
+
+    fireEvent.pointerEnter(navigation, { pointerType: "mouse" });
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.pointerLeave(navigation, { pointerType: "mouse" });
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    act(() => {
+      vi.runAllTimers();
+    });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("keeps Work open when a mouse user clicks the trigger they hovered", () => {
+    const trigger = screen.getByRole("button", { name: "프로젝트 메뉴" });
+    const navigation = trigger.closest(".site-work-navigation")!;
+    fireEvent.pointerEnter(navigation, { pointerType: "mouse" });
+    fireEvent.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("does not open Work for touch pointers, so a tap still toggles it", () => {
+    const trigger = screen.getByRole("button", { name: "프로젝트 메뉴" });
+    const navigation = trigger.closest(".site-work-navigation")!;
+    fireEvent.pointerEnter(navigation, { pointerType: "touch" });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    fireEvent.click(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("keeps Career, PDF, and Contact globally available in English", () => {
+    expect(screen.getByRole("link", { name: "CAREER" })).toHaveAttribute("href", "/career");
+    expect(screen.getByRole("link", { name: "PDF" })).toHaveAttribute(
       "href",
       "/dokyum-kim-portfolio.pdf",
     );
-    expect(screen.getByRole("link", { name: "이메일로 연락하기" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "CONTACT" })).toHaveAttribute(
       "href",
       "mailto:snfltptkd91@gmail.com",
     );
+    expect(screen.queryByRole("link", { name: /INDEPENDENT/ })).toBeNull();
   });
 
   it("marks the current section and closes with Escape", () => {
-    expect(screen.getByRole("link", { name: "커리어" })).toHaveAttribute(
-      "aria-current",
-      "page",
-    );
+    expect(screen.getByRole("link", { name: "CAREER" })).toHaveAttribute("aria-current", "page");
     const trigger = screen.getByRole("button", { name: "프로젝트 메뉴" });
     fireEvent.click(trigger);
     fireEvent.keyDown(document, { key: "Escape" });
@@ -48,12 +87,15 @@ describe("SiteHeader", () => {
     fireEvent.click(trigger);
     expect(trigger).toHaveAttribute("aria-expanded", "true");
     expect(document.body.style.overflow).toBe("hidden");
-    for (const project of projects) {
-      expect(screen.getByRole("link", { name: new RegExp(project.name) })).toHaveAttribute(
+    const menu = within(document.getElementById("mobile-menu")!);
+    for (const project of workProjects) {
+      expect(menu.getByRole("link", { name: new RegExp(project.name) })).toHaveAttribute(
         "href",
         project.route,
       );
     }
+    expect(menu.queryByRole("link", { name: /Touchpoint/ })).toBeNull();
+    expect(menu.getByRole("link", { name: "CONTACT" })).toBeInTheDocument();
     fireEvent.keyDown(document, { key: "Escape" });
     expect(document.body.style.overflow).toBe("");
     expect(trigger).toHaveFocus();

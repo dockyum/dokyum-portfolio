@@ -1,13 +1,13 @@
-import type { CareerEntry, EducationEntry } from "@/content/career";
-import { getProjectBySlug, type Project } from "@/content/projects";
+import type { CareerEntry, EducationEntry, IndependentEntry } from "@/content/career";
+import { getProjectBySlug } from "@/content/projects";
 
 export function CareerTimeline({
   careers,
-  projects,
+  independent,
   education,
 }: {
   careers: readonly CareerEntry[];
-  projects: readonly Project[];
+  independent: readonly IndependentEntry[];
   education: readonly EducationEntry[];
 }) {
   return (
@@ -46,27 +46,36 @@ export function CareerTimeline({
         </div>
       </section>
 
-      <section className="career-independent" aria-labelledby="career-independent-heading">
+      <section
+        className="career-independent"
+        id="independent"
+        aria-labelledby="career-independent-heading"
+      >
         <div className="career-section-heading">
-          <p className="career-section-kicker">INDEPENDENT PROJECTS</p>
-          <h2 id="career-independent-heading">직접 만드는 것들</h2>
+          <p className="career-section-kicker">INDEPENDENT</p>
+          <h2 id="career-independent-heading">개인 프로젝트</h2>
         </div>
         <div className="independent-entries">
-          {projects.map((project) => (
-            <article className="independent-entry" key={project.slug}>
-              <p className="independent-period">{project.period ?? ""}</p>
-              <div className="independent-entry-main">
-                <h3 className="independent-name">{project.name}</h3>
-                <p className="independent-role">{project.role}</p>
-                <p className="independent-summary">{project.summary}</p>
-                <div className="career-projects">
-                  <a href={project.route} aria-label={`${project.name} 프로젝트 보기`}>
-                    {project.name} ↗
-                  </a>
+          {independent.map((entry) => {
+            const project = entry.projectSlug ? getProjectBySlug(entry.projectSlug) : undefined;
+            return (
+              <article className="independent-entry" key={`${entry.name}-${entry.period}`}>
+                <p className="independent-period">{entry.period}</p>
+                <div className="independent-entry-main">
+                  <h3 className="independent-name">{entry.name}</h3>
+                  <p className="independent-role">{entry.role}</p>
+                  <p className="independent-summary">{entry.summary}</p>
+                  {project ? (
+                    <div className="career-projects">
+                      <a href={project.route} aria-label={`${project.name} 프로젝트 보기`}>
+                        {project.name} ↗
+                      </a>
+                    </div>
+                  ) : null}
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </section>
 

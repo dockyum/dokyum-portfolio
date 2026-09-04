@@ -176,177 +176,146 @@ a:focus-visible, button:focus-visible {
 
 /* Landing */
 .landing-page { overflow: hidden; }
-.landing-hero {
-  display: grid;
-  min-height: 100svh;
-  padding: clamp(5.5rem, 8vw, 8rem) 0 clamp(2.5rem, 5vw, 5rem);
-}
-.landing-masthead {
-  margin: 0;
-  overflow: hidden;
-  padding: 0 clamp(1rem, 3vw, 3rem);
-  font-family: var(--font-display);
-  font-size: clamp(5rem, 14vw, 14rem);
-  font-weight: 400;
-  letter-spacing: -0.065em;
-  line-height: 0.78;
-  white-space: nowrap;
-}
-.landing-thesis {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  margin-top: clamp(2rem, 5vw, 5rem);
-  padding: 0 clamp(1rem, 3vw, 3rem);
-}
+/* A block, not a grid: a grid column would grow to the clipped card strip's full width. */
+.landing-hero { padding: calc(64px + 3rem) 0 clamp(2rem, 4vw, 4rem); }
+.landing-thesis { padding: 0 clamp(1rem, 3vw, 3rem); }
 .landing-thesis > p {
-  grid-column: 1 / 4;
-  margin: 0.65rem 0 0;
+  margin: 0 0 clamp(1.25rem, 2.2vw, 2rem);
   color: var(--signal-blue);
   font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: -0.04em;
   line-height: 1.4;
 }
+/* The thesis is the one large statement on the page; everything else stays at utility size. */
 .landing-thesis h1 {
-  grid-column: 4 / 13;
-  max-width: 10.5em;
   margin: 0;
   font-family: var(--font-korean);
-  font-size: clamp(2.6rem, 6vw, 7rem);
+  font-size: clamp(2.6rem, 6.6vw, 8rem);
   font-weight: 690;
   letter-spacing: -0.07em;
-  line-height: 0.98;
-  text-wrap: balance;
+  line-height: 1.02;
   word-break: keep-all;
 }
+.landing-thesis-line { display: block; }
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 .landing-thesis-word { animation: fade-in 0.5s var(--ease-out) both; }
+
+/* The card strip drifts left under a fixed baseline; each card keeps its own size like a contact sheet. */
 .project-runway {
-  --runway-card: clamp(14rem, 24vw, 25rem);
-  --runway-overlap: 1rem;
-  display: grid;
-  width: 100%;
-  /* Every card keeps the same width: later tracks shrink by the overlap the card pulls back. */
-  grid-template-columns: var(--runway-card);
-  grid-auto-columns: calc(var(--runway-card) - var(--runway-overlap));
-  grid-auto-flow: column;
-  align-items: start;
-  margin-top: clamp(3rem, 8vw, 8rem);
-  padding: 0 clamp(1rem, 3vw, 3rem) 1rem;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
+  --runway-height: 27vw;
+  --runway-gap: 0.35vw;
+  --runway-gutter: clamp(1rem, 3vw, 3rem);
+  position: relative;
+  margin-top: clamp(1.5rem, 2.5vw, 2rem);
+  padding-top: 5.5rem; /* room for the captions that rise above a hovered card */
+  overflow: hidden;
+  overflow: clip;
   cursor: grab;
+  touch-action: pan-y;
 }
-.project-runway::-webkit-scrollbar { display: none; }
 .project-runway.is-dragging { cursor: grabbing; user-select: none; }
 .project-runway.is-dragging .project-card { pointer-events: none; }
+.project-runway-track {
+  position: relative;
+  display: flex;
+  width: max-content;
+  height: var(--runway-height);
+  align-items: flex-end;
+  will-change: transform;
+}
 .project-card {
   position: relative;
   display: block;
-  aspect-ratio: 4 / 5;
+  flex-shrink: 0;
+  margin-inline-end: var(--runway-gap);
+  transition: width 0.6s var(--ease-out), height 0.6s var(--ease-out);
+}
+.project-card.is-first { margin-inline-start: var(--runway-gutter); }
+.project-card:hover, .project-card:focus-visible { z-index: 3; }
+.project-card img { -webkit-user-drag: none; user-select: none; }
+.project-card-image {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  border: 1px solid var(--ink);
-  border-radius: 2px;
   background: var(--paper-raised);
 }
-.project-card + .project-card { margin-inline-start: calc(-1 * var(--runway-overlap)); }
-.project-card:hover, .project-card:focus-visible { z-index: 1; }
-.project-card img { -webkit-user-drag: none; user-select: none; }
-.project-card-image { position: absolute; inset: 0 0 17%; overflow: hidden; }
-.project-card-image img { object-fit: cover; transition: transform 1s var(--ease-out); }
-.project-card:hover .project-card-image img,
-.project-card:focus-visible .project-card-image img { transform: scale(1.04); }
-.project-card-logo {
+.project-card-image img { object-fit: cover; }
+.project-card-caption {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: calc(100% + 0.9rem);
   left: 0;
   display: flex;
-  height: 17%;
+  flex-direction: column;
+  gap: 0.35rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+.project-card:hover .project-card-caption,
+.project-card:focus-visible .project-card-caption { opacity: 1; transform: none; }
+.project-card-name {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.7rem 1rem;
-  border-top: 1px solid var(--ink);
-  background: var(--paper-raised);
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 580;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
-.project-card-logo-image {
-  position: relative;
-  width: var(--project-logo-width, 50%);
-  height: 2rem;
-}
-.project-card-logo-image img { object-fit: contain; }
-.project-card[href="/work/touchpoint"] { --project-logo-width: 74%; }
-.project-card[href="/work/butlerlee"] { --project-logo-width: 44%; }
-.project-card[href="/work/snode"] { --project-logo-width: 42%; }
-.project-card[href="/work/coffeeting"] { --project-logo-width: 48%; }
-.project-card[href="/work/matching-admin"] { --project-logo-width: 48%; }
-.project-card[href="/work/moum"] { --project-logo-width: 36%; }
-.project-runway-meta {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem clamp(1rem, 3vw, 3rem) 0;
-  border-top: 1px solid var(--rule);
-}
-.project-runway-status {
-  display: grid;
-  min-width: 0;
-  flex: 1;
-  align-items: baseline;
-  gap: 1rem;
-  grid-template-columns: 5rem minmax(8rem, 1fr) minmax(16rem, 2fr);
-}
-.project-runway-meta p { margin: 0; }
-.project-runway-controls {
-  display: flex;
+.project-card-name::before {
+  width: 4px;
+  height: 4px;
   flex-shrink: 0;
-  gap: 0.25rem;
-  margin-top: -0.875rem;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
 }
-.project-runway-controls button {
-  display: inline-flex;
-  width: 44px;
-  height: 44px;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  transition: color 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
-}
-.project-runway-controls button:hover { color: var(--signal-blue); }
-.project-runway-controls button[aria-disabled="true"] { opacity: 0.35; cursor: default; }
-.project-runway-count, .project-runway-name {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-}
-.project-runway-name { font-weight: 650; text-transform: uppercase; }
-.project-runway-kind { margin-right: 0.75rem; color: var(--muted); font-weight: 400; }
-.project-runway-outcome {
+.project-card-kind { color: var(--signal-blue); }
+.project-card-outcome {
   color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.82rem;
+  line-height: 1.35;
   word-break: keep-all;
 }
+/* Card sizes are drawn on the 1440 canvas and follow each image's own orientation. */
+.project-card[data-project="snode"] { width: 20.6vw; height: 24.9vw; }
+.project-card[data-project="coffeeting"] { width: 14.2vw; aspect-ratio: 165 / 276; }
+.project-card[data-project="matching-admin"] { width: 21.7vw; aspect-ratio: 313 / 242; }
+.project-card[data-project="moum"] { width: 11.5vw; aspect-ratio: 166 / 192; }
+.project-card[data-project="butlerlee"] { width: 20.5vw; aspect-ratio: 296 / 260; }
+.project-card[data-project="touchpoint"] { width: 12.4vw; aspect-ratio: 178 / 210; }
+/* Hover grows a card by roughly a tenth and lets it push its neighbours aside. */
+.project-card[data-project="snode"]:hover,
+.project-card[data-project="snode"]:focus-visible { width: 23.1vw; height: 27vw; }
+.project-card[data-project="coffeeting"]:hover,
+.project-card[data-project="coffeeting"]:focus-visible { width: 15.4vw; }
+.project-card[data-project="matching-admin"]:hover,
+.project-card[data-project="matching-admin"]:focus-visible { width: 24.3vw; }
+.project-card[data-project="moum"]:hover,
+.project-card[data-project="moum"]:focus-visible { width: 12.9vw; }
+.project-card[data-project="butlerlee"]:hover,
+.project-card[data-project="butlerlee"]:focus-visible { width: 23vw; }
+.project-card[data-project="touchpoint"]:hover,
+.project-card[data-project="touchpoint"]:focus-visible { width: 13.9vw; }
 @keyframes editorial-entrance {
   from { opacity: 0; transform: translateY(1.5rem); }
   to { opacity: 1; transform: translateY(0); }
 }
-.landing-masthead, .landing-thesis, .project-runway {
+.landing-thesis, .project-runway {
   animation: editorial-entrance 0.72s var(--ease-out) both;
 }
-.landing-masthead { animation-delay: 0s; }
-.landing-thesis { animation-delay: 0.16s; }
-.project-runway { animation-delay: 0.36s; }
+.landing-thesis { animation-delay: 0s; }
+.project-runway { animation-delay: 0.2s; }
 
 /* Project detail */
 .work-hero {
@@ -669,6 +638,7 @@ a:focus-visible, button:focus-visible {
   margin: 0.6rem 0 0;
   font-size: clamp(1.8rem, 3vw, 3.5rem);
   letter-spacing: -0.055em;
+  word-break: keep-all;
 }
 .career-section-kicker { margin: 0; color: var(--signal-blue); }
 .education-entries, .independent-entries {
@@ -752,8 +722,6 @@ a:focus-visible, button:focus-visible {
   .work-story-heading { position: sticky; top: 96px; align-self: start; }
 }
 @media (max-width: 1024px) {
-  .landing-thesis > p { grid-column: 1 / 5; }
-  .landing-thesis h1 { grid-column: 5 / 13; }
   .work-hero-copy { grid-column: 1 / 7; }
   .work-hero-media { grid-column: 7 / 13; }
   .work-story-body { grid-column: 5 / 13; }
@@ -804,33 +772,28 @@ a:focus-visible, button:focus-visible {
   .site-mobile-actions .site-email-link { grid-column: 1 / 3; }
   body:has(.site-mobile-menu:not([hidden])) main,
   body:has(.site-mobile-menu:not([hidden])) > .site-footer { visibility: hidden; }
-  .landing-hero { padding-top: 5.5rem; }
-  .landing-masthead {
-    padding-inline: 1rem;
-    font-size: clamp(4rem, 22vw, 6.4rem);
-    white-space: nowrap;
-  }
-  .landing-thesis { display: block; margin-top: 2.5rem; padding-inline: 1rem; }
+  .landing-hero { padding-top: calc(64px + 2rem); }
+  .landing-thesis { padding-inline: 1rem; }
   .landing-thesis > p { margin: 0 0 1.25rem; }
   .landing-thesis h1 { font-size: clamp(2.6rem, 13vw, 4.3rem); }
   .project-runway {
-    --runway-card: min(78vw, 21rem);
-    --runway-overlap: 0px;
-    gap: 0.75rem;
-    margin-top: 3rem;
-    padding-inline: 1rem;
-    scroll-padding-inline: 1rem;
-    scroll-snap-type: x mandatory;
+    --runway-height: 97.5vw;
+    --runway-gap: 1.35vw;
+    --runway-gutter: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 4.5rem;
   }
-  .project-card, .project-card + .project-card { margin: 0; scroll-snap-align: center; }
-  .project-runway-meta { padding-inline: 1rem; }
-  .project-runway-status {
-    gap: 0.5rem 1rem;
-    grid-template-columns: auto 1fr;
-  }
-  .project-runway-controls { display: none; }
-  .project-runway-name { text-align: right; }
-  .project-runway-outcome { grid-column: 1 / 3; }
+  /* Full-bleed cards with captions always showing; no accordion on touch so tap targets stay put. */
+  .project-card { transition: none; }
+  .project-card-caption { bottom: calc(100% + 0.6rem); opacity: 1; transform: none; }
+  .project-card-name { font-size: 0.66rem; }
+  .project-card-outcome { font-size: 0.78rem; }
+  .project-card[data-project="snode"], .project-card[data-project="snode"]:hover { width: 80.6vw; height: 97.4vw; }
+  .project-card[data-project="coffeeting"], .project-card[data-project="coffeeting"]:hover { width: 55vw; }
+  .project-card[data-project="matching-admin"], .project-card[data-project="matching-admin"]:hover { width: 85vw; }
+  .project-card[data-project="moum"], .project-card[data-project="moum"]:hover { width: 45vw; }
+  .project-card[data-project="butlerlee"], .project-card[data-project="butlerlee"]:hover { width: 80.3vw; }
+  .project-card[data-project="touchpoint"], .project-card[data-project="touchpoint"]:hover { width: 48.3vw; }
   .work-hero, .work-story-section { grid-template-columns: 1fr; }
   .work-hero { min-height: auto; }
   .work-hero-copy, .work-hero-media { grid-column: 1; }

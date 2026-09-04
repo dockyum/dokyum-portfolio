@@ -1,4 +1,4 @@
-import type { ProjectSlug } from "./projects";
+import { getProjectBySlug, type ProjectSlug } from "./projects";
 
 export type CareerEntry = {
   period: string;
@@ -13,6 +13,14 @@ export type EducationEntry = {
   period: string;
   institution: string;
   program: string;
+};
+
+export type IndependentEntry = {
+  period: string;
+  name: string;
+  role: string;
+  summary: string;
+  projectSlug?: ProjectSlug;
 };
 
 export const careerEntries = [
@@ -56,15 +64,25 @@ export const careerEntries = [
     highlights: ["2019 예비창업패키지 선정"],
     projectSlugs: [],
   },
+] as const satisfies readonly CareerEntry[];
+
+const touchpoint = getProjectBySlug("touchpoint")!;
+
+export const independentEntries: readonly IndependentEntry[] = [
+  {
+    period: touchpoint.period ?? "",
+    name: touchpoint.name,
+    role: touchpoint.role,
+    summary: touchpoint.summary,
+    projectSlug: touchpoint.slug,
+  },
   {
     period: "2016.10–2018.11",
-    company: "피그위",
+    name: "피그위",
     role: "Founder/CEO",
     summary: "첫 창업 경험을 통해 제품과 사업 운영의 전 과정을 익혔습니다.",
-    highlights: [],
-    projectSlugs: [],
   },
-] as const satisfies readonly CareerEntry[];
+];
 
 export const educationEntries = [
   { period: "2020.12–2021.05", institution: "FastCampus", program: "Data Science School" },

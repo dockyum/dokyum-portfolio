@@ -1,17 +1,14 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { careerEntries, educationEntries } from "@/content/career";
-import { getProjectsByKind } from "@/content/projects";
+import { careerEntries, educationEntries, independentEntries } from "@/content/career";
 import { CareerTimeline } from "./career-timeline";
-
-const independentProjects = getProjectsByKind("independent");
 
 function renderTimeline() {
   return render(
     <CareerTimeline
       careers={careerEntries}
-      projects={independentProjects}
+      independent={independentEntries}
       education={educationEntries}
     />,
   );
@@ -41,7 +38,7 @@ describe("CareerTimeline", () => {
     );
   });
 
-  it("lists independent projects after employment and before education", () => {
+  it("lists independent work after employment and before education", () => {
     const { container } = renderTimeline();
     const sections = Array.from(container.querySelectorAll(".career-timeline > section"));
     expect(sections.map((section) => section.className)).toEqual([
@@ -49,11 +46,25 @@ describe("CareerTimeline", () => {
       "career-independent",
       "career-education",
     ]);
-    expect(container.querySelector(".career-history")).not.toHaveTextContent("Touchpoint");
-    expect(screen.getByRole("heading", { name: "Touchpoint" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Touchpoint 프로젝트 보기" })).toHaveAttribute(
+    const history = container.querySelector(".career-history")!;
+    expect(history).not.toHaveTextContent("Touchpoint");
+    expect(history).not.toHaveTextContent("피그위");
+
+    const independent = within(container.querySelector<HTMLElement>(".career-independent")!);
+    expect(independent.getByText("INDEPENDENT")).toBeInTheDocument();
+    expect(independent.getByRole("heading", { name: "개인 프로젝트" })).toBeInTheDocument();
+    expect(independent.getByRole("heading", { name: "Touchpoint" })).toBeInTheDocument();
+    expect(independent.getByRole("heading", { name: "피그위" })).toBeInTheDocument();
+    expect(independent.getByText("2016.10–2018.11")).toBeInTheDocument();
+    expect(independent.getByRole("link", { name: "Touchpoint 프로젝트 보기" })).toHaveAttribute(
       "href",
       "/work/touchpoint",
     );
+    expect(independent.queryByRole("link", { name: /피그위/ })).toBeNull();
+  });
+
+  it("anchors the independent section for deep links", () => {
+    const { container } = renderTimeline();
+    expect(container.querySelector(".career-independent")).toHaveAttribute("id", "independent");
   });
 });

@@ -2,14 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 
-import { projects } from "@/content/projects";
+import { getProjectsByKind } from "@/content/projects";
+
+const workProjects = getProjectsByKind("career");
+const WORK_CLOSE_DELAY = 150;
 
 const globalLinks = {
-  career: { href: "/career", label: "커리어" },
-  pdf: { href: "/dokyum-kim-portfolio.pdf", label: "포트폴리오 PDF" },
-  email: { href: "mailto:snfltptkd91@gmail.com", label: "이메일로 연락하기" },
+  career: { href: "/career", label: "CAREER" },
+  pdf: { href: "/dokyum-kim-portfolio.pdf", label: "PDF" },
+  email: { href: "mailto:snfltptkd91@gmail.com", label: "CONTACT" },
 } as const;
 
 type ProjectLinksProps = {
@@ -19,7 +23,7 @@ type ProjectLinksProps = {
 function ProjectLinks({ pathname }: ProjectLinksProps) {
   return (
     <ul className="site-project-links">
-      {projects.map((project, index) => (
+      {workProjects.map((project, index) => (
         <li key={project.slug}>
           <Link
             className="site-project-link"
@@ -69,7 +73,48 @@ export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const workTriggerRef = useRef<HTMLButtonElement>(null);
   const mobileTriggerRef = useRef<HTMLButtonElement>(null);
+  const workCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const workOpenedByHover = useRef(false);
   const pathname = usePathname();
+
+  function cancelWorkClose() {
+    if (workCloseTimer.current === null) return;
+    clearTimeout(workCloseTimer.current);
+    workCloseTimer.current = null;
+  }
+
+  function closeWork() {
+    workOpenedByHover.current = false;
+    setWorkOpen(false);
+  }
+
+  // Hover opens Work for mouse users only; touch and keyboard keep the click toggle.
+  function openWorkFromPointer(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== "mouse") return;
+    cancelWorkClose();
+    workOpenedByHover.current = true;
+    setWorkOpen(true);
+  }
+
+  function closeWorkFromPointer(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== "mouse") return;
+    cancelWorkClose();
+    workCloseTimer.current = setTimeout(() => {
+      workCloseTimer.current = null;
+      closeWork();
+    }, WORK_CLOSE_DELAY);
+  }
+
+  function toggleWork() {
+    // A click on a trigger the mouse already hovered open should not snap the menu shut.
+    if (workOpenedByHover.current) {
+      setWorkOpen(true);
+      return;
+    }
+    setWorkOpen((open) => !open);
+  }
+
+  useEffect(() => cancelWorkClose, []);
 
   useEffect(() => {
     const close = (event: KeyboardEvent) => {
@@ -78,7 +123,7 @@ export function SiteHeader() {
         setMobileOpen(false);
         mobileTriggerRef.current?.focus();
       } else if (workOpen) {
-        setWorkOpen(false);
+        closeWork();
         workTriggerRef.current?.focus();
       }
     };
@@ -87,7 +132,7 @@ export function SiteHeader() {
   }, [mobileOpen, workOpen]);
 
   useEffect(() => {
-    setWorkOpen(false);
+    closeWork();
     setMobileOpen(false);
   }, [pathname]);
 
@@ -105,7 +150,11 @@ export function SiteHeader() {
       </Link>
 
       <nav className="site-actions" aria-label="주요 링크">
-        <div className="site-work-navigation">
+        <div
+          className="site-work-navigation"
+          onPointerEnter={openWorkFromPointer}
+          onPointerLeave={closeWorkFromPointer}
+        >
           <button
             ref={workTriggerRef}
             className="site-work-trigger"
@@ -113,7 +162,7 @@ export function SiteHeader() {
             aria-label="프로젝트 메뉴"
             aria-expanded={workOpen}
             aria-controls="work-menu"
-            onClick={() => setWorkOpen((open) => !open)}
+            onClick={toggleWork}
           >
             WORK
           </button>

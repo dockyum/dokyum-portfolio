@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
 import { CareerTimeline } from "@/components/career/career-timeline";
-import { careerEntries, educationEntries } from "@/content/career";
-import { getProjectsByKind } from "@/content/projects";
+import { careerEntries, educationEntries, independentEntries } from "@/content/career";
 
 export const metadata: Metadata = {
   title: "커리어",
@@ -17,15 +16,15 @@ export default function CareerPage() {
     <main className="career-page">
       <header className="career-hero">
         <p className="career-hero-kicker">CAREER / PRODUCT / OPERATIONS</p>
-        <h1>2016 — NOW</h1>
+        <h1>2018 — NOW</h1>
         <p className="career-hero-summary">
-          제품 밖의 병목까지 발견하고, 사업이 흐르도록 제품과 운영을 다시 설계해 왔습니다.
+          제품 밖의 병목까지 찾아, 사업이 성장하는 구조를 만들어 왔습니다.
         </p>
       </header>
 
       <CareerTimeline
         careers={careerEntries}
-        projects={getProjectsByKind("independent")}
+        independent={independentEntries}
         education={educationEntries}
       />
 
