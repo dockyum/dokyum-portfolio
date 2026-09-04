@@ -490,6 +490,10 @@ a:focus-visible, button:focus-visible {
   position: absolute;
   top: 50%;
   right: calc(100% + 0.75rem);
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--paper-raised);
   color: var(--ink);
   font-family: var(--font-mono);
   font-size: 0.68rem;
