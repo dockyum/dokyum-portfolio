@@ -31,6 +31,8 @@ pnpm dev
 | `NEXT_PUBLIC_SITE_URL` | canonical URL과 소셜 메타데이터에 사용할 사이트 주소 |
 | `UPSTASH_REDIS_REST_URL` | Upstash Redis REST endpoint |
 | `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis REST 인증 토큰 |
+| `TWIN_API_URL` | ai-twin 호스트. 비우면 랜딩의 Ask docky 채팅이 렌더되지 않습니다 |
+| `TWIN_PROXY_SECRET` | 선택. ai-twin 프록시 호출을 식별하는 공유 시크릿 |
 
 `NEXT_PUBLIC_SITE_URL`이 없으면 Vercel의 `VERCEL_PROJECT_PRODUCTION_URL`을 사용하고, 그 값도 없으면 `http://localhost:3000`을 사용합니다.
 
@@ -45,6 +47,7 @@ pnpm dev
 - `/work/butlerlee`
 - `/work/touchpoint`
 - `/api/visitors` — 익명 방문자 수 API
+- `/api/chat` — ai-twin 프록시 (랜딩 Ask docky 채팅)
 - `/dokyum-kim-portfolio.pdf` — 포트폴리오 PDF
 
 ## Verification
