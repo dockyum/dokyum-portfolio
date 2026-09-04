@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s — dokyum kim",
   },
   description:
-    "제품 밖의 병목까지 찾아, 사업이 성장하는 구조를 만드는 dokyum kim의 포트폴리오입니다.",
+    "제품 너머 병목까지 찾아, 사업이 성장하는 구조를 만드는 dokyum kim의 포트폴리오입니다.",
   authors: [{ name: "dokyum kim" }],
   creator: "dokyum kim",
   alternates: {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     type: "website",
     title: "dokyum kim — Product Portfolio",
-    description: "제품 밖의 병목까지 찾아, 사업이 성장하는 구조를 만듭니다.",
+    description: "제품 너머 병목까지 찾아, 사업이 성장하는 구조를 만듭니다.",
     url: "/",
     images: [
       {
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "dokyum kim — Product Portfolio",
-    description: "제품 밖의 병목까지 찾아, 사업이 성장하는 구조를 만듭니다.",
+    description: "제품 너머 병목까지 찾아, 사업이 성장하는 구조를 만듭니다.",
     images: ["/og.png"],
   },
 };

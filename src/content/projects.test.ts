@@ -2,7 +2,13 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { getProjectBySlug, getProjectNeighbors, getProjectsByKind, projects } from "./projects";
+import {
+  getProjectBySlug,
+  getProjectNeighbors,
+  getProjectsByKind,
+  projects,
+  type Project,
+} from "./projects";
 
 describe("projects", () => {
   it("keeps the resume order: career work first, independent projects last", () => {
@@ -25,16 +31,25 @@ describe("projects", () => {
     expect(getProjectsByKind("independent").map(({ slug }) => slug)).toEqual(["touchpoint"]);
   });
 
-  it("keeps every slug, route, and landing line unique", () => {
+  it("keeps every slug, route, and problem line unique", () => {
     expect(new Set(projects.map(({ slug }) => slug)).size).toBe(6);
     expect(new Set(projects.map(({ route }) => route)).size).toBe(6);
-    expect(projects.every(({ activeLine }) => activeLine.length > 0)).toBe(true);
+    expect(new Set(projects.map(({ problemLine }) => problemLine)).size).toBe(6);
+    expect(projects.every(({ problemLine }) => problemLine.length > 0)).toBe(true);
+  });
+
+  it("describes every project with hashtags for the Work menu", () => {
+    for (const project of projects) {
+      expect(project.tags.length).toBeGreaterThanOrEqual(3);
+      expect(project.tags.every((tag) => tag.startsWith("#") && !tag.includes(" "))).toBe(true);
+    }
   });
 
   it("does not publish unverified Touchpoint traction", () => {
     const touchpoint = getProjectBySlug("touchpoint");
-    expect(touchpoint?.verifiedMetrics).toEqual([]);
-    expect(touchpoint?.sections.outcome.join(" ")).toContain("검증 전");
+    expect(touchpoint?.story.outcome.title).toContain("검증 전");
+    expect(touchpoint?.story.outcome.shift).toBeUndefined();
+    expect(touchpoint?.story.takeaways).toEqual([]);
   });
 
   it("keeps resume-backed periods for projects with supplied dates", () => {
@@ -58,11 +73,21 @@ describe("projects", () => {
     expect(getProjectNeighbors("touchpoint").next).toBeUndefined();
   });
 
-  it("ships every required project asset and the PDF locally", () => {
-    for (const project of projects) {
+  it("ships every project asset, case-study image, and the PDF locally", () => {
+    const typedProjects: readonly Project[] = projects;
+    for (const project of typedProjects) {
+      const { story } = project;
+      const media = [
+        story.hero,
+        ...story.chapters.flatMap((chapter) => chapter.media ?? []),
+        ...(story.outcome.media ?? []),
+        ...(story.expansion?.media ?? []),
+      ];
       expect(existsSync(join(process.cwd(), "public", project.media.card))).toBe(true);
-      expect(existsSync(join(process.cwd(), "public", project.media.hero))).toBe(true);
       expect(existsSync(join(process.cwd(), "public", project.media.logo))).toBe(true);
+      for (const item of media) {
+        expect(existsSync(join(process.cwd(), "public", item.src)), item.src).toBe(true);
+      }
     }
 
     expect(existsSync(join(process.cwd(), "public/dokyum-kim-portfolio.pdf"))).toBe(true);

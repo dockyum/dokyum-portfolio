@@ -60,17 +60,23 @@ describe("SiteHeader", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "true");
   });
 
-  it("keeps Career, PDF, and Contact globally available in English", () => {
+  it("keeps only Work and Career in the header; PDF and contact live in the footer", () => {
     expect(screen.getByRole("link", { name: "CAREER" })).toHaveAttribute("href", "/career");
-    expect(screen.getByRole("link", { name: "PDF" })).toHaveAttribute(
-      "href",
-      "/dokyum-kim-portfolio.pdf",
-    );
-    expect(screen.getByRole("link", { name: "CONTACT" })).toHaveAttribute(
-      "href",
-      "mailto:snfltptkd91@gmail.com",
-    );
+    expect(screen.queryByRole("link", { name: "PDF" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "CONTACT" })).toBeNull();
     expect(screen.queryByRole("link", { name: /INDEPENDENT/ })).toBeNull();
+  });
+
+  it("describes each work project with hashtags instead of an outcome", () => {
+    fireEvent.click(screen.getByRole("button", { name: "프로젝트 메뉴" }));
+    const menu = document.getElementById("work-menu")!;
+    for (const project of workProjects) {
+      for (const tag of project.tags) {
+        expect(menu).toHaveTextContent(tag);
+      }
+    }
+    expect(menu).not.toHaveTextContent("만원");
+    expect(menu.querySelector(".site-project-outcome")).toBeNull();
   });
 
   it("marks the current section and closes with Escape", () => {
@@ -95,7 +101,8 @@ describe("SiteHeader", () => {
       );
     }
     expect(menu.queryByRole("link", { name: /Touchpoint/ })).toBeNull();
-    expect(menu.getByRole("link", { name: "CONTACT" })).toBeInTheDocument();
+    expect(menu.getByRole("link", { name: "CAREER" })).toBeInTheDocument();
+    expect(menu.queryByRole("link", { name: "CONTACT" })).toBeNull();
     fireEvent.keyDown(document, { key: "Escape" });
     expect(document.body.style.overflow).toBe("");
     expect(trigger).toHaveFocus();

@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
   if (!project) return {};
 
-  const socialImage = `/${project.media.hero}`;
+  const socialImage = `/${project.story.hero.src}`;
 
   return {
     title: project.name,

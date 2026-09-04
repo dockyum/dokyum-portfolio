@@ -1,104 +1,210 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 
+import type { CaseChapter, CaseMedia } from "@/content/case-study";
 import { projects, type Project } from "@/content/projects";
 
 import { ProjectNavigation } from "./project-navigation";
 
-const chapters = [
-  { key: "problem", label: "문제와 맥락" },
-  { key: "judgment", label: "핵심 판단" },
-  { key: "execution", label: "실행과 운영 변화" },
-  { key: "outcome", label: "성과와 학습" },
-] as const;
+const MIN_HERO_RATIO = 1.5;
 
-type ProjectStyle = CSSProperties & { "--project-accent": string };
+function defaultSpan(count: number): number {
+  if (count === 1) return 12;
+  if (count === 3) return 4;
+  return 6;
+}
+
+function MediaGrid({ media }: { media: readonly CaseMedia[] }) {
+  return (
+    <div className="work-media" data-count={media.length}>
+      {media.map((item) => {
+        const span = item.span ?? defaultSpan(media.length);
+        const width = Math.round((span / 12) * 94);
+        return (
+          <figure key={item.src} style={{ "--span": span } as CSSProperties}>
+            <Image
+              src={`/${item.src}`}
+              alt={item.alt}
+              width={item.width}
+              height={item.height}
+              sizes={`(max-width: 767px) 100vw, ${width}vw`}
+            />
+            {item.caption ? <figcaption>{item.caption}</figcaption> : null}
+          </figure>
+        );
+      })}
+    </div>
+  );
+}
+
+function Chapter({ chapter, index }: { chapter: CaseChapter; index?: number }) {
+  return (
+    <section className="work-chapter">
+      <div className="work-chapter-text">
+        <p className="work-label">
+          {index === undefined ? null : <span>{String(index + 1).padStart(2, "0")}</span>}
+          {chapter.label}
+        </p>
+        <h2>{chapter.title}</h2>
+        {chapter.lead ? <p className="work-chapter-lead">{chapter.lead}</p> : null}
+        {chapter.body?.map((paragraph) => (
+          <p className="work-chapter-body" key={paragraph}>
+            {paragraph}
+          </p>
+        ))}
+      </div>
+      {chapter.quotes ? (
+        <ul className="work-quotes">
+          {chapter.quotes.map((quote) => (
+            <li key={quote}>“{quote}”</li>
+          ))}
+        </ul>
+      ) : null}
+      {chapter.groups ? (
+        <div className="work-groups">
+          {chapter.groups.map((group) => (
+            <div className="work-group" key={group.title}>
+              <h3>{group.title}</h3>
+              <ul>
+                {group.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ) : null}
+      {chapter.media ? <MediaGrid media={chapter.media} /> : null}
+    </section>
+  );
+}
 
 export function ProjectDetail({ project }: { project: Project }) {
-  const projectStyle: ProjectStyle = { "--project-accent": project.media.accent };
+  const { story } = project;
   const projectIndex = projects.findIndex(({ slug }) => slug === project.slug) + 1;
+  const heroRatio = Math.max(story.hero.width / story.hero.height, MIN_HERO_RATIO);
+  const pageStyle = {
+    "--project-accent": project.media.accent,
+    "--hero-ratio": heroRatio.toFixed(3),
+    "--hero-position": story.hero.position ?? "50% 50%",
+  } as CSSProperties;
 
   return (
-    <main className="work-page" style={projectStyle}>
+    <main className="work-page" style={pageStyle}>
       <header className="work-hero">
-        <div className="work-hero-copy">
-          <p className="work-index">
-            {String(projectIndex).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
-          </p>
-          <p className="work-kicker">{project.category}</p>
-          <div className="work-logo">
-            <span className="work-logo-image">
-              <Image
-                src={`/${project.media.logo}`}
-                alt={`${project.name} 로고`}
-                fill
-                loading="eager"
-                sizes="176px"
-              />
-            </span>
-          </div>
-          <dl className="work-meta">
-            <div>
-              <dt className="work-meta-label">ROLE</dt>
-              <dd>{project.role}</dd>
-            </div>
-            {project.period ? (
-              <div>
-                <dt className="work-meta-label">PERIOD</dt>
-                <dd>{project.period}</dd>
-              </div>
-            ) : null}
-            <div>
-              <dt className="work-meta-label">TEAM</dt>
-              <dd>{project.team}</dd>
-            </div>
-          </dl>
-          <h1>{project.heroOutcome}</h1>
-          <div className="work-summary">
-            {project.sections.overview.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-        </div>
-        <figure className="work-hero-media">
-          <Image
-            src={`/${project.media.hero}`}
-            alt={project.media.alt}
-            fill
-            preload
-            sizes="(max-width: 767px) 100vw, 56vw"
-          />
-        </figure>
+        <p className="work-index">
+          {String(projectIndex).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
+          <span className="work-kicker">{project.category}</span>
+        </p>
+        <h1>
+          <span className="work-title">{project.name}</span>
+          <span className="work-tagline">{story.tagline}</span>
+        </h1>
       </header>
 
-      {project.verifiedMetrics.length > 0 ? (
-        <section className="work-metrics" aria-label="주요 성과">
-          <dl className="work-metrics-list">
-            {project.verifiedMetrics.map((metric) => (
-              <div key={metric}>
-                <dt className="work-metric-label">VERIFIED METRIC</dt>
-                <dd className="work-metric-value">{metric}</dd>
-              </div>
-            ))}
+      <section className="work-intro" aria-label="프로젝트 소개">
+        <div className="work-intro-copy">
+          <p className="work-headline">{story.headline}</p>
+          <p className="work-summary">{project.summary}</p>
+        </div>
+        <dl className="work-meta">
+          <div>
+            <dt className="work-label">ROLE</dt>
+            <dd>{project.role}</dd>
+          </div>
+          {project.period ? (
+            <div>
+              <dt className="work-label">PERIOD</dt>
+              <dd>{project.period}</dd>
+            </div>
+          ) : null}
+          <div>
+            <dt className="work-label">TEAM</dt>
+            <dd>{project.team}</dd>
+          </div>
+          <div>
+            <dt className="work-label">PRODUCT</dt>
+            <dd>{project.product}</dd>
+          </div>
+          {project.tools ? (
+            <div>
+              <dt className="work-label">TOOLS</dt>
+              <dd>{project.tools}</dd>
+            </div>
+          ) : null}
+        </dl>
+      </section>
+
+      <figure className="work-hero-media">
+        <Image
+          src={`/${story.hero.src}`}
+          alt={story.hero.alt}
+          fill
+          preload
+          sizes="(max-width: 767px) 100vw, 94vw"
+        />
+      </figure>
+
+      <dl className="work-brief" aria-label="프로젝트 요약">
+        {story.facts.map((fact) => (
+          <div key={fact.label}>
+            <dt className="work-label">{fact.label}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <article className="work-story">
+        {story.chapters.map((chapter, index) => (
+          <Chapter chapter={chapter} index={index} key={chapter.title} />
+        ))}
+      </article>
+
+      <section className="work-outcome" aria-labelledby="work-outcome-heading">
+        <p className="work-label">OUTCOME</p>
+        <h2 id="work-outcome-heading">{story.outcome.title}</h2>
+        {story.outcome.detail?.map((line) => (
+          <p className="work-outcome-detail" key={line}>
+            {line}
+          </p>
+        ))}
+        {story.outcome.shift ? (
+          <dl className="work-shift">
+            <div>
+              <dt className="work-label">{story.outcome.shift.from.label}</dt>
+              <dd>{story.outcome.shift.from.value}</dd>
+            </div>
+            <div>
+              <dt className="work-label">{story.outcome.shift.to.label}</dt>
+              <dd>{story.outcome.shift.to.value}</dd>
+            </div>
           </dl>
+        ) : null}
+        {story.outcome.note ? <p className="work-outcome-note">{story.outcome.note}</p> : null}
+        {story.outcome.media ? <MediaGrid media={story.outcome.media} /> : null}
+      </section>
+
+      {story.takeaways.length > 0 ? (
+        <section className="work-takeaways" aria-labelledby="work-takeaways-heading">
+          <h2 id="work-takeaways-heading">Takeaways</h2>
+          <ol>
+            {story.takeaways.map((takeaway) => (
+              <li key={takeaway.title}>
+                <h3>{takeaway.title}</h3>
+                {takeaway.body.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </li>
+            ))}
+          </ol>
         </section>
       ) : null}
 
-      <article className="work-story">
-        {chapters.map((chapter, index) => (
-          <section className="work-story-section" key={chapter.key}>
-            <div className="work-story-heading">
-              <span className="work-story-index">{String(index + 1).padStart(2, "0")}</span>
-              <h2>{chapter.label}</h2>
-            </div>
-            <div className="work-story-body">
-              {project.sections[chapter.key].map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-          </section>
-        ))}
-      </article>
+      {story.expansion ? (
+        <article className="work-story work-story-extra">
+          <Chapter chapter={story.expansion} />
+        </article>
+      ) : null}
 
       <ProjectNavigation slug={project.slug} />
     </main>

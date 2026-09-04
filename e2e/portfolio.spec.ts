@@ -55,11 +55,18 @@ test("landing CTA, project journey, and PDF are available", async ({ page, reque
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: /제품 밖의 병목까지/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: "CONTACT" })).toHaveAttribute(
+  await expect(page.getByRole("heading", { name: /제품 너머 병목까지/ })).toBeVisible();
+  const footer = page.locator(".site-footer");
+  await expect(footer.getByRole("link", { name: "CONTACT" })).toHaveAttribute(
     "href",
     "mailto:snfltptkd91@gmail.com",
   );
+  await expect(footer.getByRole("link", { name: "PDF" })).toHaveAttribute(
+    "href",
+    "/dokyum-kim-portfolio.pdf",
+  );
+  await expect(page.locator('.site-header a[href^="mailto:"]')).toHaveCount(0);
+  await expect(page.locator('.site-header a[href$=".pdf"]')).toHaveCount(0);
 
   await openCard(page, "Snode");
   await expect(page).toHaveURL(/\/work\/snode$/);
@@ -199,7 +206,6 @@ test("mobile layout keeps navigation and content inside the viewport", async ({ 
     await page.getByRole("button", { name: "메뉴 열기" }).click();
     await expect(page.getByRole("link", { name: /Snode/ })).toBeVisible();
     await expect(page.getByRole("link", { name: "CAREER" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "CONTACT" })).toBeVisible();
     await page.getByRole("link", { name: "CAREER" }).click();
     await expect(page).toHaveURL(/\/career$/);
   }
@@ -253,8 +259,20 @@ test("Work dropdown rows keep the editorial grid across the full menu width", as
   for (const row of await rows.all()) {
     await expect(row).toHaveCSS("display", "grid");
     await expect(row).toHaveCSS("text-transform", "none");
+    await expect(row.locator(".site-project-tags")).toContainText("#");
     expect((await row.boundingBox())!.width).toBeGreaterThan(menuWidth - 4);
   }
+});
+
+test("project detail pages carry the PDF chapters, images, and takeaways", async ({ page }) => {
+  await page.goto("/work/snode");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Snode");
+  await expect(
+    page.getByRole("heading", { level: 2, name: "회사의 성장이 정체되고 있는 원인은 뭘까?" }),
+  ).toBeVisible();
+  expect(await page.locator(".work-media img").count()).toBeGreaterThan(3);
+  await expect(page.getByRole("heading", { level: 2, name: "Takeaways" })).toBeVisible();
+  await expect(page.locator(".work-outcome")).toContainText("1,300만원");
 });
 
 test("runway cards vary in size on one baseline and the hovered card grows with a caption", async ({

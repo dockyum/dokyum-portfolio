@@ -1,6 +1,6 @@
 # dokyum kim — Product Portfolio
 
-제품 밖의 병목까지 찾아, 사업이 성장하는 구조를 만드는 dokyum kim의 포트폴리오입니다.
+제품 너머 병목까지 찾아, 사업이 성장하는 구조를 만드는 dokyum kim의 포트폴리오입니다.
 
 Live site: https://dokyum-portfolio.vercel.app
 

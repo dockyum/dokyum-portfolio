@@ -18,7 +18,7 @@ export default function CareerPage() {
         <p className="career-hero-kicker">CAREER / PRODUCT / OPERATIONS</p>
         <h1>2018 — NOW</h1>
         <p className="career-hero-summary">
-          제품 밖의 병목까지 찾아, 사업이 성장하는 구조를 만들어 왔습니다.
+          제품 너머 병목까지 찾아, 사업이 성장하는 구조를 만들어 왔습니다.
         </p>
       </header>
 

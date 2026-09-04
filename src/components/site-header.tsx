@@ -3,18 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { PointerEvent as ReactPointerEvent } from "react";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 
 import { getProjectsByKind } from "@/content/projects";
 
 const workProjects = getProjectsByKind("career");
 const WORK_CLOSE_DELAY = 150;
 
-const globalLinks = {
-  career: { href: "/career", label: "CAREER" },
-  pdf: { href: "/dokyum-kim-portfolio.pdf", label: "PDF" },
-  email: { href: "mailto:snfltptkd91@gmail.com", label: "CONTACT" },
-} as const;
+const careerLink = { href: "/career", label: "CAREER" } as const;
 
 type ProjectLinksProps = {
   pathname: string;
@@ -35,7 +31,14 @@ function ProjectLinks({ pathname }: ProjectLinksProps) {
             </span>
             <span className="site-project-name">{project.name}</span>
             <span className="site-project-period">{project.period ?? ""}</span>
-            <span className="site-project-outcome">{project.activeLine}</span>
+            <span className="site-project-tags">
+              {project.tags.map((tag, tagIndex) => (
+                <Fragment key={tag}>
+                  {tagIndex > 0 ? " " : null}
+                  <span>{tag}</span>
+                </Fragment>
+              ))}
+            </span>
           </Link>
         </li>
       ))}
@@ -43,28 +46,19 @@ function ProjectLinks({ pathname }: ProjectLinksProps) {
   );
 }
 
-type GlobalLinksProps = {
+type CareerLinkProps = {
   pathname: string;
 };
 
-function GlobalLinks({ pathname }: GlobalLinksProps) {
+function CareerLink({ pathname }: CareerLinkProps) {
   return (
-    <>
-      <Link
-        className="site-career-link"
-        href={globalLinks.career.href}
-        aria-current={pathname === globalLinks.career.href ? "page" : undefined}
-      >
-        {globalLinks.career.label}
-      </Link>
-      <a className="site-pdf-link" href={globalLinks.pdf.href} download>
-        {globalLinks.pdf.label}
-      </a>
-      <a className="site-email-link" href={globalLinks.email.href}>
-        {globalLinks.email.label}
-        <span aria-hidden="true">↗</span>
-      </a>
-    </>
+    <Link
+      className="site-career-link"
+      href={careerLink.href}
+      aria-current={pathname === careerLink.href ? "page" : undefined}
+    >
+      {careerLink.label}
+    </Link>
   );
 }
 
@@ -170,7 +164,7 @@ export function SiteHeader() {
             <ProjectLinks pathname={pathname} />
           </div>
         </div>
-        <GlobalLinks pathname={pathname} />
+        <CareerLink pathname={pathname} />
       </nav>
 
       <button
@@ -189,7 +183,7 @@ export function SiteHeader() {
         <nav aria-label="모바일 메뉴">
           <ProjectLinks pathname={pathname} />
           <div className="site-mobile-actions">
-            <GlobalLinks pathname={pathname} />
+            <CareerLink pathname={pathname} />
           </div>
         </nav>
       </div>

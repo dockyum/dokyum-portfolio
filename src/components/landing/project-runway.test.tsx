@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { projects } from "@/content/projects";
 import { ProjectRunway } from "./project-runway";
 
-const thesis = "제품 밖의 병목까지 찾아, 사업이 성장하는 구조를 만듭니다.";
+const thesis = "제품 너머 병목까지 찾아, 사업이 성장하는 구조를 만듭니다.";
 
 function primaryCard(name: string) {
   return screen.getByRole("link", { name: `${name} 프로젝트 보기` });
@@ -39,7 +39,7 @@ describe("ProjectRunway", () => {
     const words = Array.from(container.querySelectorAll<HTMLElement>(".landing-thesis-word"));
     expect(words.map((word) => word.textContent?.trim())).toEqual([
       "제품",
-      "밖의",
+      "너머",
       "병목까지",
       "찾아,",
       "사업이",
@@ -64,11 +64,11 @@ describe("ProjectRunway", () => {
     expect(screen.getAllByRole("link")).toHaveLength(projects.length);
   });
 
-  it("captions each card with its name and outcome, tagging independent work only", () => {
+  it("captions each card with its name and the problem it solved, tagging independent work only", () => {
     const { container } = render(<ProjectRunway projects={projects} />);
     for (const project of projects) {
       const card = within(primaryCard(project.name));
-      const caption = card.getByText(project.activeLine).closest(".project-card-caption")!;
+      const caption = card.getByText(project.problemLine).closest(".project-card-caption")!;
       expect(caption).toHaveTextContent(project.name);
       if (project.kind === "independent") {
         expect(caption).toHaveTextContent("INDEPENDENT");
