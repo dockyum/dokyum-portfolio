@@ -317,6 +317,61 @@ a:focus-visible, button:focus-visible {
 .landing-thesis { animation-delay: 0s; }
 .project-runway { animation-delay: 0.2s; }
 
+/* Ask docky trigger */
+.ask-docky-trigger {
+  position: fixed;
+  z-index: 90;
+  right: clamp(1rem, 3vw, 3rem);
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  display: inline-flex;
+  width: 56px;
+  height: 56px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: var(--paper-raised);
+  cursor: pointer;
+  transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
+}
+.ask-docky-trigger:hover, .ask-docky-trigger:focus-visible { transform: translateY(-2px); }
+.ask-docky-trigger[data-hidden="true"] { opacity: 0; pointer-events: none; }
+.ask-docky-trigger-mark { width: 40px; height: 40px; overflow: visible; }
+.ask-docky-trigger-band {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: ask-docky-spin 24s linear infinite;
+}
+.ask-docky-trigger-band path { fill: none; vector-effect: non-scaling-stroke; }
+.ask-docky-band-body { stroke: var(--ink); stroke-width: 7px; }
+.ask-docky-band-core { stroke: var(--paper-raised); stroke-width: 5px; }
+.ask-docky-band-flow {
+  stroke: var(--signal-blue);
+  stroke-width: 1.5px;
+  stroke-dasharray: 12 88;
+  stroke-linecap: round;
+  animation: ask-docky-flow 6s linear infinite;
+}
+@keyframes ask-docky-spin { to { transform: rotate(360deg); } }
+@keyframes ask-docky-flow { to { stroke-dashoffset: -100; } }
+.ask-docky-trigger-label {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 0.75rem);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  opacity: 0;
+  translate: 0.4rem -50%;
+  transition: opacity 0.3s var(--ease-out), translate 0.3s var(--ease-out);
+  pointer-events: none;
+}
+.ask-docky-trigger:hover .ask-docky-trigger-label,
+.ask-docky-trigger:focus-visible .ask-docky-trigger-label { opacity: 1; translate: 0 -50%; }
+
 /* Project detail */
 .work-hero {
   display: grid;
@@ -832,6 +887,7 @@ a:focus-visible, button:focus-visible {
   .site-footer { align-items: start; grid-template-columns: 1fr auto; }
   .site-visitor { text-align: right; }
   .site-footer > a { justify-self: start; }
+  .ask-docky-trigger-label { display: none; }
 }
 @media (hover: none) {
   .site-header a:active, .site-header button:active, .project-card:active, .career-projects a:active,
