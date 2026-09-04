@@ -317,6 +317,137 @@ a:focus-visible, button:focus-visible {
 .landing-thesis { animation-delay: 0s; }
 .project-runway { animation-delay: 0.2s; }
 
+/* Ask docky (landing chat) */
+.ask-docky {
+  padding: clamp(2.5rem, 5vw, 5rem) clamp(1rem, 3vw, 3rem);
+  border-top: 1px solid var(--rule);
+  scroll-margin-top: 64px;
+}
+.ask-docky-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.ask-docky-title {
+  margin: 0;
+  color: var(--signal-blue);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 580;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+.ask-docky-kind { color: var(--muted); font-weight: 400; }
+.ask-docky-count { margin: 0; font-family: var(--font-mono); font-size: 0.72rem; }
+.ask-docky-transcript-wrap {
+  display: grid;
+  overflow: hidden;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s var(--ease-out);
+}
+.ask-docky[data-state="active"] .ask-docky-transcript-wrap { grid-template-rows: 1fr; }
+.ask-docky[data-restored] .ask-docky-transcript-wrap { transition: none; }
+.ask-docky-transcript {
+  min-height: 0;
+  max-height: min(60svh, 42rem);
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+.ask-docky[data-state="active"] .ask-docky-transcript { border-top: 1px solid var(--rule); }
+.ask-docky-turn {
+  display: grid;
+  gap: 1rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--rule);
+  grid-template-columns: 7rem minmax(0, 1fr);
+}
+.ask-docky-turn-label {
+  padding-top: 0.3rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: -0.04em;
+}
+.ask-docky-turn[data-role="assistant"] .ask-docky-turn-label { color: var(--signal-blue); }
+.ask-docky-turn-body {
+  font-size: 1rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+.ask-docky-turn.is-pending .ask-docky-turn-body { color: var(--muted); }
+.ask-docky-caret {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-left: 0.15em;
+  background: var(--signal-blue);
+  vertical-align: -0.15em;
+  animation: ask-docky-blink 1s steps(2, start) infinite;
+}
+@keyframes ask-docky-blink { to { visibility: hidden; } }
+.ask-docky-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  border-bottom: 1px solid var(--ink);
+}
+.ask-docky[data-state="active"] .ask-docky-form { margin-top: 1rem; }
+.ask-docky-form:focus-within { margin-bottom: -1px; border-bottom: 2px solid var(--focus); }
+.ask-docky-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0.6rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-korean);
+  font-size: clamp(1.25rem, 2.2vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  outline: none;
+}
+.ask-docky-input::placeholder { color: var(--muted); opacity: 1; }
+.ask-docky-input:disabled { color: var(--muted); }
+.ask-docky-send {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  transition: color 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
+}
+.ask-docky-send:hover { color: var(--signal-blue); }
+.ask-docky-send[aria-disabled="true"] { opacity: 0.35; cursor: default; }
+.ask-docky-caption, .ask-docky-limit {
+  max-width: 46rem;
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+.ask-docky-limit { color: var(--ink); }
+.ask-docky-limit a {
+  border-bottom: 1px solid var(--ink);
+  white-space: nowrap;
+  transition: opacity 0.3s var(--ease-out);
+}
+.ask-docky-limit a:hover { opacity: 0.55; }
+
 /* Ask docky trigger */
 .ask-docky-trigger {
   position: fixed;
@@ -887,6 +1018,10 @@ a:focus-visible, button:focus-visible {
   .site-footer { align-items: start; grid-template-columns: 1fr auto; }
   .site-visitor { text-align: right; }
   .site-footer > a { justify-self: start; }
+  .ask-docky { padding: 3rem 1rem; }
+  .ask-docky-turn { gap: 0.35rem; grid-template-columns: 1fr; }
+  .ask-docky-turn-label { padding-top: 0; }
+  .ask-docky-input { font-size: 1.25rem; }
   .ask-docky-trigger-label { display: none; }
 }
 @media (hover: none) {
