@@ -2,7 +2,7 @@
 
 **작성:** 2026-09-04
 
-**상태:** 승인된 방향(2026-09-04 브레인스토밍에서 구조·트리거·채팅 섹션·환경 섹션 승인), 구현 전
+**상태:** 구현 완료(2026-09-04, 브랜치 `dockyum/Chat`, `pnpm verify` 통과). 머지와 Vercel env(`TWIN_API_URL`) 설정 대기
 
 **연관 문서**
 
@@ -125,7 +125,7 @@ SSOT는 ai-twin 저장소의 `docs/superpowers/specs/2026-09-04-portfolio-proxy-
 
 - 띠 그룹이 24초 주기로 한 바퀴 회전한다(`rotate`, linear, infinite).
 - 띠를 따라 signal-blue 짧은 dash가 6초 주기로 흐른다(`stroke-dashoffset`, linear, infinite).
-- hover·focus-visible: 타일이 2px 떠오르고(`translateY(-2px)`), 왼쪽에 모노 라벨 `ASK DOCKY`가 나타난다(opacity·translateX, 0.3s). 모바일(≤767px)에서는 라벨을 숨긴다.
+- hover·focus-visible: 타일이 2px 떠오르고(`translateY(-2px)`), 왼쪽에 모노 라벨 `ASK DOCKY`가 종이색 칩(1px `ink` 테두리, 2px 라운드)으로 나타난다(opacity·translateX, 0.3s). 카드 사진 위에서도 읽히도록 칩을 둔다. 모바일(≤767px)에서는 라벨을 숨긴다.
 - reduced-motion: 기존 전역 규칙(`animation: none !important`, `transition: none !important`)으로 정지한다.
 
 ### 동작
@@ -301,3 +301,4 @@ DOCKY·AI    커피팅에서는 … ▌
 - ai-twin의 한도 저장소와 헤더 구현은 ai-twin 세션에서 한다. 그 전까지 포트폴리오는 로컬 카운트로 표시한다.
 - 세션 쿠키는 브라우저 종료로 끝난다. 브라우저의 탭 복원 설정에 따라 세션 쿠키가 살아남을 수 있다(브라우저 정책).
 - 트윈 답은 평문이다. 마크다운 렌더링은 필요해지면 추가한다.
+- 구현 중 발견: 이전 runway의 화살표가 `scrollIntoView`로 페이지를 세로로도 움직여, 길어진 페이지에서 포인터 아래 카드가 인덱스를 가로챘다. 가로 스크롤만 하도록 고쳤으나, 같은 날 main에 랜딩 스트립 리디자인(`800be4c`)이 들어와 화살표 컨트롤 자체가 사라졌으므로 rebase 때 그 수정은 제외했다.
