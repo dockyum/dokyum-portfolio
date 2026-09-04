@@ -527,36 +527,20 @@ const lanes = {
   ship: { id: "l-ship", title: "SHIP & OPERATE", subtitle: "배포 · 운영", x: 1240, width: 360 },
 } as const satisfies Record<string, HarnessLane>;
 
-const intake = (node: Omit<HarnessNode, "lane" | "x" | "width">): HarnessNode => ({
-  ...node,
-  lane: lanes.intake.id,
-  x: 20,
-  width: 220,
-});
-const hermes = (node: Omit<HarnessNode, "lane" | "x" | "width">): HarnessNode => ({
-  ...node,
-  lane: lanes.hermes.id,
-  x: 308,
-  width: 232,
-});
-const claude = (node: Omit<HarnessNode, "lane" | "x" | "width">): HarnessNode => ({
-  ...node,
-  lane: lanes.claude.id,
-  x: 580,
-  width: 380,
-});
-const human = (node: Omit<HarnessNode, "lane" | "x" | "width">): HarnessNode => ({
-  ...node,
-  lane: lanes.human.id,
-  x: 1000,
-  width: 220,
-});
-const ship = (node: Omit<HarnessNode, "lane" | "x" | "width">): HarnessNode => ({
-  ...node,
-  lane: lanes.ship.id,
-  x: 1270,
-  width: 300,
-});
+/** 레인별 노드 x·폭을 고정하는 팩토리. 노드 데이터에는 id·kind·텍스트·y·height만 적는다. */
+const placeIn =
+  (lane: HarnessLane, x: number, width: number) =>
+  (node: Omit<HarnessNode, "lane" | "x" | "width">): HarnessNode => ({
+    ...node,
+    lane: lane.id,
+    x,
+    width,
+  });
+const intake = placeIn(lanes.intake, 20, 220);
+const hermes = placeIn(lanes.hermes, 308, 232);
+const claude = placeIn(lanes.claude, 580, 380);
+const human = placeIn(lanes.human, 1000, 220);
+const ship = placeIn(lanes.ship, 1270, 300);
 const knowledge = (
   index: number,
   node: Omit<HarnessNode, "lane" | "kind" | "x" | "y" | "width" | "height">,
