@@ -71,7 +71,7 @@
 | `.env.example`, `README.md` | `TWIN_API_URL`, `TWIN_PROXY_SECRET` 문서화 |
 | `e2e/ask-docky.spec.ts` | 채팅 흐름 E2E |
 
-의존성 추가: `ai`(v6), `@ai-sdk/react`(v4). ai-twin과 메이저를 맞춰 UI message 스트림 프로토콜을 동일하게 유지한다.
+의존성 추가: `ai`(v7), `@ai-sdk/react`(v4). ai-twin과 메이저를 맞춰 UI message 스트림 프로토콜을 동일하게 유지한다.
 
 ## 6. 프록시 API 계약 — `POST /api/chat`
 
