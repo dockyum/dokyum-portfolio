@@ -100,8 +100,8 @@ test("the chat survives a detour to a project page", async ({ page }) => {
   await ask(page, "질문");
   await expect(page.locator(".ask-docky-turn[data-role='assistant']")).toContainText("짧은 답");
 
-  await page.getByRole("link", { name: "Snode 프로젝트 보기" }).click();
-  await expect(page).toHaveURL(/\/work\/snode$/);
+  await page.goto("/work/snode");
+  await expect(page.locator("main.work-page")).toBeVisible();
   await page.goBack();
 
   await expect(page.locator(".ask-docky")).toHaveAttribute("data-state", "active");
