@@ -366,7 +366,7 @@ system?: { title: string; intro: readonly string[]; diagram: HarnessDiagram };
 ### 7.3 초기 배율과 클램프
 
 - 스테이지 크기 `(w, h)`, viewBox `(W, H)`일 때 `fit = min(w/W, h/H)`, `cover = max(w/W, h/H)`.
-- 열릴 때와 "맞춤" 버튼: `scale = cover`, `x = 0`(INTAKE 레인이 왼쪽에 보이도록 왼쪽 정렬), `y = (h − H·scale) / 2`.
+- 열릴 때와 "맞춤" 버튼: `scale = cover`, `x = 0`, `y = 0`(레인 헤더와 INTAKE 레인이 먼저 보이도록 왼쪽 위 정렬. cover에서는 세로 중앙 정렬이 항상 헤더를 잘라낸다).
 - 배율 범위: `0.5 × fit` 이상 `4 × fit` 이하.
 - 이동 클램프: 다이어그램의 각 변이 스테이지 반대편 25% 지점을 넘어 밖으로 나가지 못한다. 즉 항상 다이어그램의 최소 25%가 보인다.
 - 창 크기 변경(`resize`) 시 현재 배율을 유지하고 클램프만 다시 적용한다.

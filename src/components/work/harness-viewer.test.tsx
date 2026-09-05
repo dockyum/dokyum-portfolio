@@ -84,7 +84,7 @@ describe("HarnessViewer", () => {
     expect(screen.getByRole("dialog", { name: title })).toHaveAttribute("open");
     expect(document.body.style.overflow).toBe("hidden");
     expect(stage).toHaveFocus();
-    // cover = max(1200/1600, 800/1000) = 0.8, 왼쪽 정렬, 세로 중앙
+    // cover = max(1200/1600, 800/1000) = 0.8, 왼쪽 위 정렬
     expect(canvasTransform()).toEqual({ x: 0, y: 0, scale: 0.8 });
   });
 

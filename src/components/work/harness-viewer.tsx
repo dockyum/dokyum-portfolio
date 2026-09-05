@@ -66,13 +66,13 @@ export function HarnessViewer({ title, inline, full, steps, viewBox }: HarnessVi
     [stageSize, viewBox.height, viewBox.width],
   );
 
-  // 초기 배율은 cover: 스테이지를 꽉 채우고, INTAKE 레인이 왼쪽에 보이도록 왼쪽 정렬
+  // 초기 배율은 cover: 스테이지를 꽉 채우고, 레인 헤더와 INTAKE 레인이 먼저 보이도록 왼쪽 위 정렬
   const fitToStage = useCallback(() => {
     const { width, height } = stageSize();
     if (!width || !height) return;
     fitRef.current = Math.min(width / viewBox.width, height / viewBox.height);
     const cover = Math.max(width / viewBox.width, height / viewBox.height);
-    setTransform({ x: 0, y: (height - viewBox.height * cover) / 2, scale: cover });
+    setTransform({ x: 0, y: 0, scale: cover });
   }, [stageSize, viewBox.height, viewBox.width]);
 
   const zoomAt = useCallback(
