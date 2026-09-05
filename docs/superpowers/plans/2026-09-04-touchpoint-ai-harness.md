@@ -53,7 +53,7 @@
 - Consumes: 없음.
 - Produces: `HarnessDiagram`, `HarnessNode`, `HarnessEdge`, `HarnessLane`, `HarnessLegendItem`, `HarnessNodeKind`, `HarnessEdgeKind` 타입. `harnessCounts`, `harnessText`, `knowledgeTitles` 상수. `estimateTextWidth(text, size, mono?)`, `textHeight(node)`, `validateHarnessDiagram(diagram): string[]`. Task 2가 같은 파일에 `touchpointHarness`를 추가한다.
 
-- [ ] **Step 1: worktree에 의존성을 설치하고 기존 테스트가 통과하는지 확인**
+- [x] **Step 1: worktree에 의존성을 설치하고 기존 테스트가 통과하는지 확인**
 
 ```bash
 corepack pnpm install --frozen-lockfile
@@ -62,7 +62,7 @@ corepack pnpm test
 
 Expected: 설치 성공, 기존 단위 테스트 전부 PASS. (실패하면 여기서 멈추고 원인을 보고한다. 이 계획의 변경과 무관한 실패다.)
 
-- [ ] **Step 2: 검증기 실패 테스트 작성**
+- [x] **Step 2: 검증기 실패 테스트 작성**
 
 `src/content/harness.test.ts`:
 
@@ -216,12 +216,12 @@ describe("textHeight", () => {
 });
 ```
 
-- [ ] **Step 3: 테스트가 실패하는지 확인**
+- [x] **Step 3: 테스트가 실패하는지 확인**
 
 Run: `corepack pnpm vitest run src/content/harness.test.ts`
 Expected: FAIL — `Failed to resolve import "./harness"`.
 
-- [ ] **Step 4: 타입, 상수, 검증기 구현**
+- [x] **Step 4: 타입, 상수, 검증기 구현**
 
 `src/content/harness.ts`:
 
@@ -410,12 +410,12 @@ export function validateHarnessDiagram(diagram: HarnessDiagram): string[] {
 }
 ```
 
-- [ ] **Step 5: 테스트 통과 확인**
+- [x] **Step 5: 테스트 통과 확인**
 
 Run: `corepack pnpm vitest run src/content/harness.test.ts`
 Expected: PASS (8 tests).
 
-- [ ] **Step 6: lint와 커밋**
+- [x] **Step 6: lint와 커밋**
 
 ```bash
 corepack pnpm lint
@@ -438,7 +438,7 @@ Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF"
 - Consumes: Task 1의 타입, `harnessCounts`, `knowledgeTitles`, `validateHarnessDiagram`.
 - Produces: `export const touchpointHarness: HarnessDiagram` (id `"touchpoint-harness"`, viewBox 1600×1000, 레인 5개, 노드 27개, 엣지 23개, 단계 12개). Task 3·5·6이 소비한다.
 
-- [ ] **Step 1: 실패 테스트 추가**
+- [x] **Step 1: 실패 테스트 추가**
 
 `src/content/harness.test.ts`의 import를 아래로 바꾸고, 파일 끝에 describe 블록을 추가한다.
 
@@ -503,12 +503,12 @@ function byIdDetail(id: string): readonly string[] {
 }
 ```
 
-- [ ] **Step 2: 실패 확인**
+- [x] **Step 2: 실패 확인**
 
 Run: `corepack pnpm vitest run src/content/harness.test.ts`
 Expected: FAIL — `touchpointHarness` is not exported (또는 undefined).
 
-- [ ] **Step 3: 데이터 작성**
+- [x] **Step 3: 데이터 작성**
 
 `src/content/harness.ts` 끝에 추가한다. 좌표는 스펙 5.1의 레인 구간 안에 있고, 텍스트 줄바꿈은 검증기의 폭·높이 계산을 통과하도록 미리 나눠 두었다.
 
@@ -881,12 +881,12 @@ export const touchpointHarness: HarnessDiagram = {
 };
 ```
 
-- [ ] **Step 4: 테스트 통과 확인**
+- [x] **Step 4: 테스트 통과 확인**
 
 Run: `corepack pnpm vitest run src/content/harness.test.ts`
 Expected: PASS (13 tests). `passes validation`이 실패하면 오류 메시지가 어떤 노드의 어떤 줄이 넘치는지 알려준다. 그 줄을 두 줄로 나누거나 노드 `height`를 키워 고친다. 레인 x 구간과 viewBox는 바꾸지 않는다.
 
-- [ ] **Step 5: 스펙의 두 곳을 데이터에 맞춘다**
+- [x] **Step 5: 스펙의 두 곳을 데이터에 맞춘다**
 
 k-constitution은 제목이 200px 노드에 맞지 않아 제목/라벨을 나눴고, 범례는 헤더 띠에 SHIP 레인 제목과 겹쳐 지식 띠 제목 행 오른쪽으로 옮겼다. 스펙을 정본으로 유지하기 위해 반영한다.
 
@@ -905,7 +905,7 @@ print("spec updated")
 PY
 ```
 
-- [ ] **Step 6: lint와 커밋**
+- [x] **Step 6: lint와 커밋**
 
 ```bash
 corepack pnpm lint
@@ -928,7 +928,7 @@ Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF"
 - Consumes: `harnessText`, `estimateTextWidth`, `touchpointHarness`, 타입 `HarnessDiagram`, `HarnessEdge`, `HarnessNode`, `HarnessLegendItem` (Task 1·2).
 - Produces: `HarnessDiagram({ diagram, variant: "inline" | "full" })` 서버 컴포넌트, 순수 함수 `routeEdge(from, to): string`, `parsePath(path): Point[]`, `pathMidpoint(path): Point`. 모든 SVG id는 `${diagram.id}-${variant}-` 접두어를 갖는다. 루트 `<svg>`는 `role="img"`, `aria-labelledby`, `aria-describedby`, 클래스 `harness-diagram harness-diagram-{variant}`.
 
-- [ ] **Step 1: 실패 테스트 작성**
+- [x] **Step 1: 실패 테스트 작성**
 
 `src/components/work/harness-diagram.test.tsx`:
 
@@ -1015,12 +1015,12 @@ describe("HarnessDiagram", () => {
 });
 ```
 
-- [ ] **Step 2: 실패 확인**
+- [x] **Step 2: 실패 확인**
 
 Run: `corepack pnpm vitest run src/components/work/harness-diagram.test.tsx`
 Expected: FAIL — `Failed to resolve import "./harness-diagram"`.
 
-- [ ] **Step 3: 컴포넌트 구현**
+- [x] **Step 3: 컴포넌트 구현**
 
 `src/components/work/harness-diagram.tsx` (서버 컴포넌트, `"use client"` 없음):
 
@@ -1326,12 +1326,12 @@ export function HarnessDiagram({ diagram, variant }: HarnessDiagramProps) {
 }
 ```
 
-- [ ] **Step 4: 테스트 통과 확인**
+- [x] **Step 4: 테스트 통과 확인**
 
 Run: `corepack pnpm vitest run src/components/work/harness-diagram.test.tsx`
 Expected: PASS (7 tests).
 
-- [ ] **Step 5: SVG 스타일 추가**
+- [x] **Step 5: SVG 스타일 추가**
 
 `src/app/globals.css` 파일 끝(`@media (prefers-reduced-motion: reduce)` 블록 뒤)에 추가한다. 색은 토큰만, accent는 게이트 마커와 루프에만.
 
@@ -1377,7 +1377,7 @@ Expected: PASS (7 tests).
 .harness-footnote { fill: var(--muted); font-family: var(--font-mono); font-size: 11.5px; }
 ```
 
-- [ ] **Step 6: lint와 커밋**
+- [x] **Step 6: lint와 커밋**
 
 ```bash
 corepack pnpm lint
@@ -1400,7 +1400,7 @@ Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF"
 - Consumes: 없음 (다이어그램은 `inline`/`full` prop으로 받는다).
 - Produces: `HarnessViewer({ title, inline, full, steps, viewBox })`. 트리거 버튼 접근 가능한 이름 `"{title} 크게 보기"`, `aria-haspopup="dialog"`, `aria-expanded`. `<dialog class="work-system-dialog" aria-label={title}>`, 툴바 버튼 `축소`/`확대`/`맞춤`/`닫기`, 스테이지 `role="application" aria-label="다이어그램 이동 영역" tabIndex=0 data-dragging`, 캔버스 `.work-system-canvas`의 inline style `transform: translate(Xpx, Ypx) scale(S)`.
 
-- [ ] **Step 1: 실패 테스트 작성**
+- [x] **Step 1: 실패 테스트 작성**
 
 `src/components/work/harness-viewer.test.tsx`:
 
@@ -1559,12 +1559,12 @@ describe("HarnessViewer", () => {
 });
 ```
 
-- [ ] **Step 2: 실패 확인**
+- [x] **Step 2: 실패 확인**
 
 Run: `corepack pnpm vitest run src/components/work/harness-viewer.test.tsx`
 Expected: FAIL — `Failed to resolve import "./harness-viewer"`.
 
-- [ ] **Step 3: 컴포넌트 구현**
+- [x] **Step 3: 컴포넌트 구현**
 
 `src/components/work/harness-viewer.tsx`:
 
@@ -1910,12 +1910,12 @@ export function HarnessViewer({ title, inline, full, steps, viewBox }: HarnessVi
 }
 ```
 
-- [ ] **Step 4: 테스트 통과 확인**
+- [x] **Step 4: 테스트 통과 확인**
 
 Run: `corepack pnpm vitest run src/components/work/harness-viewer.test.tsx`
 Expected: PASS (8 tests). `toHaveFocus`가 실패하면 `stageRef.current?.focus()`가 `fitToStage()` 뒤에 있는지, 스테이지에 `tabIndex={0}`이 있는지 확인한다.
 
-- [ ] **Step 5: 뷰어 스타일 추가**
+- [x] **Step 5: 뷰어 스타일 추가**
 
 `src/app/globals.css` 파일 끝(Task 3에서 추가한 `.harness-*` 블록 뒤)에 추가한다.
 
@@ -2039,7 +2039,7 @@ Expected: PASS (8 tests). `toHaveFocus`가 실패하면 `stageRef.current?.focus
 }
 ```
 
-- [ ] **Step 6: lint와 커밋**
+- [x] **Step 6: lint와 커밋**
 
 ```bash
 corepack pnpm lint
@@ -2061,7 +2061,7 @@ Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF"
 - Consumes: `touchpointHarness`, `harnessCounts`, 타입 `HarnessDiagram` (Task 1·2).
 - Produces: `Project`에 선택 필드 `metricsNote?: string`, `system?: ProjectSystem`. `export type ProjectSystem = { title: string; intro: readonly string[]; diagram: HarnessDiagram }`. Touchpoint 항목의 `system.title`은 `"시스템 구조"`. Task 6이 `project.system`과 `project.metricsNote`를 읽는다.
 
-- [ ] **Step 1: 실패 테스트 작성**
+- [x] **Step 1: 실패 테스트 작성**
 
 `src/content/projects.test.ts`에서 import 아래에 한 줄을 추가하고, `does not publish unverified Touchpoint traction` 테스트를 통째로 교체한다.
 
@@ -2086,12 +2086,12 @@ import { harnessCounts } from "./harness";
   });
 ```
 
-- [ ] **Step 2: 실패 확인**
+- [x] **Step 2: 실패 확인**
 
 Run: `corepack pnpm vitest run src/content/projects.test.ts`
 Expected: FAIL — `expected [] to have a length of 3`.
 
-- [ ] **Step 3: 타입 확장**
+- [x] **Step 3: 타입 확장**
 
 `src/content/projects.ts` 맨 위에 import를 추가하고, `ProjectSections` 타입 아래에 `ProjectSystem`을 추가하고, `Project` 타입에 두 필드를 넣는다.
 
@@ -2119,7 +2119,7 @@ export type ProjectSystem = {
   system?: ProjectSystem;
 ```
 
-- [ ] **Step 4: Touchpoint 항목 교체**
+- [x] **Step 4: Touchpoint 항목 교체**
 
 `projects` 배열의 마지막 항목(`slug: "touchpoint"`)을 아래로 통째로 바꾼다. 문구는 스펙 4절 그대로다.
 
@@ -2183,12 +2183,12 @@ export type ProjectSystem = {
   },
 ```
 
-- [ ] **Step 5: 콘텐츠 테스트 전체 통과 확인**
+- [x] **Step 5: 콘텐츠 테스트 전체 통과 확인**
 
 Run: `corepack pnpm vitest run src/content`
 Expected: PASS. `career.test.ts`도 그대로 통과한다(Touchpoint `period`는 바뀌지 않았고, Career 독립 프로젝트 요약은 새 `summary`를 그대로 받는다).
 
-- [ ] **Step 6: lint, 타입 검사, 커밋**
+- [x] **Step 6: lint, 타입 검사, 커밋**
 
 ```bash
 corepack pnpm lint
@@ -2213,7 +2213,7 @@ Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF"
 - Consumes: `Project`(`system?`, `metricsNote?`), `HarnessDiagram` 컴포넌트, `HarnessViewer` (Task 3·4·5).
 - Produces: `buildChapters(project): Chapter[]` (export, `system`이 있으면 3번째에 `{ key: "system", label: project.system.title }`). Touchpoint 페이지에 `section#system.work-story-section.work-system`, `.work-metrics-note`. 트리거 접근 가능한 이름은 `"Touchpoint 시스템 구조 다이어그램 크게 보기"`.
 
-- [ ] **Step 1: 실패 테스트 작성**
+- [x] **Step 1: 실패 테스트 작성**
 
 `src/components/work/project-detail.test.tsx` 전체를 아래로 교체한다.
 
@@ -2291,12 +2291,12 @@ describe("ProjectDetail", () => {
 });
 ```
 
-- [ ] **Step 2: 실패 확인**
+- [x] **Step 2: 실패 확인**
 
 Run: `corepack pnpm vitest run src/components/work/project-detail.test.tsx`
 Expected: FAIL — `buildChapters` is not exported / 챕터 수 4.
 
-- [ ] **Step 3: 컴포넌트 교체**
+- [x] **Step 3: 컴포넌트 교체**
 
 `src/components/work/project-detail.tsx` 전체를 아래로 교체한다.
 
@@ -2451,12 +2451,12 @@ export function ProjectDetail({ project }: { project: Project }) {
 }
 ```
 
-- [ ] **Step 4: 테스트 통과 확인**
+- [x] **Step 4: 테스트 통과 확인**
 
 Run: `corepack pnpm vitest run src/components/work`
 Expected: PASS (project-detail 6개 + navigation + diagram + viewer). 이전 Task의 뷰어 테스트가 정의한 jsdom 폴리필은 파일 단위이므로, project-detail 테스트에서 dialog를 열지 않는 한 필요 없다.
 
-- [ ] **Step 5: 챕터 레이아웃과 각주 스타일 추가**
+- [x] **Step 5: 챕터 레이아웃과 각주 스타일 추가**
 
 `src/app/globals.css` 파일 끝에 추가한다.
 
@@ -2475,7 +2475,7 @@ Expected: PASS (project-detail 6개 + navigation + diagram + viewer). 이전 Tas
 }
 ```
 
-- [ ] **Step 6: 전체 단위 테스트, lint, 타입 검사, 커밋**
+- [x] **Step 6: 전체 단위 테스트, lint, 타입 검사, 커밋**
 
 ```bash
 corepack pnpm test
@@ -2498,7 +2498,7 @@ Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF"
 - Consumes: Task 4·6이 만든 DOM — `button[aria-label="Touchpoint 시스템 구조 다이어그램 크게 보기"]`, `dialog.work-system-dialog`, `.work-system-stage`, `.work-system-canvas`(inline `transform`), `section#system`.
 - Produces: 없음. 이 태스크는 검증이 산출물이다.
 
-- [ ] **Step 1: E2E 테스트 추가**
+- [x] **Step 1: E2E 테스트 추가**
 
 `e2e/portfolio.spec.ts` 파일 끝에 추가한다.
 
@@ -2553,7 +2553,7 @@ test("Touchpoint detail keeps the diagram inside the viewport on mobile", async 
 
 > 모바일 테스트의 `탭해서 크게 보기`는 `(hover: none)` 미디어 조건으로 보인다. Playwright의 Desktop Chrome 프로젝트는 hover가 가능한 장치로 에뮬레이션되므로, 이 단언이 실패하면 `page.emulateMedia`로는 hover 미디어를 바꿀 수 없다는 뜻이다. 그 경우 단언을 `await expect(page.getByRole("button", { name: /크게 보기/ })).toBeVisible();`로 바꾼다.
 
-- [ ] **Step 2: lint, 단위 테스트, 프로덕션 빌드**
+- [x] **Step 2: lint, 단위 테스트, 프로덕션 빌드**
 
 ```bash
 corepack pnpm lint
@@ -2563,13 +2563,13 @@ corepack pnpm build
 
 Expected: 셋 다 성공. `build`가 `HarnessDiagram`을 클라이언트 컴포넌트 prop으로 넘기는 부분에서 실패하면, `harness-diagram.tsx`에 `"use client"`가 없는지와 이벤트 핸들러가 없는지 확인한다(서버 컴포넌트 엘리먼트는 직렬화된 렌더 결과로 넘어간다).
 
-- [ ] **Step 3: Playwright 브라우저 확인**
+- [x] **Step 3: Playwright 브라우저 확인**
 
 ```bash
 ls ~/Library/Caches/ms-playwright 2>/dev/null | grep -i chromium || corepack pnpm exec playwright install chromium
 ```
 
-- [ ] **Step 4: 개발 서버를 띄우고 E2E 실행**
+- [x] **Step 4: 개발 서버를 띄우고 E2E 실행**
 
 이 셸에는 `pnpm`이 PATH에 없어 Playwright의 `webServer`(`pnpm dev …`)가 스스로 서버를 못 띄운다. 서버를 직접 띄우면 `reuseExistingServer`가 그것을 쓴다.
 
@@ -2583,7 +2583,7 @@ corepack pnpm test:e2e
 
 Expected: 새 테스트 2개를 포함해 전부 PASS. 실패한 테스트가 있으면 `test-results/`의 trace를 열어 원인을 고친 뒤 다시 돌린다. 서버는 다음 단계 스크린샷까지 유지한다.
 
-- [ ] **Step 5: 세 폭에서 스크린샷을 찍어 시각 점검**
+- [x] **Step 5: 세 폭에서 스크린샷을 찍어 시각 점검**
 
 임시 스크립트를 worktree 안에 만들고(의존성 해석을 위해), 찍은 뒤 지운다.
 
@@ -2628,7 +2628,7 @@ git status --short   # e2e/.harness-shots.mjs가 남아 있으면 안 된다
 
 노드 텍스트가 잘리거나 엣지가 노드를 가로지르면 `harness.ts`의 해당 노드 `height`/줄바꿈이나 엣지 `path`를 고치고 Task 2 테스트를 다시 돌린 뒤 스크린샷을 다시 찍는다. 레인 구간과 viewBox는 유지한다.
 
-- [ ] **Step 6: 랜딩과 GNB의 Touchpoint 한 줄 확인 후 서버 종료**
+- [x] **Step 6: 랜딩과 GNB의 Touchpoint 한 줄 확인 후 서버 종료**
 
 ```bash
 curl -s http://127.0.0.1:4173/ | grep -o 'AI 에이전트 하네스로 1인이 0→1 제품을 구축·운영합니다' | head -1
@@ -2638,7 +2638,7 @@ kill "$(cat "$SCRATCH/dev.pid")"
 
 Expected: 첫 명령이 문구를 출력하고(랜딩 카드), 두 번째가 1 이상(Career 독립 프로젝트 요약).
 
-- [ ] **Step 7: 커밋**
+- [x] **Step 7: 커밋**
 
 ```bash
 git add e2e/portfolio.spec.ts
@@ -2661,17 +2661,17 @@ Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF"
 
 > 2026-09-05 사용자 지시("브랜치에서 작업했으면 PR 만들어서 머지해. 나에게 다시 묻지 말고", `~/.claude/rules/common/worktree.md` "완료 후 통합")에 따라 검증이 통과하면 묻지 않고 PR → 머지까지 수행한다. 멈추고 보고하는 경우는 검증 실패, 해결하지 못한 충돌, 보호 규칙으로 머지 불가뿐이다.
 
-- [ ] **Step 1: 브랜치 상태와 검증 결과 점검**
+- [x] **Step 1: 브랜치 상태와 검증 결과 점검**
 
 ```bash
 git status --short            # 비어 있어야 한다
-git log --oneline main..HEAD  # 이 계획의 커밋(스펙·계획·기능 6·테스트)이 보여야 한다
+git log --oneline main..HEAD  # 이 계획의 커밋이 보여야 한다 (2026-09-05 재통합: github/main ea11932 위에 새 브랜치 `dockyum/touchpoint-ai-harness`로 재구성, 스펙 §13 참조)
 git remote -v                 # github.com/dockyum/dokyum-portfolio 를 가리키는 원격 이름 확인 (보통 `github`; `origin`은 로컬 경로일 수 있다)
 ```
 
 Task 7의 lint·단위·빌드·E2E가 모두 통과한 상태여야 한다. 하나라도 실패했으면 여기서 멈추고 보고한다. 아래 명령의 `github`은 Step 1에서 확인한 GitHub 원격 이름으로 바꾼다.
 
-- [ ] **Step 2: 계획 체크박스를 마감하고 커밋**
+- [x] **Step 2: 계획 체크박스를 마감하고 커밋**
 
 이 계획 파일의 Task 1–7 체크박스를 `- [x]`로 바꾼다(Task 8의 남은 단계는 수행하면서 갱신).
 
@@ -2695,8 +2695,8 @@ git merge-base --is-ancestor github/main HEAD && echo "up to date" || echo "reba
 - [ ] **Step 4: 브랜치 push와 PR 생성**
 
 ```bash
-git push -u github dockyum/touchpoint-architecture-추가        # rebase 했으면 --force-with-lease
-gh pr create --repo dockyum/dokyum-portfolio --base main --head dockyum/touchpoint-architecture-추가 \
+git push -u github dockyum/touchpoint-ai-harness        # rebase 했으면 --force-with-lease
+gh pr create --repo dockyum/dokyum-portfolio --base main --head dockyum/touchpoint-ai-harness \
   --title "feat: retell Touchpoint as an AI harness build with a system diagram" \
   --body "$(cat <<'EOF'
 ## Summary
@@ -2722,7 +2722,7 @@ EOF
 - [ ] **Step 5: 머지 (fast-forward push)**
 
 ```bash
-git push github dockyum/touchpoint-architecture-추가:main     # base가 조상이면 fast-forward, SHA 보존, PR은 GitHub이 merged로 처리
+git push github dockyum/touchpoint-ai-harness:main     # base가 조상이면 fast-forward, SHA 보존, PR은 GitHub이 merged로 처리
 ```
 
 브랜치 보호로 거부되면 `gh pr merge --rebase --repo dockyum/dokyum-portfolio <PR번호>`. 그것도 불가하면 멈추고 보고한다.
@@ -2730,7 +2730,7 @@ git push github dockyum/touchpoint-architecture-추가:main     # base가 조상
 - [ ] **Step 6: 원격 브랜치 정리와 프로덕션 확인**
 
 ```bash
-git push github --delete dockyum/touchpoint-architecture-추가
+git push github --delete dockyum/touchpoint-ai-harness
 for i in $(seq 1 20); do
   if curl -s https://dokyum-portfolio.vercel.app/work/touchpoint | grep -q '시스템 구조'; then echo deployed; break; fi
   sleep 15
