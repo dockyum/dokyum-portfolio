@@ -20,8 +20,7 @@ they share the main checkout. Treat `main` there as shared state.
 2. Push the branch: `git push -u origin <branch>`.
 3. Open the PR against `main` with `gh pr create`. The body says what changed,
    why, and how it was verified.
-4. Open the PR as soon as the work is verified; merge it when the user asks to
-   merge or land the work.
+4. Open the PR as soon as the work is verified, then merge it right away.
 5. Merge on GitHub with **Rebase and merge**: `gh pr merge <number> --rebase`.
    Rebase keeps `main` linear, which the guard hook and the other sessions
    rely on. Do not squash, because the commit series is the record, and do not
