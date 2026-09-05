@@ -2683,7 +2683,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF"
 ```
 
-- [ ] **Step 3: 원격 main과 동기화**
+- [x] **Step 3: 원격 main과 동기화**
 
 ```bash
 git fetch github
@@ -2692,7 +2692,7 @@ git merge-base --is-ancestor github/main HEAD && echo "up to date" || echo "reba
 
 `rebase needed`면 `git rebase github/main` 후 충돌을 양쪽 의도를 읽고 해결하고, Task 7 Step 2·4의 검증(lint·test·build·e2e)을 다시 돌린다. 저장소는 선형 히스토리(fast-forward만)를 쓴다.
 
-- [ ] **Step 4: 브랜치 push와 PR 생성**
+- [x] **Step 4: 브랜치 push와 PR 생성**
 
 ```bash
 git push -u github dockyum/touchpoint-ai-harness        # rebase 했으면 --force-with-lease
@@ -2719,7 +2719,7 @@ EOF
 )"
 ```
 
-- [ ] **Step 5: 머지 (fast-forward push)**
+- [x] **Step 5: 머지 (fast-forward push)**
 
 ```bash
 git push github dockyum/touchpoint-ai-harness:main     # base가 조상이면 fast-forward, SHA 보존, PR은 GitHub이 merged로 처리
@@ -2727,7 +2727,7 @@ git push github dockyum/touchpoint-ai-harness:main     # base가 조상이면 fa
 
 브랜치 보호로 거부되면 `gh pr merge --rebase --repo dockyum/dokyum-portfolio <PR번호>`. 그것도 불가하면 멈추고 보고한다.
 
-- [ ] **Step 6: 원격 브랜치 정리와 프로덕션 확인**
+- [x] **Step 6: 원격 브랜치 정리와 프로덕션 확인**
 
 ```bash
 git push github --delete dockyum/touchpoint-ai-harness
@@ -2740,6 +2740,6 @@ curl -s https://dokyum-portfolio.vercel.app/ | grep -o 'AI 에이전트 하네�
 
 Expected: `deployed` 출력과 랜딩 문구 출력. 로컬 worktree는 orca가 관리하므로 그대로 두고, 메인 체크아웃의 로컬 `main`은 건드리지 않는다.
 
-- [ ] **Step 7: 보고**
+- [x] **Step 7: 보고**
 
 PR URL, main에 올라간 커밋 범위, Vercel 배포 트리거 사실, `https://dokyum-portfolio.vercel.app/work/touchpoint#system` 링크, 그리고 사용자가 메인 체크아웃에서 `git pull --ff-only github main`으로 로컬 main을 맞출 수 있다는 점을 보고한다.
