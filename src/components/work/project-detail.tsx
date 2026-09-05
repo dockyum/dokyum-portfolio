@@ -4,6 +4,8 @@ import type { CSSProperties } from "react";
 import type { CaseChapter, CaseMedia } from "@/content/case-study";
 import { projects, type Project } from "@/content/projects";
 
+import { HarnessDiagram } from "./harness-diagram";
+import { HarnessViewer } from "./harness-viewer";
 import { ProjectNavigation } from "./project-navigation";
 
 const MIN_HERO_RATIO = 1.5;
@@ -39,7 +41,7 @@ function MediaGrid({ media }: { media: readonly CaseMedia[] }) {
 
 function Chapter({ chapter, index }: { chapter: CaseChapter; index?: number }) {
   return (
-    <section className="work-chapter">
+    <section className="work-chapter" id={chapter.id}>
       <div className="work-chapter-text">
         <p className="work-label">
           {index === undefined ? null : <span>{String(index + 1).padStart(2, "0")}</span>}
@@ -75,6 +77,17 @@ function Chapter({ chapter, index }: { chapter: CaseChapter; index?: number }) {
         </div>
       ) : null}
       {chapter.media ? <MediaGrid media={chapter.media} /> : null}
+      {chapter.diagram ? (
+        <div className="work-chapter-diagram">
+          <HarnessViewer
+            title={`${chapter.label} 다이어그램`}
+            inline={<HarnessDiagram diagram={chapter.diagram} variant="inline" />}
+            full={<HarnessDiagram diagram={chapter.diagram} variant="full" />}
+            steps={chapter.diagram.steps}
+            viewBox={chapter.diagram.viewBox}
+          />
+        </div>
+      ) : null}
     </section>
   );
 }

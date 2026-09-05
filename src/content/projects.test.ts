@@ -50,6 +50,13 @@ describe("projects", () => {
     expect(touchpoint?.story.outcome.title).toContain("검증 전");
     expect(touchpoint?.story.outcome.shift).toBeUndefined();
     expect(touchpoint?.story.takeaways).toEqual([]);
+    const system = touchpoint?.story.chapters.find((chapter) => chapter.id === "system");
+    expect(system?.label).toBe("시스템 구조");
+    expect(system?.diagram?.id).toBe("touchpoint-harness");
+    const text = JSON.stringify(touchpoint?.story);
+    expect(text).not.toMatch(/매출|사용자 수|예약 수|방문자/);
+    expect(touchpoint?.problemLine).toContain("AI");
+    expect(touchpoint?.tags).toContain("#AI하네스");
   });
 
   it("keeps resume-backed periods for projects with supplied dates", () => {

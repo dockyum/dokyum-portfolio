@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { getProjectBySlug } from "@/content/projects";
@@ -57,5 +57,23 @@ describe("ProjectDetail", () => {
     expect(container.querySelector(".work-shift")).toBeNull();
     expect(container.querySelector(".work-takeaways")).toBeNull();
     expect(screen.getByRole("heading", { level: 2, name: /검증 전/ })).toBeInTheDocument();
+  });
+
+  it("renders the harness viewer inside the Touchpoint system chapter", () => {
+    const project = getProjectBySlug("touchpoint")!;
+    render(<ProjectDetail project={project} />);
+
+    const trigger = screen.getByRole("button", { name: "시스템 구조 다이어그램 크게 보기" });
+    expect(trigger.closest("section")).toHaveAttribute("id", "system");
+    expect(trigger.closest("section")).toHaveClass("work-chapter");
+    expect(within(trigger).getByRole("img", { name: /시스템 구조/ })).toBeInTheDocument();
+    expect(screen.getByText(project.story.chapters.find((c) => c.id === "system")!.body![0])).toBeInTheDocument();
+  });
+
+  it("renders no diagram viewer for cases without one", () => {
+    const project = getProjectBySlug("snode")!;
+    render(<ProjectDetail project={project} />);
+    expect(screen.queryByRole("button", { name: /크게 보기/ })).toBeNull();
+    expect(document.querySelector("section#system")).toBeNull();
   });
 });

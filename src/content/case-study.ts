@@ -1,3 +1,5 @@
+import type { HarnessDiagram } from "./harness";
+
 export type CaseMedia = {
   src: string;
   alt: string;
@@ -15,6 +17,8 @@ export type CaseFact = { label: string; value: string };
 export type CaseGroup = { title: string; items: readonly string[] };
 
 export type CaseChapter = {
+  /** Anchor id for deep links (e.g. "system" → /work/touchpoint#system). */
+  id?: string;
   label: string;
   title: string;
   lead?: string;
@@ -22,6 +26,8 @@ export type CaseChapter = {
   quotes?: readonly string[];
   groups?: readonly CaseGroup[];
   media?: readonly CaseMedia[];
+  /** Interactive harness diagram rendered after the body (click to enlarge, drag, zoom). */
+  diagram?: HarnessDiagram;
 };
 
 export type CaseOutcome = {

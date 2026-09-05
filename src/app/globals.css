@@ -641,6 +641,7 @@ a:focus-visible, button:focus-visible {
   line-height: 1.75;
   word-break: keep-all;
 }
+.work-chapter-diagram { margin-top: clamp(2rem, 4vw, 3.5rem); }
 .work-quotes {
   display: grid;
   gap: 0.75rem;
