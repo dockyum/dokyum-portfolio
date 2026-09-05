@@ -1451,8 +1451,8 @@ function renderViewer() {
   return render(
     <HarnessViewer
       title={title}
-      inline={<svg role="img" aria-label="inline" />}
-      full={<svg role="img" aria-label="full" />}
+      inline={<span>inline</span>}
+      full={<span>full</span>}
       steps={steps}
       viewBox={viewBox}
     />,
