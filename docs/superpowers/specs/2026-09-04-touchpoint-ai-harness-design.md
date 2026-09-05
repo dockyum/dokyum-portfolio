@@ -451,3 +451,12 @@ system?: { title: string; intro: readonly string[]; diagram: HarnessDiagram };
 - Touchpoint 저장소의 파일명과 규칙 이름은 공개해도 되는 정보로 본다. 환경 변수 값, 키, 고객 데이터, Supabase 프로젝트 id는 다이어그램과 문구 어디에도 넣지 않는다.
 - 기존 히어로 이미지(포스터)는 유지한다. 다이어그램은 본문 챕터에 산다.
 - 스펙과 코드의 한국어 문구는 이 문서를 정본으로 한다.
+
+## 14. 2026-09-05 재통합: 케이스 스터디 모델 위로 이전
+
+업스트림 `94c2db0`(상세 페이지를 포트폴리오 PDF 기반 케이스 스터디 모델로 재구축)이 먼저 반영되어, 4.3절·6.4절·10.1절이 전제한 `sections`/`verifiedMetrics`/4챕터 템플릿은 사라졌다. 이 절이 그 세 절을 대체한다.
+
+- 서사는 `src/content/cases/touchpoint.ts`의 `touchpointStory`(`CaseStudy`)에 담는다. `headline`이 4.1절의 `heroOutcome`, `facts`의 `책임/핵심 의사결정/성과/협업 인원`이 역할·판단·메트릭·팀을, `chapters`가 4.2절의 배경·문제·핵심 판단·시스템 구조·실행을, `outcome.detail`이 성과와 학습 두 문단을, `outcome.note`가 `metricsNote`를 맡는다. 시스템 규모 수치(`hooks 16 · rules 12 · skills 20 · agents 8`)는 `harnessCounts`에서 템플릿 리터럴로 만들어 `성과` fact에 넣는다. 별도 메트릭 밴드는 없다.
+- `CaseChapter`에 선택 필드 `id?: string`과 `diagram?: HarnessDiagram`을 추가했다. `Chapter` 컴포넌트는 `id`를 섹션에 붙이고, `diagram`이 있으면 미디어 뒤에 `.work-chapter-diagram` 안에 `HarnessViewer`(제목 `"{label} 다이어그램"`, 트리거 이름 `"시스템 구조 다이어그램 크게 보기"`)를 렌더한다. 시스템 구조 챕터의 `id`는 `system`이라 `/work/touchpoint#system` 링크는 유지된다.
+- `Project`의 새 필드는 `problemLine`(랜딩 카드·이웃 링크), `tags`(Work 메뉴 해시태그), `tools`를 4.1절의 메시지에 맞춰 채웠다. `takeaways`는 업스트림 테스트(트랙션 미주장)를 따라 비워 두고 학습은 `outcome.detail`에 둔다.
+- 테스트는 업스트림의 `project-detail.test.tsx`/`projects.test.ts`를 유지한 채 다이어그램 챕터와 문구 규칙 검사를 추가했다. E2E는 `#system` 챕터와 트리거 이름으로 찾는다.
