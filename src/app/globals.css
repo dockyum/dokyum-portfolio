@@ -1194,3 +1194,42 @@ a:focus-visible, button:focus-visible {
     transition: none !important;
   }
 }
+/* Harness diagram (Touchpoint 시스템 구조) — 인라인 SVG이므로 토큰이 그대로 적용된다 */
+.harness-diagram { display: block; font-family: var(--font-korean); }
+.harness-lane-bg { fill: var(--paper-raised); }
+.harness-lane-bg-alt { fill: var(--paper); }
+.harness-lane-title {
+  fill: var(--signal-blue);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.harness-lane-subtitle { fill: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+.harness-lane-rule { stroke: var(--grid); stroke-width: 1; }
+.harness-header-rule { stroke: var(--rule); stroke-width: 1; }
+.harness-band-bg { fill: var(--paper-raised); stroke: var(--rule); stroke-width: 1; }
+.harness-band-title {
+  fill: var(--signal-blue);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.harness-node-box { fill: var(--paper-raised); stroke: var(--ink); stroke-width: 1.5; }
+.harness-node-source .harness-node-box { stroke-width: 1; }
+.harness-node-box-inner { fill: none; stroke: var(--ink); stroke-width: 1; }
+.harness-node-title { fill: var(--ink); font-size: 20px; font-weight: 600; letter-spacing: -0.03em; }
+.harness-node-label { fill: var(--signal-blue); font-family: var(--font-mono); font-size: 12.5px; }
+.harness-node-detail { fill: var(--muted); font-size: 13px; }
+.harness-gate-marker { fill: var(--project-accent, #ff6b5f); }
+.harness-human-icon { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.harness-edge { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.harness-edge-branch { stroke: var(--muted); stroke-dasharray: 5 4; }
+.harness-edge-loop { stroke: var(--project-accent, #ff6b5f); stroke-width: 2.5; }
+.harness-arrow { fill: var(--ink); }
+.harness-arrow-branch { fill: var(--muted); }
+.harness-arrow-loop { fill: var(--project-accent, #ff6b5f); }
+.harness-edge-label-bg { fill: var(--paper); }
+.harness-edge-label text { fill: var(--ink); font-family: var(--font-mono); font-size: 11px; }
+.harness-legend-text { fill: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+.harness-footnote { fill: var(--muted); font-family: var(--font-mono); font-size: 11.5px; }
