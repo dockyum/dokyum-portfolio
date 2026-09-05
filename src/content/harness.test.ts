@@ -4,6 +4,7 @@ import {
   harnessCounts,
   knowledgeTitles,
   textHeight,
+  touchpointHarness,
   validateHarnessDiagram,
   type HarnessDiagram,
   type HarnessNode,
@@ -145,3 +146,50 @@ describe("textHeight", () => {
     expect(textHeight({ label: ["a", "b"], detail: ["c", "d", "e"] })).toBe(26 + 35 + 50);
   });
 });
+
+describe("touchpointHarness", () => {
+  it("passes validation", () => {
+    expect(validateHarnessDiagram(touchpointHarness)).toEqual([]);
+  });
+
+  it("has five lanes, one loop, and twelve screen-reader steps", () => {
+    expect(touchpointHarness.lanes.map(({ title }) => title)).toEqual([
+      "INTAKE",
+      "HERMES",
+      "CLAUDE CODE",
+      "HUMAN",
+      "SHIP & OPERATE",
+    ]);
+    expect(touchpointHarness.edges.filter(({ kind }) => kind === "loop")).toHaveLength(1);
+    expect(touchpointHarness.steps).toHaveLength(12);
+  });
+
+  it("names the real hooks, gates, and agents", () => {
+    const byId = new Map(touchpointHarness.nodes.map((node) => [node.id, node]));
+    expect(byId.get("merge-gate")).toMatchObject({ kind: "gate", label: ["pre-merge-gate.sh"] });
+    expect(byId.get("claim")).toMatchObject({ kind: "gate", label: ["pre-worktree-linear-claim.sh"] });
+    expect(byId.get("gate-ready")).toMatchObject({ kind: "gate" });
+    expect(byId.get("hermes")).toMatchObject({ kind: "agent", title: "Hermes" });
+    expect(byId.get("admin-eval")).toMatchObject({ kind: "human", label: ["/admin/eval", "admin-eval-review"] });
+    expect(touchpointHarness.nodes.filter(({ kind }) => kind === "gate")).toHaveLength(3);
+  });
+
+  it("carries every harness count in the knowledge band and the Codex footnote", () => {
+    const titles = touchpointHarness.nodes
+      .filter(({ kind }) => kind === "knowledge")
+      .map(({ title }) => title);
+    expect(titles).toEqual(expect.arrayContaining(Object.values(knowledgeTitles)));
+    expect(titles).toHaveLength(7);
+    expect(touchpointHarness.footnote).toContain(".codex/");
+    expect(byIdDetail("build")).toContain(`편집마다 훅 + ast-grep 규칙 ${harnessCounts.astGrepRules}`);
+  });
+
+  it("closes the loop from error triage back to Linear intake", () => {
+    const loop = touchpointHarness.edges.find(({ kind }) => kind === "loop");
+    expect(loop).toMatchObject({ from: "triage", to: "source-triage", label: "prod 에러 → Linear" });
+  });
+});
+
+function byIdDetail(id: string): readonly string[] {
+  return touchpointHarness.nodes.find((node) => node.id === id)?.detail ?? [];
+}

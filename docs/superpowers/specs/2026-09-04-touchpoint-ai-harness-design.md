@@ -178,7 +178,7 @@ Touchpoint만 5챕터다. 번호는 `01 문제와 맥락`, `02 핵심 판단`, `
 
 | id | 제목 | 라벨 | 설명 |
 | --- | --- | --- | --- |
-| `k-constitution` | CLAUDE.md · AGENTS.md | `프로젝트 헌법` | 규칙 우선순위 · 보호 영역 |
+| `k-constitution` | CLAUDE.md | `AGENTS.md · 프로젝트 헌법` | 규칙 우선순위 · 보호 영역 |
 | `k-rules` | rules 12 | `.claude/rules` | git · testing · security · wiki-protocol … |
 | `k-skills` | skills 20 | `.claude/skills` | dev-checklist · linear-hermes-workflow · prd-interview … |
 | `k-agents` | agents 8 | `.claude/agents` | planner · review-inspector · quality-evaluator … |
@@ -220,7 +220,7 @@ Touchpoint만 5챕터다. 번호는 `01 문제와 맥락`, `02 핵심 판단`, `
 
 ### 5.5 범례
 
-다이어그램 우상단 헤더 띠 안에 네 항목: `하드 차단 게이트`(accent 마커), `에이전트`(둥근 사각형), `사람`(픽토그램), `조건 분기`(점선). 범례 텍스트는 12px mono.
+지식 띠 제목 행의 오른쪽 끝(헤더 띠는 SHIP 레인 제목과 겹쳐 쓰지 않는다)에 네 항목: `하드 차단 게이트`(accent 마커), `에이전트`(둥근 사각형), `사람`(픽토그램), `조건 분기`(점선). 범례 텍스트는 12px mono.
 
 ### 5.6 스크린리더용 단계 목록
 
