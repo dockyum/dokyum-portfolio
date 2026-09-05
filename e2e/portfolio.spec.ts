@@ -342,3 +342,51 @@ test("detail and career heroes share the entrance and respect reduced motion", a
   await page.goto("/");
   await expect(page.locator(".landing-thesis-word").first()).toHaveCSS("animation-duration", "0s");
 });
+
+test("Touchpoint system diagram opens full screen, pans by drag, and closes with Escape", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/work/touchpoint");
+  const chapter = page.locator("#system");
+  await chapter.scrollIntoViewIfNeeded();
+  await expect(chapter.locator(".work-label")).toContainText("시스템 구조");
+  const trigger = page.getByRole("button", { name: "시스템 구조 다이어그램 크게 보기" });
+  await expect(trigger.getByRole("img")).toBeVisible();
+
+  await trigger.click();
+  const dialog = page.locator("dialog.work-system-dialog");
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "닫기" })).toBeVisible();
+
+  const translateX = () =>
+    page.locator(".work-system-canvas").evaluate((element) => {
+      const match = /translate\((-?[\d.]+)px/.exec((element as HTMLElement).style.transform);
+      return match ? Number(match[1]) : Number.NaN;
+    });
+  const before = await translateX();
+  expect(Number.isNaN(before)).toBe(false);
+
+  const stage = (await page.locator(".work-system-stage").boundingBox())!;
+  const x = stage.x + stage.width / 2;
+  const y = stage.y + stage.height / 2;
+  await page.mouse.move(x, y);
+  await page.mouse.down();
+  await page.mouse.move(x + 120, y, { steps: 8 });
+  await page.mouse.up();
+  expect(await translateX()).toBeGreaterThan(before + 100);
+
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
+});
+
+test("Touchpoint detail keeps the diagram inside the viewport on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/work/touchpoint");
+  await page.locator("#system").scrollIntoViewIfNeeded();
+  await expect(page.getByRole("button", { name: "시스템 구조 다이어그램 크게 보기" })).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth),
+  ).toBe(false);
+});
