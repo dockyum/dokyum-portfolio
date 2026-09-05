@@ -22,7 +22,7 @@
 - 뷰어: 네이티브 `<dialog>` + `showModal`, 페이지 스크롤 잠금은 `document.body.style.overflow = "hidden"`(GNB 모바일 메뉴와 같은 방식), 배율 범위 `0.5×fit`–`4×fit`, 항상 다이어그램의 25% 이상이 보이도록 클램프, 초기 배율은 cover.
 - 감속 모션은 전역 규칙(`globals.css`의 `@media (prefers-reduced-motion: reduce)`가 모든 `transition`을 끈다)에 맡긴다. 컴포넌트는 CSS transition만 쓰고 JS 애니메이션을 만들지 않는다.
 - 커밋 메시지는 영어 Conventional Commits. 커밋 트레일러: `Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>` 와 `Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF`.
-- `main`을 되감는 명령(`git reset`, `git rebase`, `branch -f`)은 쓰지 않는다. 최종 반영은 main 체크아웃에서 `git merge --ff-only`.
+- `main`을 되감는 명령(`git reset`, `git rebase`, `branch -f`)은 쓰지 않는다. 최종 반영은 검증 통과 후 묻지 않고 PR 생성 → `git push github <branch>:main`(fast-forward)이며, 메인 체크아웃의 로컬 `main`은 건드리지 않는다(2026-09-05 사용자 지시, `~/.claude/rules/common/worktree.md` "완료 후 통합").
 
 ## File Structure
 
@@ -2657,44 +2657,80 @@ Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF"
 
 **Interfaces:**
 - Consumes: Task 1–7의 커밋.
-- Produces: `main`이 이 브랜치로 fast-forward되고 GitHub에 push되어 Vercel 프로덕션 배포가 시작된다.
+- Produces: GitHub `main`이 이 브랜치로 fast-forward되어 Vercel 프로덕션 배포가 시작된다. 메인 체크아웃의 로컬 `main`은 건드리지 않는다.
 
-- [ ] **Step 1: 브랜치 상태 점검**
+> 2026-09-05 사용자 지시("브랜치에서 작업했으면 PR 만들어서 머지해. 나에게 다시 묻지 말고", `~/.claude/rules/common/worktree.md` "완료 후 통합")에 따라 검증이 통과하면 묻지 않고 PR → 머지까지 수행한다. 멈추고 보고하는 경우는 검증 실패, 해결하지 못한 충돌, 보호 규칙으로 머지 불가뿐이다.
+
+- [ ] **Step 1: 브랜치 상태와 검증 결과 점검**
 
 ```bash
 git status --short            # 비어 있어야 한다
-git log --oneline main..HEAD  # 이 계획의 커밋 7개(스펙 + 기능 6)가 보여야 한다
-git -C /Users/dockyum/Workspace/dokyum-portfolio status --short --branch | head -3   # main 체크아웃이 clean하고 main 브랜치여야 한다
+git log --oneline main..HEAD  # 이 계획의 커밋(스펙·계획·기능 6·테스트)이 보여야 한다
+git remote -v                 # github.com/dockyum/dokyum-portfolio 를 가리키는 원격 이름 확인 (보통 `github`; `origin`은 로컬 경로일 수 있다)
 ```
 
-- [ ] **Step 2: 사용자 확인 (필수 정지 지점)**
+Task 7의 lint·단위·빌드·E2E가 모두 통과한 상태여야 한다. 하나라도 실패했으면 여기서 멈추고 보고한다. 아래 명령의 `github`은 Step 1에서 확인한 GitHub 원격 이름으로 바꾼다.
 
-main push는 Vercel 프로덕션 배포다. 아래 내용을 사용자에게 보고하고 명시적 승인을 받기 전에는 진행하지 않는다.
+- [ ] **Step 2: 계획 체크박스를 마감하고 커밋**
 
-- 검증 결과: lint, 단위 테스트 수, 빌드, E2E 결과.
-- 스크린샷 점검 결과와 고친 것.
-- 반영 대상 커밋 목록.
-
-- [ ] **Step 3: main으로 fast-forward하고 GitHub에 push**
+이 계획 파일의 Task 1–7 체크박스를 `- [x]`로 바꾼다(Task 8의 남은 단계는 수행하면서 갱신).
 
 ```bash
-git -C /Users/dockyum/Workspace/dokyum-portfolio merge --ff-only dockyum/touchpoint-architecture-추가
-git -C /Users/dockyum/Workspace/dokyum-portfolio remote -v
+git add docs/superpowers/plans/2026-09-04-touchpoint-ai-harness.md
+git commit -m "docs: record the Touchpoint harness plan completion
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF"
 ```
 
-`remote -v`에서 `github.com/dockyum/dokyum-portfolio`를 가리키는 원격 이름(`github` 또는 `origin`)을 확인한 뒤:
+- [ ] **Step 3: 원격 main과 동기화**
 
 ```bash
-git -C /Users/dockyum/Workspace/dokyum-portfolio push <그 원격> main
+git fetch github
+git merge-base --is-ancestor github/main HEAD && echo "up to date" || echo "rebase needed"
 ```
 
-두 원격이 모두 GitHub 저장소를 가리키면 둘 다 push한다.
+`rebase needed`면 `git rebase github/main` 후 충돌을 양쪽 의도를 읽고 해결하고, Task 7 Step 2·4의 검증(lint·test·build·e2e)을 다시 돌린다. 저장소는 선형 히스토리(fast-forward만)를 쓴다.
 
-- [ ] **Step 4: 프로덕션 확인**
-
-Vercel 배포가 끝날 때까지 기다린 뒤(보통 2–3분):
+- [ ] **Step 4: 브랜치 push와 PR 생성**
 
 ```bash
+git push -u github dockyum/touchpoint-architecture-추가        # rebase 했으면 --force-with-lease
+gh pr create --repo dockyum/dokyum-portfolio --base main --head dockyum/touchpoint-architecture-추가 \
+  --title "feat: retell Touchpoint as an AI harness build with a system diagram" \
+  --body "$(cat <<'EOF'
+## Summary
+- Touchpoint 상세 페이지를 "AI 에이전트 하네스로 1인이 0→1 제품을 구축·운영"한 사례로 재작성 (랜딩 카드·히어로·5챕터·시스템 실측 메트릭)
+- Hermes × Claude Code 하네스를 데이터 기반 인라인 SVG 다이어그램으로 추가: 클릭 확대, 드래그 이동, 휠·핀치·키보드 줌
+- 시장 트랙션 주장은 없음. 수치는 2026-09-03 Touchpoint 저장소 실측
+
+## Verification
+- `corepack pnpm lint`, `corepack pnpm test`, `corepack pnpm build`, `corepack pnpm test:e2e` 통과
+- 1440 / 1024 / 390 스크린샷 시각 점검
+
+## Docs
+- Spec: docs/superpowers/specs/2026-09-04-touchpoint-ai-harness-design.md
+- Plan: docs/superpowers/plans/2026-09-04-touchpoint-ai-harness.md
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+https://claude.ai/code/session_01Ps6mzF9U3G21M1PSAgdMRF
+EOF
+)"
+```
+
+- [ ] **Step 5: 머지 (fast-forward push)**
+
+```bash
+git push github dockyum/touchpoint-architecture-추가:main     # base가 조상이면 fast-forward, SHA 보존, PR은 GitHub이 merged로 처리
+```
+
+브랜치 보호로 거부되면 `gh pr merge --rebase --repo dockyum/dokyum-portfolio <PR번호>`. 그것도 불가하면 멈추고 보고한다.
+
+- [ ] **Step 6: 원격 브랜치 정리와 프로덕션 확인**
+
+```bash
+git push github --delete dockyum/touchpoint-architecture-추가
 for i in $(seq 1 20); do
   if curl -s https://dokyum-portfolio.vercel.app/work/touchpoint | grep -q '시스템 구조'; then echo deployed; break; fi
   sleep 15
@@ -2702,9 +2738,8 @@ done
 curl -s https://dokyum-portfolio.vercel.app/ | grep -o 'AI 에이전트 하네스로 1인이 0→1 제품을 구축·운영합니다' | head -1
 ```
 
-Expected: `deployed` 출력과 랜딩 문구 출력. 사용자에게 `https://dokyum-portfolio.vercel.app/work/touchpoint#system` 링크를 전달한다.
+Expected: `deployed` 출력과 랜딩 문구 출력. 로컬 worktree는 orca가 관리하므로 그대로 두고, 메인 체크아웃의 로컬 `main`은 건드리지 않는다.
 
-- [ ] **Step 5: 마무리**
+- [ ] **Step 7: 보고**
 
-- 이 계획의 체크박스를 모두 `- [x]`로 바꾸고 `docs: record the Touchpoint harness plan completion` 으로 커밋한다.
-- worktree 정리(`git worktree remove`)는 사용자에게 제안만 하고 직접 하지 않는다.
+PR URL, main에 올라간 커밋 범위, Vercel 배포 트리거 사실, `https://dokyum-portfolio.vercel.app/work/touchpoint#system` 링크, 그리고 사용자가 메인 체크아웃에서 `git pull --ff-only github main`으로 로컬 main을 맞출 수 있다는 점을 보고한다.
