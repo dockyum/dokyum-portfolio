@@ -248,8 +248,9 @@ export function HarnessDiagram({ diagram, variant }: HarnessDiagramProps) {
             viewBox="0 0 10 10"
             refX="9"
             refY="5"
-            markerWidth="8"
-            markerHeight="8"
+            markerUnits="userSpaceOnUse"
+            markerWidth="12"
+            markerHeight="12"
             orient="auto-start-reverse"
           >
             <path d="M0 0 L10 5 L0 10 Z" className={`harness-arrow harness-arrow-${kind}`} />

@@ -55,6 +55,8 @@ describe("projects", () => {
     expect(system?.diagram?.id).toBe("touchpoint-harness");
     const text = JSON.stringify(touchpoint?.story);
     expect(text).not.toMatch(/매출|사용자 수|예약 수|방문자/);
+    expect(text).toContain("6개월");
+    expect(text).not.toContain("7개월");
     expect(touchpoint?.problemLine).toContain("AI");
     expect(touchpoint?.tags).toContain("#AI하네스");
   });

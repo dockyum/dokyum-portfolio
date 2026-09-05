@@ -70,7 +70,19 @@ export const harnessCounts = {
   agents: 8,
   wikiPages: 57,
   astGrepRules: 9,
+  /** 2026-02-24 첫 커밋 → 2026-09-03: 6개월 10일. 올림하지 않는다. */
+  months: 6,
+  commits: 1009,
+  mergedPrs: 827,
+  releases: 47,
+  testFiles: 528,
+  migrations: 103,
 } as const;
+
+/** 1009 → "1,009" */
+export function formatCount(count: number): string {
+  return new Intl.NumberFormat("en-US").format(count);
+}
 
 export const knowledgeTitles = {
   rules: `rules ${harnessCounts.rules}`,

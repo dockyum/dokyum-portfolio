@@ -1,5 +1,5 @@
 import type { CaseStudy } from "../case-study";
-import { harnessCounts, touchpointHarness } from "../harness";
+import { formatCount, harnessCounts, touchpointHarness } from "../harness";
 
 export const touchpointStory = {
   tagline: "창작자와 전문가가 제안, 요청, 일정, 결제를 한 프로필 링크에서 관리하는 서비스",
@@ -17,7 +17,7 @@ export const touchpointStory = {
     },
     {
       label: "성과",
-      value: `7개월 1,009 커밋 · PR 827건 머지 · 릴리스 47회를 1인이 운영 · hooks ${harnessCounts.hooks} · rules ${harnessCounts.rules} · skills ${harnessCounts.skills} · agents ${harnessCounts.agents} (2026.09.03 저장소 실측). 시장 반응과 성장성은 검증 전`,
+      value: `${harnessCounts.months}개월 ${formatCount(harnessCounts.commits)} 커밋 · PR ${harnessCounts.mergedPrs}건 머지 · 릴리스 ${harnessCounts.releases}회를 1인이 운영 · hooks ${harnessCounts.hooks} · rules ${harnessCounts.rules} · skills ${harnessCounts.skills} · agents ${harnessCounts.agents} (2026.09.03 저장소 실측). 시장 반응과 성장성은 검증 전`,
     },
     {
       label: "협업 인원",
@@ -78,7 +78,7 @@ export const touchpointStory = {
   outcome: {
     title: "제품 전 범위를 혼자 구축·운영, 시장 반응과 성장성은 아직 검증 전",
     detail: [
-      "이 시스템 위에서 7개월 동안 1,009개 커밋과 827건의 PR, 47회의 릴리스를 혼자 운영했고, 결제, 인증, 다국어, 채팅, 음성 통화, 어드민까지 제품 전 범위를 구축했습니다. 다만 시장 반응과 성장성은 아직 검증 전입니다.",
+      `이 시스템 위에서 ${harnessCounts.months}개월 동안 ${formatCount(harnessCounts.commits)}개 커밋과 ${harnessCounts.mergedPrs}건의 PR, ${harnessCounts.releases}회의 릴리스를 혼자 운영했고, 결제, 인증, 다국어, 채팅, 음성 통화, 어드민까지 제품 전 범위를 구축했습니다. 다만 시장 반응과 성장성은 아직 검증 전입니다.`,
       "배운 것은 두 가지입니다. 강제 지점은 턴 종료가 아니라 머지 같은 비가역 경계에 둬야 비용이 새지 않는다는 것, 그리고 사람의 판단이 꼭 필요한 곳만 남기고 나머지를 시스템에 넘겨야 1인이 팀의 속도를 낼 수 있다는 것입니다. 결제 규제가 제품 범위와 시장 선택을 바꿀 수 있다는 점을 확인하고 글로벌 결제 구조로 전환한 학습도 이 순환 덕에 빠르게 다음 검증 순서로 이어졌습니다.",
     ],
     note: "수치는 2026.09.03 Touchpoint 저장소 실측이며 시장 성과가 아니라 시스템 규모입니다.",

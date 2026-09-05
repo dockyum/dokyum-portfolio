@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  formatCount,
   harnessCounts,
   knowledgeTitles,
   textHeight,
@@ -193,3 +194,10 @@ describe("touchpointHarness", () => {
 function byIdDetail(id: string): readonly string[] {
   return touchpointHarness.nodes.find((node) => node.id === id)?.detail ?? [];
 }
+
+describe("formatCount", () => {
+  it("groups thousands the way the portfolio prints them", () => {
+    expect(formatCount(1009)).toBe("1,009");
+    expect(formatCount(47)).toBe("47");
+  });
+});

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { HarnessViewer } from "./harness-viewer";
@@ -148,5 +148,56 @@ describe("HarnessViewer", () => {
     fireEvent.keyDown(screen.getByRole("dialog", { name: title }), { key: "Escape" });
     expect(trigger).toHaveAttribute("aria-expanded", "false");
     expect(trigger).toHaveFocus();
+  });
+
+  it("pinches with two pointers and keeps panning with the remaining finger", () => {
+    renderViewer();
+    const { stage } = openViewer();
+    fireEvent.pointerDown(stage, { pointerId: 1, pointerType: "touch", button: 0, clientX: 300, clientY: 300 });
+    fireEvent.pointerDown(stage, { pointerId: 2, pointerType: "touch", button: 0, clientX: 500, clientY: 300 });
+    fireEvent.pointerMove(stage, { pointerId: 2, clientX: 700, clientY: 300 });
+    // 두 점 거리 200 → 400: 중점 (500, 300)을 고정점으로 2배. scale 0.8 → 1.6, x = 500 − 500·2, y = 300 − 300·2
+    expect(canvasTransform()).toEqual({ x: -500, y: -300, scale: 1.6 });
+
+    fireEvent.pointerUp(stage, { pointerId: 1 });
+    fireEvent.pointerMove(stage, { pointerId: 2, clientX: 740, clientY: 320 });
+    expect(canvasTransform()).toMatchObject({ x: -460, y: -280, scale: 1.6 });
+    fireEvent.pointerUp(stage, { pointerId: 2 });
+    expect(stage).toHaveAttribute("data-dragging", "false");
+  });
+
+  it("ignores horizontal wheel motion", () => {
+    renderViewer();
+    const { stage } = openViewer();
+    fireEvent.wheel(stage, { deltaX: 80, deltaY: 0, clientX: 0, clientY: 0 });
+    expect(canvasTransform().scale).toBeCloseTo(0.8, 5);
+  });
+
+  it("syncs state when the dialog closes natively, without a keydown", () => {
+    renderViewer();
+    const { trigger } = openViewer();
+    const dialog = screen.getByRole("dialog", { name: title });
+    act(() => {
+      dialog.removeAttribute("open");
+      dialog.dispatchEvent(new Event("close"));
+    });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(document.body.style.overflow).toBe("");
+    expect(trigger).toHaveFocus();
+  });
+
+  it("describes the stage with the help text and starts each open with fresh pointer state", () => {
+    renderViewer();
+    const { stage } = openViewer();
+    const help = document.getElementById(stage.getAttribute("aria-describedby")!)!;
+    expect(help).toHaveTextContent("드래그로 이동");
+    fireEvent.pointerDown(stage, { pointerId: 7, pointerType: "touch", button: 0, clientX: 10, clientY: 10 });
+    fireEvent.click(screen.getByRole("button", { name: "닫기" }));
+    fireEvent.click(screen.getByRole("button", { name: `${title} 크게 보기` }));
+    const reopened = screen.getByRole("application", { name: "다이어그램 이동 영역" });
+    expect(reopened).toHaveAttribute("data-dragging", "false");
+    fireEvent.pointerDown(reopened, { pointerId: 8, pointerType: "touch", button: 0, clientX: 0, clientY: 0 });
+    fireEvent.pointerMove(reopened, { pointerId: 8, clientX: 50, clientY: 0 });
+    expect(canvasTransform()).toMatchObject({ x: 50, y: 0, scale: 0.8 }); // 한 손가락 = 드래그 (핀치 아님)
   });
 });

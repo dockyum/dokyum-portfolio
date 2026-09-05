@@ -5,7 +5,7 @@ import type {
   PointerEvent as ReactPointerEvent,
   ReactNode,
 } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 const MIN_SCALE_FACTOR = 0.5;
 const MAX_SCALE_FACTOR = 4;
@@ -34,6 +34,7 @@ export function HarnessViewer({ title, inline, full, steps, viewBox }: HarnessVi
   const pointers = useRef(new Map<number, Point>());
   const dragRef = useRef<Point | null>(null);
   const pinchRef = useRef<number | null>(null);
+  const helpId = useId();
   const [open, setOpen] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [transform, setTransform] = useState<Transform>({ x: 0, y: 0, scale: 1 });
@@ -72,8 +73,8 @@ export function HarnessViewer({ title, inline, full, steps, viewBox }: HarnessVi
     if (!width || !height) return;
     fitRef.current = Math.min(width / viewBox.width, height / viewBox.height);
     const cover = Math.max(width / viewBox.width, height / viewBox.height);
-    setTransform({ x: 0, y: 0, scale: cover });
-  }, [stageSize, viewBox.height, viewBox.width]);
+    setTransform(clamp({ x: 0, y: 0, scale: cover }));
+  }, [clamp, stageSize, viewBox.height, viewBox.width]);
 
   const zoomAt = useCallback(
     (factor: number, origin: Point) => {
@@ -130,6 +131,10 @@ export function HarnessViewer({ title, inline, full, steps, viewBox }: HarnessVi
     } else {
       dialog.setAttribute("open", "");
     }
+    pointers.current.clear();
+    dragRef.current = null;
+    pinchRef.current = null;
+    setDragging(false);
     setOpen(true);
   }
 
@@ -170,6 +175,7 @@ export function HarnessViewer({ title, inline, full, steps, viewBox }: HarnessVi
     const stage = stageRef.current;
     if (!stage || !open) return;
     const handleWheel = (event: WheelEvent) => {
+      if (event.deltaY === 0) return;
       event.preventDefault();
       const rect = stage.getBoundingClientRect();
       zoomAt(event.deltaY < 0 ? WHEEL_ZOOM : 1 / WHEEL_ZOOM, {
@@ -318,6 +324,7 @@ export function HarnessViewer({ title, inline, full, steps, viewBox }: HarnessVi
           className="work-system-stage"
           role="application"
           aria-label="다이어그램 이동 영역"
+          aria-describedby={helpId}
           // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- stage must be keyboard-focusable to receive pan/zoom key commands
           tabIndex={0}
           data-dragging={dragging}
@@ -325,6 +332,7 @@ export function HarnessViewer({ title, inline, full, steps, viewBox }: HarnessVi
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
+          onLostPointerCapture={handlePointerUp}
           onKeyDown={handleStageKeyDown}
         >
           <div
@@ -334,7 +342,7 @@ export function HarnessViewer({ title, inline, full, steps, viewBox }: HarnessVi
             {full}
           </div>
         </div>
-        <p className="work-system-help">드래그로 이동 · 휠이나 두 손가락으로 확대 · Esc로 닫기</p>
+        <p className="work-system-help" id={helpId}>드래그로 이동 · 휠이나 두 손가락으로 확대 · Esc로 닫기</p>
       </dialog>
     </figure>
   );
