@@ -20,7 +20,7 @@
 ## 2. 성공 기준
 
 - `/work/touchpoint`의 h1과 첫 화면만 읽어도 "AI 하네스 위에서 1인이 제품을 구축·운영했다"가 전달된다.
-- 랜딩 카드와 GNB 드롭다운의 Touchpoint 한 줄(`activeLine`)이 같은 메시지를 담는다.
+- 랜딩 카드와 이웃 프로젝트 링크의 Touchpoint 한 줄(`problemLine`)이 같은 메시지를 담는다. (GNB 드롭다운은 CAREER 프로젝트만 나열하므로 대상이 아니다.)
 - 다이어그램에 실제 hook, skill, agent 파일명이 그대로 적혀 있고, 모든 수치는 2026-09-03 기준 Touchpoint 저장소 실측치와 일치한다.
 - 다이어그램은 인라인에서 전체가 보이고, 클릭(모바일은 탭)하면 전체 화면 뷰어가 열리며, 마우스와 터치 드래그로 이동하고 휠·핀치·버튼·키보드로 줌할 수 있다.
 - 시장 트랙션(매출, 사용자 수, 예약 수)은 여전히 어떤 형태로도 주장하지 않는다. 기존 "시장 반응과 성장성은 아직 검증 전" 문장을 유지한다.
@@ -61,11 +61,11 @@
 | `period` | `2026–NOW` (유지) |
 | `team` | `사람 1 · Hermes(PM 리뷰 에이전트) · Claude Code(구현 에이전트)` |
 | `summary` | `기획, 디자인, 개발, 운영을 1인이 감당하기 위해 Hermes와 Claude Code로 PM 리뷰, 구현, 검수, 배포, 에러 트리아지가 순환하는 에이전트 하네스를 만들고, 그 위에서 유료 미팅 링크 제품 Touchpoint를 0→1로 구축한 프로젝트입니다.` |
-| `verifiedMetrics` | `hooks 16 · rules 12 · skills 20 · agents 8` / `7개월 1,009 커밋 · PR 827건 머지 · 릴리스 47회` / `테스트 파일 528개 · 마이그레이션 103건 · 위키 57페이지` |
+| `verifiedMetrics` | `hooks 16 · rules 12 · skills 20 · agents 8` / `6개월 1,009 커밋 · PR 827건 머지 · 릴리스 47회` / `테스트 파일 528개 · 마이그레이션 103건 · 위키 57페이지` |
 | `metricsNote` | `2026.09.03 Touchpoint 저장소 실측. 시장 성과가 아니라 시스템 규모입니다.` |
 | `media` | 유지 (포스터 히어로, 로고, alt, accent `#ff6b5f`) |
 
-수치는 `src/content/harness.ts`의 `harnessCounts` 상수(6.2절)에서 온다. 근거(2026-09-03, `/Users/dockyum/Workspace/touchpoint` 기준): `.claude/hooks/*.sh` 16개, `.claude/rules/*.md` 12개, `.claude/skills/*/` 20개, `.claude/agents/*.md` 8개, `git rev-list --count HEAD` 1,009, squash 머지 제목의 `(#NNN)` 827건, `touchpoint-v*` 태그 47개, 첫 커밋 2026-02-24, 테스트 파일 528개, `supabase/migrations/*.sql` 103개, `docs/wiki/**/*.md` 57개.
+수치는 `src/content/harness.ts`의 `harnessCounts` 상수(6.2절)에서 온다. 근거(2026-09-03, `/Users/dockyum/Workspace/touchpoint` 기준): `.claude/hooks/*.sh` 16개, `.claude/rules/*.md` 12개, `.claude/skills/*/` 20개, `.claude/agents/*.md` 8개, `git rev-list --count HEAD` 1,009, squash 머지 제목의 `(#NNN)` 827건, `touchpoint-v*` 태그 47개, 첫 커밋 2026-02-24, 테스트 파일 528개, `supabase/migrations/*.sql` 103개, `docs/wiki/**/*.md` 57개. 기간은 첫 커밋 2026-02-24부터 스냅샷 2026-09-03까지 6개월 10일이며 올림하지 않는다.
 
 ### 4.2 챕터 본문
 
@@ -96,7 +96,7 @@
 
 **outcome** (05 성과와 학습)
 
-1. 이 시스템 위에서 7개월 동안 1,009개 커밋과 827건의 PR, 47회의 릴리스를 혼자 운영했고, 결제, 인증, 다국어, 채팅, 음성 통화, 어드민까지 제품 전 범위를 구축했습니다. 다만 시장 반응과 성장성은 아직 검증 전입니다.
+1. 이 시스템 위에서 6개월 동안 1,009개 커밋과 827건의 PR, 47회의 릴리스를 혼자 운영했고, 결제, 인증, 다국어, 채팅, 음성 통화, 어드민까지 제품 전 범위를 구축했습니다. 다만 시장 반응과 성장성은 아직 검증 전입니다.
 2. 배운 것은 두 가지입니다. 강제 지점은 턴 종료가 아니라 머지 같은 비가역 경계에 둬야 비용이 새지 않는다는 것, 그리고 사람의 판단이 꼭 필요한 곳만 남기고 나머지를 시스템에 넘겨야 1인이 팀의 속도를 낼 수 있다는 것입니다. 결제 규제가 제품 범위와 시장 선택을 바꿀 수 있다는 점을 확인하고 글로벌 결제 구조로 전환한 학습도 이 순환 덕에 빠르게 다음 검증 순서로 이어졌습니다.
 
 ### 4.3 챕터 순서와 번호
@@ -110,7 +110,7 @@ Touchpoint만 5챕터다. 번호는 `01 문제와 맥락`, `02 핵심 판단`, `
 - 인라인 SVG, `viewBox="0 0 1600 1000"`, `preserveAspectRatio="xMidYMid meet"`.
 - 상단 56px는 레인 헤더 띠. 본문 영역은 y 56–800. 지식 계층 띠는 y 840–1000. 본문과 지식 띠 사이 여백(y 800–840)은 루프 화살표 통로다.
 - 다섯 레인의 x 구간: INTAKE 0–270, HERMES 270–560, CLAUDE CODE 560–980, HUMAN 980–1240, SHIP & OPERATE 1240–1600. 레인 경계는 얇은 세로 규칙선(`--grid`)으로 표시한다.
-- 텍스트 크기(viewBox 단위): 노드 제목 20px Pretendard 600, 파일명 라벨 12.5px Geist Mono, 설명 13px Pretendard `--muted`. 레인 헤더는 12px Geist Mono 대문자.
+- 텍스트 크기(viewBox 단위): 노드 제목 20px Pretendard 600, 파일명 라벨 12.5px Geist Mono, 설명 13px Pretendard `--muted`. 레인 헤더는 12px Geist Mono 대문자. 범례와 각주는 11px / 11.5px Geist Mono(범례 배치 계산이 엣지 라벨과 같은 11px 기준을 쓴다).
 - 노드 안의 줄바꿈은 데이터에 배열로 미리 적는다. 런타임 텍스트 측정은 하지 않는다.
 
 ### 5.2 노드 종류와 표기
@@ -186,7 +186,7 @@ Touchpoint만 5챕터다. 번호는 `01 문제와 맥락`, `02 핵심 판단`, `
 | `k-graph` | graphify | `graphify-out` | 코드 지식 그래프, Glob/Grep 전에 주입 |
 | `k-ast` | ast-grep 9 | `.ast-grep/rules` | 디자인 시스템 · RSC 경계 강제 |
 
-각주(지식 띠 아래 오른쪽 정렬, 12px mono `--muted`): `동일 하네스를 .codex/ 에 미러해 Codex CLI도 같은 규칙으로 동작합니다.`
+각주(지식 띠 아래 오른쪽 정렬, 11.5px mono `--muted`): `동일 하네스를 .codex/ 에 미러해 Codex CLI도 같은 규칙으로 동작합니다.`
 
 ### 5.4 엣지 인벤토리
 
@@ -220,7 +220,7 @@ Touchpoint만 5챕터다. 번호는 `01 문제와 맥락`, `02 핵심 판단`, `
 
 ### 5.5 범례
 
-지식 띠 제목 행의 오른쪽 끝(헤더 띠는 SHIP 레인 제목과 겹쳐 쓰지 않는다)에 네 항목: `하드 차단 게이트`(accent 마커), `에이전트`(둥근 사각형), `사람`(픽토그램), `조건 분기`(점선). 범례 텍스트는 12px mono.
+지식 띠 제목 행의 오른쪽 끝(헤더 띠는 SHIP 레인 제목과 겹쳐 쓰지 않는다)에 네 항목: `하드 차단 게이트`(accent 마커), `에이전트`(둥근 사각형), `사람`(픽토그램), `조건 분기`(점선). 범례 텍스트는 11px mono.
 
 ### 5.6 스크린리더용 단계 목록
 
@@ -317,9 +317,10 @@ system?: { title: string; intro: readonly string[]; diagram: HarnessDiagram };
 - 엣지 경로는 `path`가 있으면 그대로 쓴다. 없으면 두 노드의 중심 x가 같을 때(같은 레인의 위아래 노드) from 아래 변 중심에서 to 위 변 중심으로 수직 직선을, 그 외에는 from의 to 쪽 변 중심에서 출발해 두 변의 x 중간값에서 꺾이는 직교 경로(수평 → 수직 → 수평)를 만든다. 라벨은 경로 중간점 위에 `paper` 배경 사각형을 깔고 얹는다. 자동 경로가 다른 노드를 가로지르면 데이터에 `path`를 명시해 우회한다.
 - 색은 CSS 클래스(`harness-node-{kind}`, `harness-edge-{kind}`)로 지정한다. 인라인 SVG이므로 `globals.css`의 토큰이 적용된다.
 
-**`HarnessViewer({ title, inline, full, steps })`** (클라이언트, `"use client"`)
+**`HarnessViewer({ title, inline, full, steps, viewBox })`** (클라이언트, `"use client"`)
 
 - `inline`과 `full`은 각각 `<HarnessDiagram variant="inline"/>`, `<HarnessDiagram variant="full"/>` 요소다. `ProjectDetail`이 만들어 넘긴다.
+- `viewBox`는 캔버스 크기(px)와 cover/fit 계산에 쓴다.
 - 렌더 구조:
 
 ```
@@ -375,18 +376,18 @@ system?: { title: string; intro: readonly string[]; diagram: HarnessDiagram };
 
 - 스테이지에 `touch-action: none`. `pointerdown`에서 `setPointerCapture`, `pointermove`에서 델타만큼 `x, y` 갱신, `pointerup`/`pointercancel`에서 해제.
 - 마우스 왼쪽 버튼만 드래그로 인식한다. 드래그 중 `data-dragging="true"`로 커서를 `grabbing`으로 바꾼다.
-- 스테이지는 `tabIndex={0}`과 `aria-label="다이어그램 이동 영역"`을 가져 키보드로 도달할 수 있다. 다이얼로그가 열리면 초기 포커스는 닫기 버튼이 아니라 스테이지에 둔다.
+- 스테이지는 `role="application"`, `tabIndex={0}`, `aria-label="다이어그램 이동 영역"`, 도움말 문단을 가리키는 `aria-describedby`를 가져 키보드로 도달할 수 있고, 포커스 링은 `--focus` 2px 안쪽 윤곽선이다. 드래그 중 텍스트 선택은 `user-select: none`으로 막는다. 다이얼로그가 열리면 초기 포커스는 닫기 버튼이 아니라 스테이지에 둔다.
 - 키보드: 스테이지가 포커스를 가질 때 화살표 키로 40px 이동, `+`/`=`로 확대, `-`로 축소, `0`으로 맞춤.
 
 ### 7.5 줌
 
-- 휠: `deltaY < 0`이면 1.1배 확대, 아니면 1/1.1 축소. 포인터 위치를 고정점으로 삼는다(줌 후 포인터 아래 지점이 그대로). 다이얼로그 안에서만 동작하므로 페이지 스크롤과 충돌하지 않는다. `preventDefault`한다.
+- 휠: `deltaY < 0`이면 1.1배 확대, 아니면 1/1.1 축소. 포인터 위치를 고정점으로 삼는다(줌 후 포인터 아래 지점이 그대로). 다이얼로그 안에서만 동작하므로 페이지 스크롤과 충돌하지 않는다. `preventDefault`한다. `deltaY`가 0인 가로 스와이프는 무시한다.
 - 핀치: 활성 포인터가 둘이면 두 점 거리의 비율로 배율을 바꾸고 중점을 고정점으로 삼는다.
 - 버튼 `+`/`−`: 스테이지 중심을 고정점으로 1.25배씩.
 
 ### 7.6 감속 모션과 접근성
 
-- `prefers-reduced-motion: reduce`이면 다이얼로그 열림 애니메이션과 transform 전환을 제거한다. 그 외에는 버튼 줌에만 `transform 0.2s var(--ease-out)`을 적용하고 드래그 중에는 전환을 끈다.
+- `prefers-reduced-motion: reduce`이면 다이얼로그 열림 애니메이션과 transform 전환을 제거한다. 그 외에는 드래그 중이 아닌 모든 transform 변경(버튼·휠·키보드 줌, 맞춤)에 `transform 0.2s var(--ease-out)`을 적용하고 드래그 중에는 전환을 끈다.
 - 툴바 버튼은 44×44px 이상, 포커스 링은 전역 `--focus` 규칙을 따른다.
 - 다이얼로그가 열리면 `aria-expanded="true"`. 트리거의 접근 가능한 이름은 `"{title} 크게 보기"`.
 - 인라인 SVG의 `<title>`은 `"Touchpoint AI 하네스 시스템 구조"`, `<desc>`는 `description` 한 문장.
@@ -427,7 +428,7 @@ system?: { title: string; intro: readonly string[]; diagram: HarnessDiagram };
 3. `크게 보기` 트리거를 클릭하면 `dialog[open]`이 보이고 툴바 `닫기` 버튼이 포커스 가능하다.
 4. 스테이지 중앙에서 마우스 다운 → 120px 오른쪽 이동 → 업 후 캔버스 `transform`의 translate x가 이전보다 커진다.
 5. `Escape`로 닫히고 트리거가 포커스를 가진다.
-6. 390×844 뷰포트에서 같은 페이지의 `document.documentElement.scrollWidth`가 `clientWidth`를 넘지 않는다.
+6. 390×844 뷰포트에서 같은 페이지의 `document.documentElement.scrollWidth`가 `window.innerWidth`를 넘지 않는다(기존 모바일 검사와 같은 기준).
 
 ### 10.3 시각 점검
 
@@ -452,7 +453,7 @@ system?: { title: string; intro: readonly string[]; diagram: HarnessDiagram };
 - 기존 히어로 이미지(포스터)는 유지한다. 다이어그램은 본문 챕터에 산다.
 - 스펙과 코드의 한국어 문구는 이 문서를 정본으로 한다.
 
-## 14. 2026-09-05 재통합: 케이스 스터디 모델 위로 이전
+## 13. 2026-09-05 재통합: 케이스 스터디 모델 위로 이전
 
 업스트림 `94c2db0`(상세 페이지를 포트폴리오 PDF 기반 케이스 스터디 모델로 재구축)이 먼저 반영되어, 4.3절·6.4절·10.1절이 전제한 `sections`/`verifiedMetrics`/4챕터 템플릿은 사라졌다. 이 절이 그 세 절을 대체한다.
 
