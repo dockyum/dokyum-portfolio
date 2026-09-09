@@ -27,8 +27,8 @@ export type Project = {
   name: string;
   kind: ProjectKind;
   category: string;
-  /** Which problem the project solved; shown on the landing runway and neighbour links. */
-  problemLine: string;
+  /** What the product is; shown on the landing runway and neighbour links. */
+  overviewLine: string;
   /** Project traits shown as hashtags in the Work menu. */
   tags: readonly string[];
   role: string;
@@ -53,7 +53,7 @@ export const projects = [
     name: "Snode",
     category: "FIELD APP · OPERATIONS",
     kind: "career",
-    problemLine: "작업 기록의 오류로 추가 수주를 못하는 문제를 해결하는 앱·어드민 개발",
+    overviewLine: "건설 현장의 출력과 작업을 앱으로 기록해 건설사 제출용 작업일지를 만드는 시스템",
     tags: ["#0to1", "#E2E", "#운영프로세스개선", "#AI업무적용"],
     role: "PO · 기획 · 운영 관리",
     period: "2025.05–2026.02",
@@ -76,7 +76,7 @@ export const projects = [
     name: "Coffeeting",
     category: "MVP · PRODUCT MARKET LEARNING",
     kind: "career",
-    problemLine: "고객 인터뷰와 MVP 테스트로 O2O 소개팅 서비스를 0to1 출시",
+    overviewLine: "원하는 조건을 남기면 매니저가 매칭부터 카페 예약까지 해주는 3만원 소개팅 서비스",
     tags: ["#0to1", "#E2E", "#고객가설검증", "#요구사항구조화"],
     role: "PM · 기획 · F.E. 개발",
     period: "2023.05–2023.10",
@@ -98,7 +98,7 @@ export const projects = [
     name: "Matching Admin",
     category: "BACK OFFICE · AUTOMATION",
     kind: "career",
-    problemLine: "매칭 매니저 업무의 효율 증가를 목표로 업무 유형에 따라 자동화·최적화",
+    overviewLine: "매니저가 남녀 매칭부터 만남 조율, 안내, 비상 대응까지 처리하는 커피팅 운영 어드민",
     tags: ["#백오피스E2E", "#업무자동화", "#운영효율화"],
     role: "PM · 기획 · 디자인 · 개발 관리",
     period: "2023.09–2024.11",
@@ -120,7 +120,7 @@ export const projects = [
     name: "Moum",
     category: "FUNNEL · SUPPLY GROWTH",
     kind: "career",
-    problemLine: "사용자가 관심 가는 클래스가 없어 낮았던 상품 클릭률을 개선",
+    overviewLine: "꽃꽂이, 공방, 산책 같은 원데이 클래스에서 3:3으로 만나는 데이팅 서비스",
     tags: ["#퍼널분석", "#전환율개선", "#고객리서치"],
     role: "PM · 기획 · 디자인 · F.E. 개발",
     period: "2022.10–2023.01",
@@ -142,7 +142,7 @@ export const projects = [
     name: "Butlerlee",
     category: "OWNED WEB · MEMBERSHIP",
     kind: "career",
-    problemLine: "예약의 97%가 OTA에 집중된 구조를 자사 웹과 멤버십 중심으로 전환",
+    overviewLine: "서촌과 북촌에서 한옥 스테이를 운영하는 숙박 서비스",
     tags: ["#자사웹전환", "#멤버십설계", "#OTA의존도개선", "#외주개발관리"],
     role: "PM · 웹 기획 · 운영 관리",
     period: "2022.03–2022.09",
@@ -164,7 +164,7 @@ export const projects = [
     name: "Touchpoint",
     category: "0→1 PRODUCT · AI SYSTEM BUILD",
     kind: "independent",
-    problemLine: "1인 개발의 처리량 한계를 AI 에이전트 하네스로 풀어 0→1 제품을 구축·운영",
+    overviewLine: "창작자와 전문가가 제안, 요청, 일정, 결제를 한 프로필 링크에서 관리하는 서비스",
     tags: ["#0to1", "#1인빌드", "#AI하네스", "#에이전트워크플로", "#일정결제통합"],
     role: "Founding Product Builder · PO · AI 시스템 설계 · 개발",
     period: "2026–NOW",

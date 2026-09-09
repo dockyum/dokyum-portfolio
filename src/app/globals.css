@@ -216,7 +216,7 @@ a:focus-visible, button:focus-visible {
   --runway-gutter: clamp(1rem, 3vw, 3rem);
   position: relative;
   margin-top: clamp(1.5rem, 2.5vw, 2rem);
-  padding-top: 5.5rem; /* room for the captions that rise above a hovered card */
+  padding-top: 7rem; /* room for the captions that rise above a hovered card */
   overflow: hidden;
   overflow: clip;
   cursor: grab;
@@ -290,6 +290,15 @@ a:focus-visible, button:focus-visible {
   color: var(--muted);
   font-size: 0.82rem;
   line-height: 1.35;
+  word-break: keep-all;
+}
+.project-card-role {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  opacity: 0.72;
   word-break: keep-all;
 }
 /* Card sizes are drawn on the 1440 canvas and follow each image's own orientation. */
@@ -1128,13 +1137,14 @@ a:focus-visible, button:focus-visible {
     --runway-gap: 1.35vw;
     --runway-gutter: 1rem;
     margin-top: 2.5rem;
-    padding-top: 4.5rem;
+    padding-top: 6rem;
   }
   /* Full-bleed cards with captions always showing; no accordion on touch so tap targets stay put. */
   .project-card { transition: none; }
   .project-card-caption { bottom: calc(100% + 0.6rem); opacity: 1; transform: none; }
   .project-card-name { font-size: 0.66rem; }
   .project-card-line { font-size: 0.78rem; }
+  .project-card-role { font-size: 0.64rem; }
   .project-card[data-project="snode"], .project-card[data-project="snode"]:hover { width: 80.6vw; height: 97.4vw; }
   .project-card[data-project="coffeeting"], .project-card[data-project="coffeeting"]:hover { width: 55vw; }
   .project-card[data-project="matching-admin"], .project-card[data-project="matching-admin"]:hover { width: 85vw; }

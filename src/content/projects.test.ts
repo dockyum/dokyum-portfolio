@@ -31,11 +31,11 @@ describe("projects", () => {
     expect(getProjectsByKind("independent").map(({ slug }) => slug)).toEqual(["touchpoint"]);
   });
 
-  it("keeps every slug, route, and problem line unique", () => {
+  it("keeps every slug, route, and overview line unique", () => {
     expect(new Set(projects.map(({ slug }) => slug)).size).toBe(6);
     expect(new Set(projects.map(({ route }) => route)).size).toBe(6);
-    expect(new Set(projects.map(({ problemLine }) => problemLine)).size).toBe(6);
-    expect(projects.every(({ problemLine }) => problemLine.length > 0)).toBe(true);
+    expect(new Set(projects.map(({ overviewLine }) => overviewLine)).size).toBe(6);
+    expect(projects.every(({ overviewLine }) => overviewLine.length > 0)).toBe(true);
   });
 
   it("describes every project with hashtags for the Work menu", () => {
@@ -57,7 +57,7 @@ describe("projects", () => {
     expect(text).not.toMatch(/매출|사용자 수|예약 수|방문자/);
     expect(text).toContain("6개월");
     expect(text).not.toContain("7개월");
-    expect(touchpoint?.problemLine).toContain("AI");
+    expect(touchpoint?.role).toContain("AI");
     expect(touchpoint?.tags).toContain("#AI하네스");
   });
 
