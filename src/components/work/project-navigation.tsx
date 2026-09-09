@@ -25,7 +25,7 @@ export function ProjectNavigation({ slug }: { slug: ProjectSlug }) {
             <span className="work-navigation-arrow" aria-hidden="true">←</span> 이전 프로젝트
           </span>
           <strong>{previous.name}</strong>
-          <span className="work-navigation-line">{previous.problemLine}</span>
+          <span className="work-navigation-line">{previous.overviewLine}</span>
           <NavigationThumb project={previous} />
         </a>
       ) : (
@@ -41,7 +41,7 @@ export function ProjectNavigation({ slug }: { slug: ProjectSlug }) {
             다음 프로젝트 <span className="work-navigation-arrow" aria-hidden="true">→</span>
           </span>
           <strong>{next.name}</strong>
-          <span className="work-navigation-line">{next.problemLine}</span>
+          <span className="work-navigation-line">{next.overviewLine}</span>
           <NavigationThumb project={next} />
         </a>
       ) : (

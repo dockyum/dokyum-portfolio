@@ -55,7 +55,7 @@ test("landing CTA, project journey, and PDF are available", async ({ page, reque
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: /제품 너머 병목까지/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /세상을 이롭게 만들자/ })).toBeVisible();
   const footer = page.locator(".site-footer");
   await expect(footer.getByRole("link", { name: "CONTACT" })).toHaveAttribute(
     "href",

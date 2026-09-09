@@ -11,7 +11,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 
 import { projectKindLabels, type Project } from "@/content/projects";
 
-const thesisLines = ["제품 너머 병목까지 찾아,", "사업이 성장하는 구조를 만듭니다."] as const;
+const thesisLines = ["발명으로", "세상을 이롭게 만들자"] as const;
 const thesisWords = thesisLines.map((line) => line.split(" "));
 const DRIFT_SPEED = 26; // px per second
 const DRAG_THRESHOLD = 6;
@@ -220,7 +220,7 @@ export function ProjectRunway({ projects }: { projects: readonly Project[] }) {
   return (
     <section className="landing-hero" aria-labelledby="landing-title">
       <div className="landing-thesis">
-        <p>BUILDING BEYOND THE PRODUCT</p>
+        <p>INVENT TO BENEFIT THE WORLD</p>
         <h1 id="landing-title">
           {thesisWords.map((words, lineIndex) => {
             const wordStart = thesisWords
@@ -286,7 +286,8 @@ export function ProjectRunway({ projects }: { projects: readonly Project[] }) {
                       ) : null}
                       {project.name}
                     </span>
-                    <span className="project-card-line">{project.problemLine}</span>
+                    <span className="project-card-line">{project.overviewLine}</span>
+                    <span className="project-card-role">{project.role}</span>
                   </span>
                   <span className="project-card-image">
                     <Image
